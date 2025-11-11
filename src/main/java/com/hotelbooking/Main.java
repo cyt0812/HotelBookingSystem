@@ -1,28 +1,12 @@
+// Main.java - 暂时保持简单
 package com.hotelbooking;
 
-import com.hotelbooking.util.DatabaseInitializer;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
-public class Main extends Application {
-    
-    static {
-        // 在GUI启动前初始化数据库
-        DatabaseInitializer.initialize();
-    }
-    
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/hotelbooking/view/login.fxml"));
-        primaryStage.setTitle("Hotel Booking System - Login");
-        primaryStage.setScene(new Scene(root, 800, 600));
-        primaryStage.show();
-    }
-
+public class Main {
     public static void main(String[] args) {
-        launch(args);
+        System.out.println("酒店预订系统启动中...");
+        System.out.println("请运行 TestMain 进行开发测试");
+        
+        // 等JavaFX环境完善后再启动图形界面
+        // MainApp.launch(MainApp.class, args);
     }
 }
