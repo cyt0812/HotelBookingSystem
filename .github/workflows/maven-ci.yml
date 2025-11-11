@@ -22,7 +22,7 @@ jobs:
         cache: 'maven'
         
     - name: Build and test with Maven
-      run: mvn -B clean test jacoco:report
+      run: mvn -B clean test  # 移除了 jacoco:report，因为现在在 test 阶段自动执行
       
     - name: Upload test results
       uses: actions/upload-artifact@v4
@@ -33,19 +33,3 @@ jobs:
           target/surefire-reports/
           target/site/jacoco/
         retention-days: 30
-        
-    - name: Generate coverage badge
-      run: |
-        COVERAGE=$(grep -oP 'Total.*?(\d+)%' target/site/jacoco/index.html | head -1 | grep -oP '\d+%')
-        echo "COVERAGE=$COVERAGE" >> $GITHUB_ENV
-        echo "Test Coverage: $COVERAGE"
-        
-    - name: Test Summary
-      if: always()
-      run: |
-        echo "### Test Results 📊" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "✅ All tests completed successfully!" >> $GITHUB_STEP_SUMMARY
-        echo "📈 Coverage: ${{ env.COVERAGE }}" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "View detailed reports in the artifacts." >> $GITHUB_STEP_SUMMARY
