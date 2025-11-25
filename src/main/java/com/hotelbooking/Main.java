@@ -1,6 +1,5 @@
 package com.hotelbooking;
 
-import com.hotelbooking.util.DatabaseInitializer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,15 +8,13 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
     
-    static {
-        // 在GUI启动前初始化数据库
-        DatabaseInitializer.initialize();
-    }
-    
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/hotelbooking/view/login.fxml"));
-        primaryStage.setTitle("Hotel Booking System - Login");
+        // 删除或注释掉这行：
+        // DatabaseInitializer.main(new String[]{});
+        
+        Parent root = FXMLLoader.load(getClass().getResource("/com/hotelbooking/view/MainView.fxml"));
+        primaryStage.setTitle("酒店预订系统");
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
     }
