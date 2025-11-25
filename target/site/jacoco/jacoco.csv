@@ -1,0 +1,7 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+HotelBookingSystem,com.hotelbooking.controller,AdminController,4,3,0,0,2,1,1,1,1,1
+HotelBookingSystem,com.hotelbooking.service,PaymentService,18,3,6,0,2,1,4,1,1,1
+HotelBookingSystem,com.hotelbooking.util,DatabaseInitializer,10,0,0,0,4,0,2,0,2,0
+HotelBookingSystem,com.hotelbooking.util,DatabaseConnection,18,0,0,0,5,0,2,0,2,0
+HotelBookingSystem,com.hotelbooking,TestMain,28,0,0,0,12,0,2,0,2,0
+HotelBookingSystem,com.hotelbooking,Main,10,0,0,0,4,0,2,0,2,0
