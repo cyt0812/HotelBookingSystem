@@ -1,17 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DatabaseInitializer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.util</a> &gt; <span class="el_source">DatabaseInitializer.java</span></div><h1>DatabaseInitializer.java</h1><pre class="source lang-java linenums">package com.hotelbooking.util;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Statement;
 
-<span class="nc" id="L6">public class DatabaseInitializer {</span>
-    
+/**
+ * 数据库初始化工具类：用于创建HotelDB数据库的表结构（首次运行时执行）
+ */
+<span class="nc" id="L10">public class DatabaseInitializer {</span>
+
+    // 初始化数据库表结构（核心方法：创建users表）
     public static void initialize() {
-<span class="nc" id="L9">        System.out.println(&quot;Initializing database...&quot;);</span>
-        
-        // 这里先留空，等角色A设计好表结构后再填充
-        // 角色A将在这里添加创建表的SQL语句
-        
-<span class="nc" id="L14">        System.out.println(&quot;Database initialization completed!&quot;);</span>
-<span class="nc" id="L15">    }</span>
+        // 1. 定义创建users表的SQL语句（和UserDAO、User实体类的字段匹配）
+<span class="nc" id="L15">        String createUsersTable = &quot;CREATE TABLE users (&quot; +</span>
+                &quot;user_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, &quot; +  // 自增主键
+                &quot;username VARCHAR(50) UNIQUE NOT NULL, &quot; +                 // 用户名唯一，非空
+                &quot;password VARCHAR(50) NOT NULL, &quot; +                        // 密码非空
+                &quot;email VARCHAR(100), &quot; +                                   // 邮箱可选
+                &quot;full_name VARCHAR(100), &quot; +                               // 全名可选
+                &quot;role VARCHAR(20) NOT NULL DEFAULT 'CUSTOMER'&quot; +           // 角色默认值CUSTOMER
+                &quot;)&quot;;
+
+        // 2. 执行SQL创建表
+<span class="nc" id="L25">        try (Connection conn = DatabaseConnection.getConnection();  // 获取数据库连接</span>
+<span class="nc" id="L26">             Statement stmt = conn.createStatement()) {              // 创建SQL执行对象</span>
+
+<span class="nc" id="L28">            stmt.execute(createUsersTable);  // 执行建表SQL</span>
+<span class="nc" id="L29">            System.out.println(&quot;✅ [初始化成功] users表创建完成！&quot;);</span>
+
+<span class="nc" id="L31">        } catch (SQLException e) {</span>
+            // 处理异常：如果表已存在，忽略该错误（仅首次创建需要）
+<span class="nc bnc" id="L33" title="All 2 branches missed.">            if (e.getMessage().contains(&quot;already exists&quot;)) {</span>
+<span class="nc" id="L34">                System.out.println(&quot;ℹ️ [提示] users表已存在，无需重复创建！&quot;);</span>
+            } else {
+                // 其他SQL错误，打印详细信息
+<span class="nc" id="L37">                System.err.println(&quot;❌ [初始化失败] 创建users表出错：&quot; + e.getMessage());</span>
+<span class="nc" id="L38">                e.printStackTrace();</span>
+            }
+<span class="nc" id="L40">        }</span>
+<span class="nc" id="L41">    }</span>
+
+    // 主方法：运行该类即可执行初始化（手动触发建表）
+    public static void main(String[] args) {
+<span class="nc" id="L45">        System.out.println(&quot;开始初始化数据库表结构...&quot;);</span>
+<span class="nc" id="L46">        initialize();  // 调用初始化方法创建表</span>
+<span class="nc" id="L47">        System.out.println(&quot;数据库表结构初始化流程结束！&quot;);</span>
+<span class="nc" id="L48">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

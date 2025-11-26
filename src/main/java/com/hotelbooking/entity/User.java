@@ -7,6 +7,7 @@ public class User {
     private String email;
     private String fullName;
     private String role;
+    private boolean status; // 新增：用户状态（true=启用，false=禁用）
 
     // 构造方法
     public User() {}
@@ -16,10 +17,11 @@ public class User {
         this.password = password;
         this.email = email;
         this.fullName = fullName;
-        this.role = "CUSTOMER";
+        this.role = "CUSTOMER"; // 默认角色为普通用户
+        this.status = true;     // 默认状态为启用
     }
 
-    // Getter 和 Setter 方法
+    // Getter 和 Setter 方法（补充status的get/set）
     public int getUserId() { return userId; }
     public void setUserId(int userId) { this.userId = userId; }
 
@@ -38,8 +40,11 @@ public class User {
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
 
+    public boolean isStatus() { return status; } // 新增
+    public void setStatus(boolean status) { this.status = status; } // 新增
+
     @Override
     public String toString() {
-        return "User{userId=" + userId + ", username='" + username + "', role='" + role + "'}";
+        return "User{userId=" + userId + ", username='" + username + "', role='" + role + "', status=" + status + "}";
     }
 }

@@ -8,7 +8,8 @@ import java.sql.*;
 public class UserDAO {
 
     public boolean createUser(User user) {
-        String sql = "INSERT INTO users (username, password, email, full_name, role) VALUES (?, ?, ?, ?, ?)";
+        // 关键修改：删除INSERT中的role列，让数据库使用默认值
+        String sql = "INSERT INTO users (username, password, email, full_name) VALUES (?, ?, ?, ?)";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -17,7 +18,7 @@ public class UserDAO {
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getEmail());
             ps.setString(4, user.getFullName());
-            ps.setString(5, user.getRole());
+            // 移除role列的参数设置
             
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
@@ -43,7 +44,7 @@ public class UserDAO {
                 user.setPassword(rs.getString("password"));
                 user.setEmail(rs.getString("email"));
                 user.setFullName(rs.getString("full_name"));
-                user.setRole(rs.getString("role"));
+                user.setRole(rs.getString("role")); // 数据库会返回默认的CUSTOMER
                 return user;
             }
         } catch (SQLException e) {
