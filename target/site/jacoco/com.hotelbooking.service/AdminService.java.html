@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdminService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.service</a> &gt; <span class="el_source">AdminService.java</span></div><h1>AdminService.java</h1><pre class="source lang-java linenums">package com.hotelbooking.service;
+
+import com.hotelbooking.entity.User;
+import com.hotelbooking.entity.Room;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 管理员服务层
+ * 适配你的User实体类（无userId/status的构造器，使用Setter初始化）
+ */
+<span class="nc" id="L12">public class AdminService {</span>
+
+    /**
+     * 查询所有用户（模拟数据，使用Setter方法初始化User对象）
+     * @return 用户列表
+     */
+    public List&lt;User&gt; queryAllUsers() {
+<span class="nc" id="L19">        List&lt;User&gt; userList = new ArrayList&lt;&gt;();</span>
+
+        // 初始化第一个用户：使用无参构造器 + Setter方法
+<span class="nc" id="L22">        User user1 = new User();</span>
+<span class="nc" id="L23">        user1.setUserId(1); // 设置用户ID</span>
+<span class="nc" id="L24">        user1.setUsername(&quot;testuser1&quot;);</span>
+<span class="nc" id="L25">        user1.setPassword(&quot;123456&quot;);</span>
+<span class="nc" id="L26">        user1.setEmail(&quot;test1@example.com&quot;);</span>
+<span class="nc" id="L27">        user1.setFullName(&quot;测试用户1&quot;);</span>
+<span class="nc" id="L28">        user1.setRole(&quot;CUSTOMER&quot;); // 普通用户</span>
+<span class="nc" id="L29">        user1.setStatus(true);     // 启用状态</span>
+<span class="nc" id="L30">        userList.add(user1);</span>
+
+        // 初始化第二个用户
+<span class="nc" id="L33">        User user2 = new User();</span>
+<span class="nc" id="L34">        user2.setUserId(2);</span>
+<span class="nc" id="L35">        user2.setUsername(&quot;testuser2&quot;);</span>
+<span class="nc" id="L36">        user2.setPassword(&quot;123456&quot;);</span>
+<span class="nc" id="L37">        user2.setEmail(&quot;test2@example.com&quot;);</span>
+<span class="nc" id="L38">        user2.setFullName(&quot;测试用户2&quot;);</span>
+<span class="nc" id="L39">        user2.setRole(&quot;ADMIN&quot;);    // 管理员角色</span>
+<span class="nc" id="L40">        user2.setStatus(true);     // 启用状态</span>
+<span class="nc" id="L41">        userList.add(user2);</span>
+
+<span class="nc" id="L43">        return userList;</span>
+    }
+
+    /**
+     * 更新用户状态（启用/禁用）
+     * @param userId 用户ID
+     * @param status 目标状态
+     * @return 操作结果
+     */
+    public boolean updateUserStatus(int userId, boolean status) {
+        // 模拟逻辑：仅当用户ID为1/2时返回成功（模拟数据库更新成功）
+<span class="nc bnc" id="L54" title="All 4 branches missed.">        if (userId == 1 || userId == 2) {</span>
+            // 实际项目中会查询数据库并更新状态，此处简化
+<span class="nc" id="L56">            return true;</span>
+        }
+<span class="nc" id="L58">        return false;</span>
+    }
+
+    /**
+     * 添加新房间（模拟逻辑）
+     * @param room 房间对象
+     * @return 操作结果
+     */
+    public boolean insertRoom(Room room) {
+        // 模拟逻辑：房间号以&quot;10&quot;开头时返回成功（避免重复）
+<span class="nc bnc" id="L68" title="All 4 branches missed.">        return room.getRoomNumber() != null &amp;&amp; room.getRoomNumber().startsWith(&quot;10&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

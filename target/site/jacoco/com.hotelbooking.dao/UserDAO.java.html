@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.dao</a> &gt; <span class="el_source">UserDAO.java</span></div><h1>UserDAO.java</h1><pre class="source lang-java linenums">package com.hotelbooking.dao;
+
+import com.hotelbooking.entity.User;
+import com.hotelbooking.util.DatabaseConnection;
+
+import java.sql.*;
+
+<span class="fc" id="L8">public class UserDAO {</span>
+
+    public boolean createUser(User user) {
+        // 关键修改：删除INSERT中的role列，让数据库使用默认值
+<span class="fc" id="L12">        String sql = &quot;INSERT INTO users (username, password, email, full_name) VALUES (?, ?, ?, ?)&quot;;</span>
+        
+<span class="fc" id="L14">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L15">             PreparedStatement ps = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L17">            ps.setString(1, user.getUsername());</span>
+<span class="fc" id="L18">            ps.setString(2, user.getPassword());</span>
+<span class="fc" id="L19">            ps.setString(3, user.getEmail());</span>
+<span class="fc" id="L20">            ps.setString(4, user.getFullName());</span>
+            // 移除role列的参数设置
+            
+<span class="fc" id="L23">            int rowsAffected = ps.executeUpdate();</span>
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">            return rowsAffected &gt; 0;</span>
+<span class="nc" id="L25">        } catch (SQLException e) {</span>
+<span class="nc" id="L26">            System.err.println(&quot;创建用户失败: &quot; + e.getMessage());</span>
+<span class="nc" id="L27">            return false;</span>
+        }
+    }
+
+    public User getUserByUsername(String username) {
+<span class="fc" id="L32">        String sql = &quot;SELECT * FROM users WHERE username = ?&quot;;</span>
+        
+<span class="fc" id="L34">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L35">             PreparedStatement ps = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L37">            ps.setString(1, username);</span>
+<span class="fc" id="L38">            ResultSet rs = ps.executeQuery();</span>
+            
+<span class="fc bfc" id="L40" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L41">                User user = new User();</span>
+<span class="fc" id="L42">                user.setUserId(rs.getInt(&quot;user_id&quot;));</span>
+<span class="fc" id="L43">                user.setUsername(rs.getString(&quot;username&quot;));</span>
+<span class="fc" id="L44">                user.setPassword(rs.getString(&quot;password&quot;));</span>
+<span class="fc" id="L45">                user.setEmail(rs.getString(&quot;email&quot;));</span>
+<span class="fc" id="L46">                user.setFullName(rs.getString(&quot;full_name&quot;));</span>
+<span class="fc" id="L47">                user.setRole(rs.getString(&quot;role&quot;)); // 数据库会返回默认的CUSTOMER</span>
+<span class="fc" id="L48">                return user;</span>
+            }
+<span class="pc bpc" id="L50" title="2 of 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L51">            System.err.println(&quot;查询用户失败: &quot; + e.getMessage());</span>
+<span class="fc" id="L52">        }</span>
+<span class="fc" id="L53">        return null;</span>
+    }
+
+    // 测试方法
+    public static void main(String[] args) {
+<span class="nc" id="L58">        UserDAO userDAO = new UserDAO();</span>
+        
+        // 测试查询用户
+<span class="nc" id="L61">        User user = userDAO.getUserByUsername(&quot;testuser&quot;);</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (user != null) {</span>
+<span class="nc" id="L63">            System.out.println(&quot;✅ 找到用户: &quot; + user.getUsername());</span>
+        } else {
+<span class="nc" id="L65">            System.out.println(&quot;❌ 用户不存在&quot;);</span>
+        }
+<span class="nc" id="L67">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

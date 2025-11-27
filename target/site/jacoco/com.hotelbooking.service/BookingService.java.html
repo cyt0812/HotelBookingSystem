@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BookingService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.service</a> &gt; <span class="el_source">BookingService.java</span></div><h1>BookingService.java</h1><pre class="source lang-java linenums">package com.hotelbooking.service;
+
+import com.hotelbooking.dao.BookingDAO;
+import com.hotelbooking.dao.RoomDAO;
+import com.hotelbooking.entity.Booking;
+import com.hotelbooking.entity.Room;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+<span class="nc" id="L11">public class BookingService {</span>
+<span class="nc" id="L12">    private final BookingDAO bookingDAO = new BookingDAO();</span>
+<span class="nc" id="L13">    private final RoomDAO roomDAO = new RoomDAO();</span>
+
+    // 创建预订（核心业务逻辑）
+    public boolean makeBooking(Booking booking) {
+        // 1. 检查房间在预定日期内是否可用
+<span class="nc bnc" id="L18" title="All 2 branches missed.">        if (!isRoomAvailable(booking.getRoomId(), booking.getCheckInDate(), booking.getCheckOutDate())) {</span>
+<span class="nc" id="L19">            System.out.println(&quot;房间在选定日期内不可用&quot;);</span>
+<span class="nc" id="L20">            return false;</span>
+        }
+
+        // 2. 计算总价
+<span class="nc" id="L24">        long nights = ChronoUnit.DAYS.between(booking.getCheckInDate(), booking.getCheckOutDate());</span>
+<span class="nc bnc" id="L25" title="All 2 branches missed.">        if (nights &lt;= 0) {</span>
+<span class="nc" id="L26">            System.out.println(&quot;入住日期必须早于退房日期&quot;);</span>
+<span class="nc" id="L27">            return false;</span>
+        }
+
+<span class="nc" id="L30">        Room room = roomDAO.getRoomById(booking.getRoomId());</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">        if (room == null) {</span>
+<span class="nc" id="L32">            System.out.println(&quot;房间不存在&quot;);</span>
+<span class="nc" id="L33">            return false;</span>
+        }
+
+<span class="nc" id="L36">        double totalPrice = nights * room.getPricePerNight();</span>
+<span class="nc" id="L37">        booking.setTotalPrice(totalPrice);</span>
+
+        // 3. 创建预订
+<span class="nc" id="L40">        boolean success = bookingDAO.createBooking(booking);</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">        if (success) {</span>
+<span class="nc" id="L42">            System.out.println(&quot;预订成功！总价: ￥&quot; + totalPrice + &quot; (&quot; + nights + &quot;晚)&quot;);</span>
+        }
+<span class="nc" id="L44">        return success;</span>
+    }
+
+    // 带支付的预订创建
+    public boolean makeBookingWithPayment(Booking booking, String cardNumber, String expiryDate, String cvv) {
+<span class="nc" id="L49">        PaymentService paymentService = new PaymentService();</span>
+        
+        // 1. 验证支付信息 - 方法名已修复
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        if (!paymentService.validatePaymentInfo(cardNumber, expiryDate, cvv)) {</span>
+<span class="nc" id="L53">            System.out.println(&quot;支付信息验证失败&quot;);</span>
+<span class="nc" id="L54">            return false;</span>
+        }
+        
+        // 2. 检查房间可用性
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (!isRoomAvailable(booking.getRoomId(), booking.getCheckInDate(), booking.getCheckOutDate())) {</span>
+<span class="nc" id="L59">            System.out.println(&quot;房间在选定日期内不可用&quot;);</span>
+<span class="nc" id="L60">            return false;</span>
+        }
+
+        // 3. 计算总价
+<span class="nc" id="L64">        long nights = ChronoUnit.DAYS.between(booking.getCheckInDate(), booking.getCheckOutDate());</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (nights &lt;= 0) {</span>
+<span class="nc" id="L66">            System.out.println(&quot;入住日期必须早于退房日期&quot;);</span>
+<span class="nc" id="L67">            return false;</span>
+        }
+
+<span class="nc" id="L70">        Room room = roomDAO.getRoomById(booking.getRoomId());</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        if (room == null) {</span>
+<span class="nc" id="L72">            System.out.println(&quot;房间不存在&quot;);</span>
+<span class="nc" id="L73">            return false;</span>
+        }
+
+<span class="nc" id="L76">        double totalPrice = nights * room.getPricePerNight();</span>
+<span class="nc" id="L77">        booking.setTotalPrice(totalPrice);</span>
+
+        // 4. 处理支付 - 方法名已修复
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (paymentService.processPayment(totalPrice)) {</span>
+            // 5. 创建预订
+<span class="nc" id="L82">            boolean success = bookingDAO.createBooking(booking);</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">            if (success) {</span>
+<span class="nc" id="L84">                System.out.println(&quot;预订成功！总价: ￥&quot; + totalPrice + &quot; (&quot; + nights + &quot;晚)&quot;);</span>
+            }
+<span class="nc" id="L86">            return success;</span>
+        } else {
+<span class="nc" id="L88">            System.out.println(&quot;支付失败，预订未完成&quot;);</span>
+<span class="nc" id="L89">            return false;</span>
+        }
+    }
+
+    // 检查房间可用性
+    public boolean isRoomAvailable(int roomId, LocalDate checkIn, LocalDate checkOut) {
+        // 验证日期
+<span class="nc bnc" id="L96" title="All 4 branches missed.">        if (checkIn.isBefore(LocalDate.now()) || checkOut.isBefore(checkIn)) {</span>
+<span class="nc" id="L97">            return false;</span>
+        }
+
+        // 检查房间是否存在且可用
+<span class="nc" id="L101">        Room room = roomDAO.getRoomById(roomId);</span>
+<span class="nc bnc" id="L102" title="All 4 branches missed.">        if (room == null || !room.isAvailable()) {</span>
+<span class="nc" id="L103">            return false;</span>
+        }
+
+        // 检查日期冲突
+<span class="nc" id="L107">        List&lt;Booking&gt; conflicts = bookingDAO.getConflictingBookings(roomId, checkIn, checkOut);</span>
+<span class="nc" id="L108">        return conflicts.isEmpty();</span>
+    }
+
+    // 获取用户的所有预订
+    public List&lt;Booking&gt; getUserBookings(int userId) {
+<span class="nc" id="L113">        return bookingDAO.getBookingsByUserId(userId);</span>
+    }
+
+    // 取消预订并退款
+    public boolean cancelBookingWithRefund(int bookingId) {
+<span class="nc" id="L118">        Booking booking = bookingDAO.getBookingById(bookingId);</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        if (booking == null) {</span>
+<span class="nc" id="L120">            System.out.println(&quot;预订不存在&quot;);</span>
+<span class="nc" id="L121">            return false;</span>
+        }
+        
+        // 检查是否可以取消（比如入住前24小时）
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        if (booking.getCheckInDate().isBefore(LocalDate.now().plusDays(1))) {</span>
+<span class="nc" id="L126">            System.out.println(&quot;无法取消：距离入住不足24小时&quot;);</span>
+<span class="nc" id="L127">            return false;</span>
+        }
+        
+        // 处理退款 - 方法名已修复
+<span class="nc" id="L131">        PaymentService paymentService = new PaymentService();</span>
+<span class="nc" id="L132">        boolean refundSuccess = paymentService.processRefund(bookingId, booking.getTotalPrice());</span>
+        
+<span class="nc bnc" id="L134" title="All 2 branches missed.">        if (refundSuccess) {</span>
+            // 取消预订
+<span class="nc" id="L136">            boolean cancelSuccess = bookingDAO.cancelBooking(bookingId);</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">            if (cancelSuccess) {</span>
+<span class="nc" id="L138">                System.out.println(&quot;取消成功，退款已处理&quot;);</span>
+<span class="nc" id="L139">                return true;</span>
+            }
+        }
+        
+<span class="nc" id="L143">        System.out.println(&quot;取消失败&quot;);</span>
+<span class="nc" id="L144">        return false;</span>
+    }
+
+    // 取消预订（不退款）
+    public boolean cancelBooking(int bookingId) {
+<span class="nc" id="L149">        return bookingDAO.cancelBooking(bookingId);</span>
+    }
+
+    // 根据ID获取预订详情
+    public Booking getBookingById(int bookingId) {
+<span class="nc" id="L154">        return bookingDAO.getBookingById(bookingId);</span>
+    }
+
+    // 计算预订价格（用于预览）
+    public double calculateBookingPrice(int roomId, LocalDate checkIn, LocalDate checkOut) {
+<span class="nc" id="L159">        long nights = ChronoUnit.DAYS.between(checkIn, checkOut);</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">        if (nights &lt;= 0) return 0.0;</span>
+
+<span class="nc" id="L162">        Room room = roomDAO.getRoomById(roomId);</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">        if (room == null) return 0.0;</span>
+
+<span class="nc" id="L165">        return nights * room.getPricePerNight();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
