@@ -5,17 +5,102 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    // 使用嵌入式Derby
-    private static final String URL = "jdbc:derby:HotelBookingDB;create=true";
+    // 数据库连接参数
+    private static final String URL = "jdbc:derby:hotel_booking_db;create=true";
     private static final String USER = "app";
     private static final String PASSWORD = "app";
-
+    
+    // 静态块用于加载数据库驱动
+    static {
+        try {
+            // 加载 Derby 驱动
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+            System.out.println("Derby database driver loaded successfully");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Failed to load Derby database driver", e);
+        }
+    }
+    
+    /**
+     * 获取数据库连接
+     * @return Connection 数据库连接对象
+     * @throws SQLException 如果连接失败
+     */
     public static Connection getConnection() throws SQLException {
         try {
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            return DriverManager.getConnection(URL, USER, PASSWORD);
-        } catch (ClassNotFoundException e) {
-            throw new SQLException("Derby driver not found", e);
+            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            // 设置自动提交为 true（默认值）
+            connection.setAutoCommit(true);
+            return connection;
+        } catch (SQLException e) {
+            System.err.println("Failed to get database connection: " + e.getMessage());
+            throw e;
+        }
+    }
+    
+    /**
+     * 测试数据库连接是否正常
+     * @return boolean 连接是否成功
+     */
+    public static boolean testConnection() {
+        try (Connection conn = getConnection()) {
+            return conn != null && !conn.isClosed();
+        } catch (SQLException e) {
+            System.err.println("Database connection test failed: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    /**
+     * 关闭数据库连接
+     * @param connection 要关闭的连接
+     */
+    public static void closeConnection(Connection connection) {
+        if (connection != null) {
+            try {
+                if (!connection.isClosed()) {
+                    connection.close();
+                    System.out.println("Database connection closed successfully");
+                }
+            } catch (SQLException e) {
+                System.err.println("Error closing database connection: " + e.getMessage());
+            }
+        }
+    }
+    
+    /**
+     * 获取数据库信息
+     */
+    public static void printDatabaseInfo() {
+        try (Connection conn = getConnection()) {
+            System.out.println("=== Database Information ===");
+            System.out.println("Database: " + conn.getMetaData().getDatabaseProductName());
+            System.out.println("Version: " + conn.getMetaData().getDatabaseProductVersion());
+            System.out.println("URL: " + conn.getMetaData().getURL());
+            System.out.println("Driver: " + conn.getMetaData().getDriverName());
+            System.out.println("Auto Commit: " + conn.getAutoCommit());
+            System.out.println("============================");
+        } catch (SQLException e) {
+            System.err.println("Error getting database info: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * 关闭 Derby 数据库（在应用关闭时调用）
+     */
+    public static void shutdownDatabase() {
+        try {
+            // Derby 关闭数据库的特殊 URL
+            DriverManager.getConnection("jdbc:derby:;shutdown=true");
+        } catch (SQLException e) {
+            // Derby 在关闭时总是抛出 SQLException，这是正常的
+            if ("XJ015".equals(e.getSQLState())) {
+                System.out.println("Derby database shut down normally");
+            } else if ("08006".equals(e.getSQLState())) {
+                System.out.println("Derby database shut down normally");
+            } else {
+                System.err.println("Derby database did not shut down normally: " + e.getMessage());
+            }
         }
     }
 }
