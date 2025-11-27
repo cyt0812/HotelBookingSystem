@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HotelService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.service</a> &gt; <span class="el_source">HotelService.java</span></div><h1>HotelService.java</h1><pre class="source lang-java linenums">package com.hotelbooking.service;
+
+import com.hotelbooking.dao.HotelDAO;
+import com.hotelbooking.dao.RoomDAO;
+import com.hotelbooking.entity.Hotel;
+import com.hotelbooking.entity.Room;
+import java.util.List;
+
+<span class="nc" id="L9">public class HotelService {</span>
+<span class="nc" id="L10">    private final HotelDAO hotelDAO = new HotelDAO();</span>
+<span class="nc" id="L11">    private final RoomDAO roomDAO = new RoomDAO();</span>
+
+    // 获取所有酒店列表
+    public List&lt;Hotel&gt; getAllHotels() {
+<span class="nc" id="L15">        return hotelDAO.getAllHotels();</span>
+    }
+
+    // 根据ID获取酒店详情
+    public Hotel getHotelById(int hotelId) {
+<span class="nc" id="L20">        return hotelDAO.getHotelById(hotelId);</span>
+    }
+
+    // 获取酒店的所有房间
+    public List&lt;Room&gt; getHotelRooms(int hotelId) {
+<span class="nc" id="L25">        return roomDAO.getRoomsByHotelId(hotelId);</span>
+    }
+
+    // 搜索可用房间
+    public List&lt;Room&gt; searchAvailableRooms(int hotelId) {
+<span class="nc" id="L30">        List&lt;Room&gt; allRooms = roomDAO.getRoomsByHotelId(hotelId);</span>
+        // 过滤出可用房间
+<span class="nc" id="L32">        return allRooms.stream()</span>
+<span class="nc" id="L33">                .filter(Room::isAvailable)</span>
+<span class="nc" id="L34">                .toList();</span>
+    }
+
+    // 添加新酒店
+    public boolean addHotel(Hotel hotel) {
+<span class="nc" id="L39">        return hotelDAO.addHotel(hotel);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

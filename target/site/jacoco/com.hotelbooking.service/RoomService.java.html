@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RoomService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.service</a> &gt; <span class="el_source">RoomService.java</span></div><h1>RoomService.java</h1><pre class="source lang-java linenums">package com.hotelbooking.service;
+
+import com.hotelbooking.dao.RoomDAO;
+import com.hotelbooking.entity.Room;
+import java.util.List;
+
+<span class="nc" id="L7">public class RoomService {</span>
+<span class="nc" id="L8">    private final RoomDAO roomDAO = new RoomDAO();</span>
+
+    // 获取所有房间
+    public List&lt;Room&gt; getAllRooms() {
+<span class="nc" id="L12">        return roomDAO.getAllRooms();</span>
+    }
+
+    // 根据ID获取房间详情
+    public Room getRoomById(int roomId) {
+<span class="nc" id="L17">        return roomDAO.getRoomById(roomId);</span>
+    }
+
+    // 获取可用房间列表
+    public List&lt;Room&gt; getAvailableRooms() {
+<span class="nc" id="L22">        return roomDAO.getAvailableRooms();</span>
+    }
+
+    // 根据酒店ID获取房间
+    public List&lt;Room&gt; getRoomsByHotel(int hotelId) {
+<span class="nc" id="L27">        return roomDAO.getRoomsByHotelId(hotelId);</span>
+    }
+
+    // 添加新房间
+    public boolean addRoom(Room room) {
+<span class="nc" id="L32">        return roomDAO.addRoom(room);</span>
+    }
+
+    // 更新房间状态
+    public boolean updateRoomAvailability(int roomId, boolean isAvailable) {
+<span class="nc" id="L37">        return roomDAO.updateRoomAvailability(roomId, isAvailable);</span>
+    }
+
+    // 根据房型搜索房间
+    public List&lt;Room&gt; searchRoomsByType(String roomType) {
+<span class="nc" id="L42">        List&lt;Room&gt; allRooms = roomDAO.getAllRooms();</span>
+<span class="nc" id="L43">        return allRooms.stream()</span>
+<span class="nc" id="L44">                .filter(room -&gt; room.getRoomType().equalsIgnoreCase(roomType))</span>
+<span class="nc" id="L45">                .filter(Room::isAvailable)</span>
+<span class="nc" id="L46">                .toList();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
