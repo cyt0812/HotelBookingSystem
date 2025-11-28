@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 public class Booking {
     private Integer id;
+    private String bookingId;  // 确保有这个字段
     private Integer userId;
     private Integer hotelId;
     private Integer roomId;
@@ -18,11 +19,13 @@ public class Booking {
     // 默认构造器
     public Booking() {
         this.createdAt = LocalDateTime.now();
+        this.bookingId = "BOOK_" + System.currentTimeMillis() + "_" + (int)(Math.random() * 1000);
     }
     
     // 带参数构造器
     public Booking(Integer userId, Integer hotelId, Integer roomId, LocalDate checkInDate, 
                   LocalDate checkOutDate, BigDecimal totalPrice, String status) {
+        this();
         this.userId = userId;
         this.hotelId = hotelId;
         this.roomId = roomId;
@@ -30,7 +33,6 @@ public class Booking {
         this.checkOutDate = checkOutDate;
         this.totalPrice = totalPrice;
         this.status = status;
-        this.createdAt = LocalDateTime.now();
     }
     
     // Getter 和 Setter
@@ -40,6 +42,14 @@ public class Booking {
     
     public void setId(Integer id) {
         this.id = id;
+    }
+    
+    public String getBookingId() {  // 确保有这个getter方法
+        return bookingId;
+    }
+    
+    public void setBookingId(String bookingId) {
+        this.bookingId = bookingId;
     }
     
     public Integer getUserId() {
@@ -110,6 +120,7 @@ public class Booking {
     public String toString() {
         return "Booking{" +
                 "id=" + id +
+                ", bookingId='" + bookingId + '\'' +
                 ", userId=" + userId +
                 ", hotelId=" + hotelId +
                 ", roomId=" + roomId +

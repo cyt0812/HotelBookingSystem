@@ -54,12 +54,12 @@ public class HotelDAO {
     }
 
     public List<Hotel> getAllHotels() {
-        String sql = "SELECT * FROM hotels";
+        String sql = "SELECT * FROM hotels ORDER BY name ASC";
         List<Hotel> hotels = new ArrayList<>();
         
         try (Connection conn = DatabaseConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
             
             while (rs.next()) {
                 hotels.add(mapResultSetToHotel(rs));
@@ -72,13 +72,13 @@ public class HotelDAO {
     }
 
     public List<Hotel> getHotelsByLocation(String location) {
-        String sql = "SELECT * FROM hotels WHERE location = ?";
+        String sql = "SELECT * FROM hotels WHERE LOWER(location) LIKE LOWER(?) ORDER BY name ASC";
         List<Hotel> hotels = new ArrayList<>();
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
-            stmt.setString(1, location);
+            stmt.setString(1, "%" + location + "%");
             ResultSet rs = stmt.executeQuery();
             
             while (rs.next()) {
@@ -88,6 +88,86 @@ public class HotelDAO {
             
         } catch (SQLException e) {
             throw new RuntimeException("Error getting hotels by location: " + location, e);
+        }
+    }
+
+    /**
+     * 搜索酒店（按名称或位置）
+     */
+    public List<Hotel> searchHotels(String keyword) {
+        String sql = "SELECT * FROM hotels WHERE LOWER(name) LIKE LOWER(?) OR LOWER(location) LIKE LOWER(?) ORDER BY name ASC";
+        List<Hotel> hotels = new ArrayList<>();
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            String searchTerm = "%" + keyword + "%";
+            stmt.setString(1, searchTerm);
+            stmt.setString(2, searchTerm);
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                hotels.add(mapResultSetToHotel(rs));
+            }
+            return hotels;
+            
+        } catch (SQLException e) {
+            throw new RuntimeException("Error searching hotels: " + keyword, e);
+        }
+    }
+
+    /**
+     * 更新酒店可用房间数量
+     */
+    public boolean updateAvailableRooms(Integer hotelId, int availableRooms) {
+        String sql = "UPDATE hotels SET available_rooms = ? WHERE id = ?";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, availableRooms);
+            stmt.setInt(2, hotelId);
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0;
+            
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating available rooms for hotel: " + hotelId, e);
+        }
+    }
+
+    /**
+     * 增加酒店可用房间数量
+     */
+    public boolean incrementAvailableRooms(Integer hotelId) {
+        String sql = "UPDATE hotels SET available_rooms = available_rooms + 1 WHERE id = ?";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, hotelId);
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0;
+            
+        } catch (SQLException e) {
+            throw new RuntimeException("Error incrementing available rooms for hotel: " + hotelId, e);
+        }
+    }
+
+    /**
+     * 减少酒店可用房间数量
+     */
+    public boolean decrementAvailableRooms(Integer hotelId) {
+        String sql = "UPDATE hotels SET available_rooms = available_rooms - 1 WHERE id = ? AND available_rooms > 0";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, hotelId);
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0;
+            
+        } catch (SQLException e) {
+            throw new RuntimeException("Error decrementing available rooms for hotel: " + hotelId, e);
         }
     }
 
@@ -118,11 +198,31 @@ public class HotelDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, id);
-            int affectedRooms = stmt.executeUpdate();
-            return affectedRooms > 0;
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0;
             
         } catch (SQLException e) {
             throw new RuntimeException("Error deleting hotel: " + id, e);
+        }
+    }
+
+    /**
+     * 获取酒店数量统计
+     */
+    public int getHotelCount() {
+        String sql = "SELECT COUNT(*) FROM hotels";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+            
+        } catch (SQLException e) {
+            throw new RuntimeException("Error getting hotel count", e);
         }
     }
 

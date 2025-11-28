@@ -1,186 +1,150 @@
 package com.hotelbooking.service;
 
-import com.hotelbooking.dao.BookingDAO;
-import com.hotelbooking.entity.Booking;
+import com.hotelbooking.dao.PaymentDAO;
+import com.hotelbooking.entity.Payment;
+import com.hotelbooking.exception.BusinessException;
+import com.hotelbooking.exception.ErrorType;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 public class PaymentService {
-    private final BookingDAO bookingDAO;
+    private final PaymentDAO paymentDAO;
     
-    public PaymentService(BookingDAO bookingDAO) {
-        this.bookingDAO = bookingDAO;
+    public PaymentService(PaymentDAO paymentDAO) {
+        this.paymentDAO = paymentDAO;
+    }
+    
+    // 便捷构造函数
+    public PaymentService() {
+        this.paymentDAO = new PaymentDAO();
     }
     
     /**
      * 处理支付
      */
-    public boolean processPayment(Integer bookingId, String cardNumber, String expiryDate, String cvv) {
-    // 验证支付信息
-    if (!isValidCardNumber(cardNumber) || !isValidExpiryDate(expiryDate) || !isValidCVV(cvv)) {
-        return false;
+    public boolean processPayment(String bookingId, BigDecimal amount, String paymentMethod) {
+        try {
+            // 创建支付记录
+            Payment payment = new Payment(bookingId, amount, paymentMethod);
+            boolean created = paymentDAO.createPayment(payment);
+            
+            if (!created) {
+                throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, "创建支付记录失败");
+            }
+            
+            // 模拟支付处理（在实际项目中这里会调用第三方支付API）
+            boolean paymentSuccess = simulatePaymentProcessing(paymentMethod);
+            
+            if (paymentSuccess) {
+                // 支付成功，更新支付状态
+                String transactionId = "TXN_" + System.currentTimeMillis();
+                return paymentDAO.updatePaymentStatus(payment.getPaymentId(), "COMPLETED", transactionId);
+            } else {
+                // 支付失败
+                paymentDAO.updatePaymentStatus(payment.getPaymentId(), "FAILED", null);
+                throw new BusinessException(ErrorType.PAYMENT_FAILED, "支付处理失败，请重试或更换支付方式");
+            }
+            
+        } catch (BusinessException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
+                "支付系统错误: " + e.getMessage(), e);
+        }
     }
-    
-    // 获取预订信息
-    Optional<Booking> bookingOpt = bookingDAO.getBookingById(bookingId);
-    if (bookingOpt.isEmpty()) {
-        return false;
-    }
-    
-    Booking booking = bookingOpt.get();
-    
-    // 检查预订状态是否允许支付
-    if (!"CONFIRMED".equals(booking.getStatus()) && !"PENDING".equals(booking.getStatus())) {
-        return false;
-    }
-    
-    // 模拟支付处理
-    System.out.println("Processing payment for booking " + bookingId);
-    System.out.println("Amount: $" + booking.getTotalPrice());
-    System.out.println("Card: **** **** **** " + cardNumber.substring(cardNumber.length() - 4));
-    
-    // 这里总是返回 true 来模拟成功的支付
-    // 在实际应用中，这里会调用支付网关并返回实际结果
-    boolean paymentSuccess = true;
-    
-    if (paymentSuccess) {
-        // 更新预订状态为已支付
-        return bookingDAO.updateBookingStatus(bookingId, "PAID");
-    }
-    
-    return false;
-}
     
     /**
      * 处理退款
      */
-    public boolean refundPayment(Integer bookingId) {
-        Optional<Booking> bookingOpt = bookingDAO.getBookingById(bookingId);
-        if (bookingOpt.isEmpty()) {
-            return false;
-        }
-        
-        Booking booking = bookingOpt.get();
-        
-        // 只有已支付的预订才能退款
-        if (!"PAID".equals(booking.getStatus())) {
-            return false;
-        }
-        
-        // 模拟退款处理
-        System.out.println("Processing refund for booking " + bookingId);
-        System.out.println("Refund amount: $" + booking.getTotalPrice());
-        
-        // 更新预订状态为已退款
-        return bookingDAO.updateBookingStatus(bookingId, "REFUNDED");
-    }
-    
-    /**
-     * 获取预订金额
-     */
-    public Optional<BigDecimal> getBookingAmount(Integer bookingId) {
-        Optional<Booking> bookingOpt = bookingDAO.getBookingById(bookingId);
-        return bookingOpt.map(Booking::getTotalPrice);
-    }
-    
-    /**
-     * 验证信用卡号
-     */
-    private boolean isValidCardNumber(String cardNumber) {
-        if (cardNumber == null || cardNumber.length() < 13 || cardNumber.length() > 19) {
-            return false;
-        }
-        
-        // 简单的Luhn算法验证
-        return luhnCheck(cardNumber.replaceAll("\\s+", ""));
-    }
-    
-    /**
-     * 验证有效期
-     */
-    private boolean isValidExpiryDate(String expiryDate) {
-        if (expiryDate == null || !expiryDate.matches("\\d{2}/\\d{2}")) {
-            return false;
-        }
-        
+    public boolean processRefund(String bookingId) {
         try {
-            String[] parts = expiryDate.split("/");
-            int month = Integer.parseInt(parts[0]);
-            int year = Integer.parseInt(parts[1]) + 2000; // 假设是20xx年
-            
-            if (month < 1 || month > 12) {
-                return false;
+            Payment payment = paymentDAO.getPaymentByBookingId(bookingId);
+            if (payment == null) {
+                throw new BusinessException(ErrorType.PAYMENT_NOT_FOUND, "未找到对应的支付记录");
             }
             
-            LocalDate expiry = LocalDate.of(year, month, 1).plusMonths(1).minusDays(1);
-            return !expiry.isBefore(LocalDate.now());
+            if (!"COMPLETED".equals(payment.getPaymentStatus())) {
+                throw new BusinessException(ErrorType.REFUND_FAILED, "只有已完成的支付才能退款");
+            }
             
+            // 模拟退款处理
+            boolean refundSuccess = simulateRefundProcessing();
+            
+            if (refundSuccess) {
+                return paymentDAO.updatePaymentStatus(payment.getPaymentId(), "REFUNDED", 
+                    payment.getTransactionId() + "_REFUND");
+            } else {
+                throw new BusinessException(ErrorType.REFUND_FAILED, "退款处理失败");
+            }
+            
+        } catch (BusinessException e) {
+            throw e;
         } catch (Exception e) {
-            return false;
+            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
+                "退款系统错误: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 验证CVV
+     * 获取支付状态
      */
-    private boolean isValidCVV(String cvv) {
-        return cvv != null && cvv.matches("\\d{3,4}");
+    public Optional<Payment> getPaymentStatus(String bookingId) {
+        try {
+            return Optional.ofNullable(paymentDAO.getPaymentByBookingId(bookingId));
+        } catch (Exception e) {
+            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
+                "查询支付状态失败: " + e.getMessage(), e);
+        }
     }
     
     /**
-     * Luhn算法验证信用卡号
+     * 模拟支付处理（实际项目中替换为真实的支付网关调用）
      */
-    private boolean luhnCheck(String cardNumber) {
-        int sum = 0;
-        boolean alternate = false;
-        
-        for (int i = cardNumber.length() - 1; i >= 0; i--) {
-            int digit = Character.getNumericValue(cardNumber.charAt(i));
-            
-            if (alternate) {
-                digit *= 2;
-                if (digit > 9) {
-                    digit = (digit % 10) + 1;
-                }
-            }
-            
-            sum += digit;
-            alternate = !alternate;
-        }
-        
-        return (sum % 10) == 0;
+    private boolean simulatePaymentProcessing(String paymentMethod) {
+        // 模拟支付成功率：90%
+        System.out.println("模拟" + paymentMethod + "支付处理...");
+        return Math.random() > 0.1;
+    }
+    
+    /**
+     * 模拟退款处理
+     */
+    private boolean simulateRefundProcessing() {
+        // 模拟退款成功率：95%
+        System.out.println("模拟退款处理...");
+        return Math.random() > 0.05;
     }
     
     /**
      * 计算应退金额（根据取消政策）
      */
-    public Optional<BigDecimal> calculateRefundAmount(Integer bookingId) {
-        Optional<Booking> bookingOpt = bookingDAO.getBookingById(bookingId);
-        if (bookingOpt.isEmpty()) {
-            return Optional.empty();
+    public BigDecimal calculateRefundAmount(String bookingId, LocalDate checkInDate) {
+        try {
+            LocalDate today = LocalDate.now();
+            long daysUntilCheckIn = java.time.temporal.ChronoUnit.DAYS.between(today, checkInDate);
+            
+            Payment payment = paymentDAO.getPaymentByBookingId(bookingId);
+            if (payment == null) {
+                return BigDecimal.ZERO;
+            }
+            
+            BigDecimal amount = payment.getAmount();
+            
+            // 取消政策：
+            // - 提前7天以上取消：全额退款
+            // - 提前3-7天取消：退款50%
+            // - 3天内取消：不退款
+            if (daysUntilCheckIn > 7) {
+                return amount;
+            } else if (daysUntilCheckIn > 3) {
+                return amount.multiply(new BigDecimal("0.5"));
+            } else {
+                return BigDecimal.ZERO;
+            }
+        } catch (Exception e) {
+            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
+                "计算退款金额失败: " + e.getMessage(), e);
         }
-        
-        Booking booking = bookingOpt.get();
-        LocalDate checkIn = booking.getCheckInDate();
-        LocalDate today = LocalDate.now();
-        
-        long daysUntilCheckIn = java.time.temporal.ChronoUnit.DAYS.between(today, checkIn);
-        
-        // 取消政策：
-        // - 提前7天以上取消：全额退款
-        // - 提前3-7天取消：退款50%
-        // - 3天内取消：不退款
-        BigDecimal refundAmount;
-        if (daysUntilCheckIn > 7) {
-            refundAmount = booking.getTotalPrice();
-        } else if (daysUntilCheckIn > 3) {
-            refundAmount = booking.getTotalPrice().multiply(new BigDecimal("0.5"));
-        } else {
-            refundAmount = BigDecimal.ZERO;
-        }
-        
-        return Optional.of(refundAmount);
     }
 }

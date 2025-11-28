@@ -67,7 +67,18 @@ public class DatabaseConnection {
             }
         }
     }
-    
+    public static void shutdownDatabase() {
+    try {
+        DriverManager.getConnection("jdbc:derby:;shutdown=true");
+    } catch (SQLException e) {
+        if ("XJ015".equals(e.getSQLState()) || "08006".equals(e.getSQLState())) {
+            System.out.println("Derby shutdown normally");
+        } else {
+            System.out.println("Derby shutdown error: " + e.getMessage());
+        }
+    }
+}
+
     /**
      * 获取数据库信息
      */
