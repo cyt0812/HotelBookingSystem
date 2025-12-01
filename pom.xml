@@ -12,32 +12,11 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <javafx.version>21.0.2</javafx.version>
-        <exec.mainClass>com.hotelbooking.Main</exec.mainClass>
+        <javafx.version>21.0.9</javafx.version>
+        <mainClass>com.hotelbooking.Main</mainClass>
     </properties>
     
     <dependencies>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.10.0</version>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.derby</groupId>
-            <artifactId>derbyclient</artifactId>
-            <version>10.16.1.1</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.testfx</groupId>
-            <artifactId>testfx-junit5</artifactId>
-            <version>4.0.18</version>
-            <scope>test</scope>
-        </dependency>
-    
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -47,6 +26,13 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     
@@ -61,21 +47,43 @@
                 </configuration>
             </plugin>
             
-            <!-- 只保留这一个插件，并设置为默认执行 -->
+            <!-- 完全移除 exec-maven-plugin，防止 NetBeans 自动使用它 -->
+            <!-- 或者只保留配置但不设置默认执行 -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
+                <!-- 不设置 executions，防止默认执行 -->
+                <configuration>
+                    <skip>true</skip>  <!-- 跳过执行 -->
+                </configuration>
+            </plugin>
+            
+            <!-- 添加 JavaFX 插件 -->
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
                 <executions>
+                    <!-- 设置为默认执行目标 -->
                     <execution>
                         <id>default-cli</id>
+                        <phase>package</phase>
                         <goals>
-                            <goal>java</goal>
+                            <goal>run</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>${exec.mainClass}</mainClass>
+                    <mainClass>${mainClass}</mainClass>
+                    <options>
+                        <option>--module-path</option>
+                        <option>D:\javafx-sdk-21.0.9\lib</option>
+                        <option>--add-modules</option>
+                        <option>javafx.controls,javafx.fxml</option>
+                        <option>--add-opens</option>
+                        <option>java.base/java.lang=ALL-UNNAMED</option>
+                    </options>
                 </configuration>
             </plugin>
         </plugins>
