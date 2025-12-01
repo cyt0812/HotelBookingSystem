@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" 
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.hotelbooking.controller.SearchHotelsController"
+            prefWidth="800" 
+            prefHeight="800"
+            style="-fx-background-color: #f5f5f5;">
+    
+    <!-- 顶部导航栏 -->
+    <top>
+        <VBox>
+            <HBox alignment="CENTER_RIGHT" 
+                  spacing="20"
+                  style="-fx-background-color: white; -fx-padding: 15 30; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;">
+                
+                <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                    <Label text="🏨 Hotel Booking System" 
+                           style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a; -fx-cursor: hand;"
+                           onMouseClicked="#backToHome"/>
+                </HBox>
+                
+                <Button text="Help" style="-fx-background-color: transparent; -fx-text-fill: #333; -fx-font-size: 14px;"/>
+                <Button text="My Trips" style="-fx-background-color: transparent; -fx-text-fill: #333; -fx-font-size: 14px;"/>
+                <Button fx:id="btnLogin" text="Sign In" 
+                        style="-fx-background-color: #1a1a1a; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10 25; -fx-border-radius: 20; -fx-background-radius: 20;"/>
+            </HBox>
+            
+            <!-- 搜索栏 -->
+            <HBox spacing="15" alignment="CENTER" 
+                  style="-fx-background-color: white; -fx-padding: 20 30;">
+                
+                <TextField fx:id="txtSearch" 
+                           promptText="Search by hotel name or location"
+                           style="-fx-pref-width: 400px; -fx-pref-height: 40px; -fx-font-size: 14px; -fx-border-color: #ccc; -fx-border-radius: 5; -fx-background-radius: 5;"/>
+                
+                <Button text="🔍 Search" 
+                        onAction="#handleSearch"
+                        style="-fx-background-color: #8B4513; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-pref-height: 40px; -fx-padding: 10 30; -fx-border-radius: 5; -fx-background-radius: 5; -fx-cursor: hand;"/>
+            </HBox>
+        </VBox>
+    </top>
+    
+    
+    <!-- 主要内容区域 -->
+    <center>
+        <VBox spacing="20" style="-fx-padding: 30;">
+            
+            <!-- 搜索结果标题 -->
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label fx:id="lblResultCount" 
+                       text="Found 4 hotels"
+                       style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;"/>
+            </HBox>
+            
+            <!-- 酒店列表 -->
+            <ScrollPane fitToWidth="true" 
+                        style="-fx-background-color: transparent; -fx-background: transparent;">
+                <VBox fx:id="hotelListContainer" 
+                      spacing="20" 
+                      style="-fx-padding: 10;"/>
+            </ScrollPane>
+            
+        </VBox>
+    </center>
+    
+</BorderPane>
