@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<HBox xmlns="http://javafx.com/javafx/21" 
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.hotelbooking.controller.TopNavigationController"
+      alignment="CENTER_RIGHT" 
+      spacing="20"
+      style="-fx-background-color: #ffffff; -fx-padding: 0 0;">
+    <!--padding：0（上下留白0），30（左右留白30）-->
+    
+    <!-- 左侧 Logo（可选） -->
+    <Region HBox.hgrow="ALWAYS"/>
+    
+    <!-- Help 按钮 -->
+    <Button fx:id="btnHelp" 
+            text="Help"
+            styleClass="nav-button"
+            onAction="#handleHelp"
+            style="-fx-background-color: transparent; 
+                   -fx-text-fill: #333333; 
+                   -fx-font-size: 14px;
+                   -fx-cursor: hand;
+                   -fx-padding: 8 15;
+                   -fx-border-radius: 5;
+                   -fx-background-radius: 5;">
+        <tooltip>
+            <Tooltip text="get help"/>
+        </tooltip>
+    </Button>
+    
+    <!-- Trips 按钮 -->
+    <Button fx:id="btnTrips" 
+            text="My Trips"
+            styleClass="nav-button"
+            onAction="#handleTrips"
+            style="-fx-background-color: transparent; 
+                   -fx-text-fill: #333333; 
+                   -fx-font-size: 14px;
+                   -fx-cursor: hand;
+                   -fx-padding: 8 15;
+                   -fx-border-radius: 5;
+                   -fx-background-radius: 5;">
+        <tooltip>
+            <Tooltip text="我的行程"/>
+        </tooltip>
+    </Button>
+    
+    <!-- Login 按钮（特殊样式） -->
+    <Button fx:id="btnLogin" 
+            text="👤 Sign In"
+            styleClass="login-button"
+            onAction="#handleLogin"
+            style="-fx-background-color: #1a1a1a; 
+                   -fx-text-fill: white; 
+                   -fx-font-size: 14px;
+                   -fx-font-weight: bold;
+                   -fx-cursor: hand;
+                   -fx-padding: 10 25;
+                   -fx-border-radius: 20;
+                   -fx-background-radius: 20;">
+        <tooltip>
+            <Tooltip text="登录或注册"/>
+        </tooltip>
+    </Button>
+    
+</HBox>
