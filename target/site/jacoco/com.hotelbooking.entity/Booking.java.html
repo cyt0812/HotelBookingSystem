@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Booking.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.entity</a> &gt; <span class="el_source">Booking.java</span></div><h1>Booking.java</h1><pre class="source lang-java linenums">package com.hotelbooking.entity;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+public class Booking {
+    private int bookingId;
+    private int userId;
+    private int roomId;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
+    private double totalPrice;
+    private String status;
+    private LocalDateTime createdAt;
+
+    // 修复默认构造方法 - 添加初始化
+<span class="fc" id="L17">    public Booking() {</span>
+<span class="fc" id="L18">        this.status = &quot;CONFIRMED&quot;;</span>
+<span class="fc" id="L19">        this.createdAt = LocalDateTime.now();</span>
+<span class="fc" id="L20">    }</span>
+
+<span class="fc" id="L22">    public Booking(int userId, int roomId, LocalDate checkInDate, LocalDate checkOutDate, double totalPrice) {</span>
+<span class="fc" id="L23">        this.userId = userId;</span>
+<span class="fc" id="L24">        this.roomId = roomId;</span>
+<span class="fc" id="L25">        this.checkInDate = checkInDate;</span>
+<span class="fc" id="L26">        this.checkOutDate = checkOutDate;</span>
+<span class="fc" id="L27">        this.totalPrice = totalPrice;</span>
+<span class="fc" id="L28">        this.status = &quot;CONFIRMED&quot;;</span>
+<span class="fc" id="L29">        this.createdAt = LocalDateTime.now();</span>
+<span class="fc" id="L30">    }</span>
+
+    // Getter 和 Setter
+<span class="fc" id="L33">    public int getBookingId() { return bookingId; }</span>
+<span class="fc" id="L34">    public void setBookingId(int bookingId) { this.bookingId = bookingId; }</span>
+
+<span class="fc" id="L36">    public int getUserId() { return userId; }</span>
+<span class="fc" id="L37">    public void setUserId(int userId) { this.userId = userId; }</span>
+
+<span class="fc" id="L39">    public int getRoomId() { return roomId; }</span>
+<span class="fc" id="L40">    public void setRoomId(int roomId) { this.roomId = roomId; }</span>
+
+<span class="fc" id="L42">    public LocalDate getCheckInDate() { return checkInDate; }</span>
+<span class="fc" id="L43">    public void setCheckInDate(LocalDate checkInDate) { this.checkInDate = checkInDate; }</span>
+
+<span class="fc" id="L45">    public LocalDate getCheckOutDate() { return checkOutDate; }</span>
+<span class="fc" id="L46">    public void setCheckOutDate(LocalDate checkOutDate) { this.checkOutDate = checkOutDate; }</span>
+
+<span class="fc" id="L48">    public double getTotalPrice() { return totalPrice; }</span>
+<span class="fc" id="L49">    public void setTotalPrice(double totalPrice) { this.totalPrice = totalPrice; }</span>
+
+<span class="fc" id="L51">    public String getStatus() { return status; }</span>
+<span class="fc" id="L52">    public void setStatus(String status) { this.status = status; }</span>
+
+<span class="fc" id="L54">    public LocalDateTime getCreatedAt() { return createdAt; }</span>
+<span class="fc" id="L55">    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L59">        return &quot;Booking{bookingId=&quot; + bookingId + &quot;, userId=&quot; + userId + &quot;, roomId=&quot; + roomId + </span>
+               &quot;, checkIn=&quot; + checkInDate + &quot;, checkOut=&quot; + checkOutDate + &quot;, totalPrice=&quot; + totalPrice + 
+               &quot;, status='&quot; + status + &quot;', createdAt=&quot; + createdAt + &quot;}&quot;;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

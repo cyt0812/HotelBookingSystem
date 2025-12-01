@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HotelDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.dao</a> &gt; <span class="el_source">HotelDAO.java</span></div><h1>HotelDAO.java</h1><pre class="source lang-java linenums">package com.hotelbooking.dao;
+
+import com.hotelbooking.entity.Hotel;
+import com.hotelbooking.util.DatabaseConnection;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="nc" id="L9">public class HotelDAO {</span>
+    
+    public List&lt;Hotel&gt; getAllHotels() {
+<span class="nc" id="L12">        List&lt;Hotel&gt; hotels = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L13">        String sql = &quot;SELECT * FROM hotels&quot;;</span>
+        
+<span class="nc" id="L15">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L16">             Statement stmt = conn.createStatement();</span>
+<span class="nc" id="L17">             ResultSet rs = stmt.executeQuery(sql)) {</span>
+            
+<span class="nc bnc" id="L19" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L20">                Hotel hotel = new Hotel();</span>
+<span class="nc" id="L21">                hotel.setHotelId(rs.getInt(&quot;hotel_id&quot;));</span>
+<span class="nc" id="L22">                hotel.setName(rs.getString(&quot;name&quot;));</span>
+<span class="nc" id="L23">                hotel.setAddress(rs.getString(&quot;address&quot;));</span>
+<span class="nc" id="L24">                hotel.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L25">                hotel.setAmenities(rs.getString(&quot;amenities&quot;));</span>
+<span class="nc" id="L26">                hotels.add(hotel);</span>
+<span class="nc" id="L27">            }</span>
+<span class="nc" id="L28">        } catch (SQLException e) {</span>
+<span class="nc" id="L29">            e.printStackTrace();</span>
+<span class="nc" id="L30">        }</span>
+<span class="nc" id="L31">        return hotels;</span>
+    }
+    
+    public Hotel getHotelById(int hotelId) {
+<span class="nc" id="L35">        String sql = &quot;SELECT * FROM hotels WHERE hotel_id = ?&quot;;</span>
+        
+<span class="nc" id="L37">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L38">             PreparedStatement ps = conn.prepareStatement(sql)) {</span>
+            
+<span class="nc" id="L40">            ps.setInt(1, hotelId);</span>
+<span class="nc" id="L41">            ResultSet rs = ps.executeQuery();</span>
+            
+<span class="nc bnc" id="L43" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L44">                Hotel hotel = new Hotel();</span>
+<span class="nc" id="L45">                hotel.setHotelId(rs.getInt(&quot;hotel_id&quot;));</span>
+<span class="nc" id="L46">                hotel.setName(rs.getString(&quot;name&quot;));</span>
+<span class="nc" id="L47">                hotel.setAddress(rs.getString(&quot;address&quot;));</span>
+<span class="nc" id="L48">                hotel.setDescription(rs.getString(&quot;description&quot;));</span>
+<span class="nc" id="L49">                hotel.setAmenities(rs.getString(&quot;amenities&quot;));</span>
+<span class="nc" id="L50">                return hotel;</span>
+            }
+<span class="nc bnc" id="L52" title="All 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L53">            e.printStackTrace();</span>
+<span class="nc" id="L54">        }</span>
+<span class="nc" id="L55">        return null;</span>
+    }
+
+    public boolean addHotel(Hotel hotel) {
+<span class="nc" id="L59">        throw new UnsupportedOperationException(&quot;Not supported yet.&quot;); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

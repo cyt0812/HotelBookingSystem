@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RoomDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.dao</a> &gt; <span class="el_source">RoomDAO.java</span></div><h1>RoomDAO.java</h1><pre class="source lang-java linenums">package com.hotelbooking.dao;
+
+import com.hotelbooking.entity.Room;
+import com.hotelbooking.util.DatabaseConnection;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="nc" id="L10">public class RoomDAO {</span>
+
+    // 获取所有房间
+    public List&lt;Room&gt; getAllRooms() {
+<span class="nc" id="L14">        List&lt;Room&gt; rooms = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L15">        String sql = &quot;SELECT * FROM rooms&quot;;</span>
+        
+<span class="nc" id="L17">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L18">             Statement stmt = conn.createStatement();</span>
+<span class="nc" id="L19">             ResultSet rs = stmt.executeQuery(sql)) {</span>
+            
+<span class="nc bnc" id="L21" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L22">                Room room = extractRoomFromResultSet(rs);</span>
+<span class="nc" id="L23">                rooms.add(room);</span>
+<span class="nc" id="L24">            }</span>
+<span class="nc" id="L25">        } catch (SQLException e) {</span>
+<span class="nc" id="L26">            System.err.println(&quot;获取房间列表失败: &quot; + e.getMessage());</span>
+<span class="nc" id="L27">        }</span>
+<span class="nc" id="L28">        return rooms;</span>
+    }
+
+    // 根据酒店ID获取房间
+    public List&lt;Room&gt; getRoomsByHotelId(int hotelId) {
+<span class="nc" id="L33">        List&lt;Room&gt; rooms = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L34">        String sql = &quot;SELECT * FROM rooms WHERE hotel_id = ?&quot;;</span>
+        
+<span class="nc" id="L36">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L37">             PreparedStatement ps = conn.prepareStatement(sql)) {</span>
+            
+<span class="nc" id="L39">            ps.setInt(1, hotelId);</span>
+<span class="nc" id="L40">            ResultSet rs = ps.executeQuery();</span>
+            
+<span class="nc bnc" id="L42" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L43">                Room room = extractRoomFromResultSet(rs);</span>
+<span class="nc" id="L44">                rooms.add(room);</span>
+<span class="nc" id="L45">            }</span>
+<span class="nc" id="L46">        } catch (SQLException e) {</span>
+<span class="nc" id="L47">            System.err.println(&quot;根据酒店ID获取房间失败: &quot; + e.getMessage());</span>
+<span class="nc" id="L48">        }</span>
+<span class="nc" id="L49">        return rooms;</span>
+    }
+
+    // 根据房间ID获取房间
+    public Room getRoomById(int roomId) {
+<span class="nc" id="L54">        String sql = &quot;SELECT * FROM rooms WHERE room_id = ?&quot;;</span>
+        
+<span class="nc" id="L56">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L57">             PreparedStatement ps = conn.prepareStatement(sql)) {</span>
+            
+<span class="nc" id="L59">            ps.setInt(1, roomId);</span>
+<span class="nc" id="L60">            ResultSet rs = ps.executeQuery();</span>
+            
+<span class="nc bnc" id="L62" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L63">                return extractRoomFromResultSet(rs);</span>
+            }
+<span class="nc bnc" id="L65" title="All 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L66">            System.err.println(&quot;根据ID获取房间失败: &quot; + e.getMessage());</span>
+<span class="nc" id="L67">        }</span>
+<span class="nc" id="L68">        return null;</span>
+    }
+
+    // 获取可用房间
+    public List&lt;Room&gt; getAvailableRooms() {
+<span class="nc" id="L73">        List&lt;Room&gt; rooms = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L74">        String sql = &quot;SELECT * FROM rooms WHERE is_available = true&quot;;</span>
+        
+<span class="nc" id="L76">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L77">             Statement stmt = conn.createStatement();</span>
+<span class="nc" id="L78">             ResultSet rs = stmt.executeQuery(sql)) {</span>
+            
+<span class="nc bnc" id="L80" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L81">                Room room = extractRoomFromResultSet(rs);</span>
+<span class="nc" id="L82">                rooms.add(room);</span>
+<span class="nc" id="L83">            }</span>
+<span class="nc" id="L84">        } catch (SQLException e) {</span>
+<span class="nc" id="L85">            System.err.println(&quot;获取可用房间失败: &quot; + e.getMessage());</span>
+<span class="nc" id="L86">        }</span>
+<span class="nc" id="L87">        return rooms;</span>
+    }
+
+    // 添加新房间
+    public boolean addRoom(Room room) {
+<span class="nc" id="L92">        String sql = &quot;INSERT INTO rooms (hotel_id, room_number, room_type, price_per_night, max_occupancy, is_available) VALUES (?, ?, ?, ?, ?, ?)&quot;;</span>
+        
+<span class="nc" id="L94">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L95">             PreparedStatement ps = conn.prepareStatement(sql)) {</span>
+            
+<span class="nc" id="L97">            ps.setInt(1, room.getHotelId());</span>
+<span class="nc" id="L98">            ps.setString(2, room.getRoomNumber());</span>
+<span class="nc" id="L99">            ps.setString(3, room.getRoomType());</span>
+<span class="nc" id="L100">            ps.setDouble(4, room.getPricePerNight());</span>
+<span class="nc" id="L101">            ps.setInt(5, room.getMaxOccupancy());</span>
+<span class="nc" id="L102">            ps.setBoolean(6, room.isAvailable());</span>
+            
+<span class="nc bnc" id="L104" title="All 2 branches missed.">            return ps.executeUpdate() &gt; 0;</span>
+<span class="nc" id="L105">        } catch (SQLException e) {</span>
+<span class="nc" id="L106">            System.err.println(&quot;添加房间失败: &quot; + e.getMessage());</span>
+<span class="nc" id="L107">            return false;</span>
+        }
+    }
+
+    // 更新房间可用状态
+    public boolean updateRoomAvailability(int roomId, boolean isAvailable) {
+<span class="nc" id="L113">        String sql = &quot;UPDATE rooms SET is_available = ? WHERE room_id = ?&quot;;</span>
+        
+<span class="nc" id="L115">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L116">             PreparedStatement ps = conn.prepareStatement(sql)) {</span>
+            
+<span class="nc" id="L118">            ps.setBoolean(1, isAvailable);</span>
+<span class="nc" id="L119">            ps.setInt(2, roomId);</span>
+            
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            return ps.executeUpdate() &gt; 0;</span>
+<span class="nc" id="L122">        } catch (SQLException e) {</span>
+<span class="nc" id="L123">            System.err.println(&quot;更新房间状态失败: &quot; + e.getMessage());</span>
+<span class="nc" id="L124">            return false;</span>
+        }
+    }
+
+    // 从ResultSet提取Room对象
+    private Room extractRoomFromResultSet(ResultSet rs) throws SQLException {
+<span class="nc" id="L130">        Room room = new Room();</span>
+<span class="nc" id="L131">        room.setRoomId(rs.getInt(&quot;room_id&quot;));</span>
+<span class="nc" id="L132">        room.setHotelId(rs.getInt(&quot;hotel_id&quot;));</span>
+<span class="nc" id="L133">        room.setRoomNumber(rs.getString(&quot;room_number&quot;));</span>
+<span class="nc" id="L134">        room.setRoomType(rs.getString(&quot;room_type&quot;));</span>
+<span class="nc" id="L135">        room.setPricePerNight(rs.getDouble(&quot;price_per_night&quot;));</span>
+<span class="nc" id="L136">        room.setMaxOccupancy(rs.getInt(&quot;max_occupancy&quot;));</span>
+<span class="nc" id="L137">        room.setAvailable(rs.getBoolean(&quot;is_available&quot;));</span>
+<span class="nc" id="L138">        return room;</span>
+    }
+
+    // 测试方法
+    public static void main(String[] args) {
+<span class="nc" id="L143">        RoomDAO roomDAO = new RoomDAO();</span>
+        
+        // 测试获取所有房间
+<span class="nc" id="L146">        List&lt;Room&gt; rooms = roomDAO.getAllRooms();</span>
+<span class="nc" id="L147">        System.out.println(&quot;房间数量: &quot; + rooms.size());</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        for (Room room : rooms) {</span>
+<span class="nc" id="L149">            System.out.println(&quot;房间: &quot; + room.getRoomNumber() + &quot; - &quot; + room.getRoomType() + &quot; - ￥&quot; + room.getPricePerNight());</span>
+<span class="nc" id="L150">        }</span>
+        
+        // 测试根据酒店ID获取房间
+<span class="nc" id="L153">        List&lt;Room&gt; hotelRooms = roomDAO.getRoomsByHotelId(1);</span>
+<span class="nc" id="L154">        System.out.println(&quot;酒店1的房间数量: &quot; + hotelRooms.size());</span>
+<span class="nc" id="L155">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
