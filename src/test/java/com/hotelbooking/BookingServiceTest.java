@@ -14,8 +14,13 @@ public class BookingServiceTest {
         
         // 模拟房间可用性逻辑
         boolean isAvailable = roomId > 0 && !checkInDate.isEmpty() && !checkOutDate.isEmpty();
+<<<<<<< HEAD
         assertTrue(isAvailable, "Room availability check should pass");
         System.out.println("✅ Room availability test completed");
+=======
+        assertTrue(isAvailable, "房间可用性检查应该通过");
+        System.out.println("✅ 房间可用性测试完成");
+>>>>>>> gui-dashboard/master
     }
 
     @Test
@@ -28,8 +33,13 @@ public class BookingServiceTest {
         
         // 模拟预订创建逻辑
         boolean success = userId > 0 && roomId > 0 && !checkIn.isEmpty() && !checkOut.isEmpty();
+<<<<<<< HEAD
         assertTrue(success, "Booking creation should succeed");
         System.out.println("✅ Booking creation test completed");
+=======
+        assertTrue(success, "预订创建应该成功");
+        System.out.println("✅ 预订创建测试完成");
+>>>>>>> gui-dashboard/master
     }
 
     @Test
@@ -39,8 +49,14 @@ public class BookingServiceTest {
         String validCheckOut = "2024-01-20";
         String invalidCheckIn = "2023-01-01"; // 过去日期
         
+<<<<<<< HEAD
         assertTrue(!validCheckIn.isEmpty(), "Check-in date cannot be empty");
         assertTrue(!validCheckOut.isEmpty(), "Check-out date cannot be empty");
         System.out.println("✅ Date validation test completed");
+=======
+        assertTrue(!validCheckIn.isEmpty(), "入住日期不能为空");
+        assertTrue(!validCheckOut.isEmpty(), "退房日期不能为空");
+        System.out.println("✅ 日期验证测试完成");
+>>>>>>> gui-dashboard/master
     }
 }
