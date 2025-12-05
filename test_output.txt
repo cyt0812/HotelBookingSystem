@@ -1,0 +1,1512 @@
+Apache Maven 3.9.9 (8e8579a9e76f7d015ee5ec7bfcdc97d260186937)
+Maven home: D:\Program Files\NetBeans-23\netbeans\java\maven
+Java version: 21.0.7, vendor: Oracle Corporation, runtime: D:\Program Files\Java\jdk-21
+Default locale: zh_CN, platform encoding: UTF-8
+OS name: "windows 11", version: "10.0", arch: "amd64", family: "windows"
+[DEBUG] Created new class realm maven.api
+[DEBUG] Importing foreign packages into class realm maven.api
+[DEBUG]   Imported: javax.annotation.* < plexus.core
+[DEBUG]   Imported: javax.annotation.security.* < plexus.core
+[DEBUG]   Imported: javax.inject.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.artifact < plexus.core
+[DEBUG]   Imported: org.apache.maven.classrealm < plexus.core
+[DEBUG]   Imported: org.apache.maven.cli < plexus.core
+[DEBUG]   Imported: org.apache.maven.configuration < plexus.core
+[DEBUG]   Imported: org.apache.maven.exception < plexus.core
+[DEBUG]   Imported: org.apache.maven.execution < plexus.core
+[DEBUG]   Imported: org.apache.maven.execution.scope < plexus.core
+[DEBUG]   Imported: org.apache.maven.graph < plexus.core
+[DEBUG]   Imported: org.apache.maven.lifecycle < plexus.core
+[DEBUG]   Imported: org.apache.maven.model < plexus.core
+[DEBUG]   Imported: org.apache.maven.monitor < plexus.core
+[DEBUG]   Imported: org.apache.maven.plugin < plexus.core
+[DEBUG]   Imported: org.apache.maven.profiles < plexus.core
+[DEBUG]   Imported: org.apache.maven.project < plexus.core
+[DEBUG]   Imported: org.apache.maven.reporting < plexus.core
+[DEBUG]   Imported: org.apache.maven.repository < plexus.core
+[DEBUG]   Imported: org.apache.maven.rtinfo < plexus.core
+[DEBUG]   Imported: org.apache.maven.settings < plexus.core
+[DEBUG]   Imported: org.apache.maven.toolchain < plexus.core
+[DEBUG]   Imported: org.apache.maven.usability < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.authentication < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.authorization < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.events < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.observers < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.proxy < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.repository < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.resource < plexus.core
+[DEBUG]   Imported: org.codehaus.classworlds < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.* < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.classworlds < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.component < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.configuration < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.container < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.context < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.lifecycle < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.logging < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.personality < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.Xpp3Dom < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlPullParser < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlPullParserException < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlSerializer < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.* < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.artifact < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.collection < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.deployment < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.graph < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.impl < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.installation < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.internal.impl < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.metadata < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.repository < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.resolution < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.spi < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.transfer < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.util < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.version < plexus.core
+[DEBUG]   Imported: org.fusesource.jansi.* < plexus.core
+[DEBUG]   Imported: org.slf4j.* < plexus.core
+[DEBUG]   Imported: org.slf4j.event.* < plexus.core
+[DEBUG]   Imported: org.slf4j.helpers.* < plexus.core
+[DEBUG]   Imported: org.slf4j.spi.* < plexus.core
+[DEBUG] Populating class realm maven.api
+[DEBUG] Created adapter factory; available factories [file-lock, rwlock-local, semaphore-local, noop]; available name mappers [discriminating, file-gav, file-hgav, file-static, gav, static]
+[INFO] Error stacktraces are turned on.
+[DEBUG] Message scheme: color
+[DEBUG] Message styles: debug info warning error success failure strong mojo project
+[DEBUG] Reading global settings from D:\Program Files\NetBeans-23\netbeans\java\maven\conf\settings.xml
+[DEBUG] Reading user settings from C:\Users\28031\.m2\settings.xml
+[DEBUG] Reading global toolchains from D:\Program Files\NetBeans-23\netbeans\java\maven\conf\toolchains.xml
+[DEBUG] Reading user toolchains from C:\Users\28031\.m2\toolchains.xml
+[DEBUG] Using local repository at C:\Users\28031\.m2\repository
+[DEBUG] Using manager EnhancedLocalRepositoryManager with priority 10.0 for C:\Users\28031\.m2\repository
+[INFO] Scanning for projects...
+[DEBUG] Extension realms for project com.hotelbooking:HotelBookingSystem:jar:1.0-SNAPSHOT: (none)
+[DEBUG] Looking up lifecycle mappings for packaging jar from ClassRealm[plexus.core, parent: null]
+[DEBUG] === REACTOR BUILD PLAN ================================================
+[DEBUG] Project: com.hotelbooking:HotelBookingSystem:jar:1.0-SNAPSHOT
+[DEBUG] Tasks:   [test]
+[DEBUG] Style:   Regular
+[DEBUG] =======================================================================
+[INFO] 
+[INFO] ----------------< com.hotelbooking:HotelBookingSystem >-----------------
+[INFO] Building HotelBookingSystem 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[DEBUG] Lifecycle clean -> [pre-clean, clean, post-clean]
+[DEBUG] Lifecycle default -> [validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy]
+[DEBUG] Lifecycle site -> [pre-site, site, post-site, site-deploy]
+[DEBUG] Creating adapter using nameMapper 'gav' and factory 'rwlock-local'
+[DEBUG] Lifecycle clean -> [pre-clean, clean, post-clean]
+[DEBUG] Lifecycle default -> [validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy]
+[DEBUG] Lifecycle site -> [pre-site, site, post-site, site-deploy]
+[DEBUG] Lifecycle clean -> [pre-clean, clean, post-clean]
+[DEBUG] Lifecycle default -> [validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy]
+[DEBUG] Lifecycle site -> [pre-site, site, post-site, site-deploy]
+[DEBUG] Lifecycle clean -> [pre-clean, clean, post-clean]
+[DEBUG] Lifecycle default -> [validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy]
+[DEBUG] Lifecycle site -> [pre-site, site, post-site, site-deploy]
+[DEBUG] Lifecycle clean -> [pre-clean, clean, post-clean]
+[DEBUG] Lifecycle default -> [validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy]
+[DEBUG] Lifecycle site -> [pre-site, site, post-site, site-deploy]
+[DEBUG] Lifecycle clean -> [pre-clean, clean, post-clean]
+[DEBUG] Lifecycle default -> [validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy]
+[DEBUG] Lifecycle site -> [pre-site, site, post-site, site-deploy]
+[DEBUG] === PROJECT BUILD PLAN ================================================
+[DEBUG] Project:       com.hotelbooking:HotelBookingSystem:1.0-SNAPSHOT
+[DEBUG] Dependencies (collect): []
+[DEBUG] Dependencies (resolve): [compile, test]
+[DEBUG] Repositories (dependencies): [central (https://repo.maven.apache.org/maven2, default, releases)]
+[DEBUG] Repositories (plugins)     : [central (https://repo.maven.apache.org/maven2, default, releases)]
+[DEBUG] -----------------------------------------------------------------------
+[DEBUG] Goal:          org.apache.maven.plugins:maven-resources-plugin:3.3.1:resources (default-resources)
+[DEBUG] Style:         Regular
+[DEBUG] Configuration: <?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <addDefaultExcludes default-value="true"/>
+  <buildFilters default-value="${project.build.filters}"/>
+  <encoding default-value="${project.build.sourceEncoding}"/>
+  <escapeWindowsPaths default-value="true"/>
+  <fileNameFiltering default-value="false"/>
+  <includeEmptyDirs default-value="false"/>
+  <outputDirectory default-value="${project.build.outputDirectory}"/>
+  <overwrite default-value="false"/>
+  <project default-value="${project}"/>
+  <resources default-value="${project.resources}"/>
+  <session default-value="${session}"/>
+  <skip default-value="false">${maven.resources.skip}</skip>
+  <supportMultiLineFiltering default-value="false"/>
+  <useBuildFilters default-value="true"/>
+  <useDefaultDelimiters default-value="true"/>
+</configuration>
+[DEBUG] -----------------------------------------------------------------------
+[DEBUG] Goal:          org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile)
+[DEBUG] Style:         Regular
+[DEBUG] Configuration: <?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <basedir default-value="${basedir}"/>
+  <buildDirectory default-value="${project.build.directory}"/>
+  <compilePath default-value="${project.compileClasspathElements}"/>
+  <compileSourceRoots default-value="${project.compileSourceRoots}"/>
+  <compilerId default-value="javac">${maven.compiler.compilerId}</compilerId>
+  <compilerReuseStrategy default-value="${reuseCreated}">${maven.compiler.compilerReuseStrategy}</compilerReuseStrategy>
+  <compilerVersion>${maven.compiler.compilerVersion}</compilerVersion>
+  <createMissingPackageInfoClass default-value="true">${maven.compiler.createMissingPackageInfoClass}</createMissingPackageInfoClass>
+  <debug default-value="true">${maven.compiler.debug}</debug>
+  <debugFileName default-value="javac"/>
+  <debuglevel>${maven.compiler.debuglevel}</debuglevel>
+  <enablePreview default-value="false">${maven.compiler.enablePreview}</enablePreview>
+  <encoding default-value="${project.build.sourceEncoding}">${encoding}</encoding>
+  <executable>${maven.compiler.executable}</executable>
+  <failOnError default-value="true">${maven.compiler.failOnError}</failOnError>
+  <failOnWarning default-value="false">${maven.compiler.failOnWarning}</failOnWarning>
+  <forceJavacCompilerUse default-value="false">${maven.compiler.forceJavacCompilerUse}</forceJavacCompilerUse>
+  <fork default-value="false">${maven.compiler.fork}</fork>
+  <generatedSourcesDirectory default-value="${project.build.directory}/generated-sources/annotations"/>
+  <implicit>${maven.compiler.implicit}</implicit>
+  <maxmem>${maven.compiler.maxmem}</maxmem>
+  <meminitial>${maven.compiler.meminitial}</meminitial>
+  <mojoExecution default-value="${mojoExecution}"/>
+  <optimize default-value="false">${maven.compiler.optimize}</optimize>
+  <outputDirectory default-value="${project.build.outputDirectory}"/>
+  <parameters default-value="false">${maven.compiler.parameters}</parameters>
+  <project default-value="${project}"/>
+  <projectArtifact default-value="${project.artifact}"/>
+  <release>21</release>
+  <session default-value="${session}"/>
+  <showCompilationChanges default-value="false">${maven.compiler.showCompilationChanges}</showCompilationChanges>
+  <showDeprecation default-value="false">${maven.compiler.showDeprecation}</showDeprecation>
+  <showWarnings default-value="true">${maven.compiler.showWarnings}</showWarnings>
+  <skipMain>${maven.main.skip}</skipMain>
+  <skipMultiThreadWarning default-value="false">${maven.compiler.skipMultiThreadWarning}</skipMultiThreadWarning>
+  <source default-value="1.8">${maven.compiler.source}</source>
+  <staleMillis default-value="0">${lastModGranularityMs}</staleMillis>
+  <target default-value="1.8">${maven.compiler.target}</target>
+  <useIncrementalCompilation default-value="true">${maven.compiler.useIncrementalCompilation}</useIncrementalCompilation>
+  <verbose default-value="false">${maven.compiler.verbose}</verbose>
+</configuration>
+[DEBUG] -----------------------------------------------------------------------
+[DEBUG] Goal:          org.apache.maven.plugins:maven-resources-plugin:3.3.1:testResources (default-testResources)
+[DEBUG] Style:         Regular
+[DEBUG] Configuration: <?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <addDefaultExcludes default-value="true"/>
+  <buildFilters default-value="${project.build.filters}"/>
+  <encoding default-value="${project.build.sourceEncoding}"/>
+  <escapeWindowsPaths default-value="true"/>
+  <fileNameFiltering default-value="false"/>
+  <includeEmptyDirs default-value="false"/>
+  <outputDirectory default-value="${project.build.testOutputDirectory}"/>
+  <overwrite default-value="false"/>
+  <project default-value="${project}"/>
+  <resources default-value="${project.testResources}"/>
+  <session default-value="${session}"/>
+  <skip default-value="false">${maven.test.skip}</skip>
+  <supportMultiLineFiltering default-value="false"/>
+  <useBuildFilters default-value="true"/>
+  <useDefaultDelimiters default-value="true"/>
+</configuration>
+[DEBUG] -----------------------------------------------------------------------
+[DEBUG] Goal:          org.apache.maven.plugins:maven-compiler-plugin:3.11.0:testCompile (default-testCompile)
+[DEBUG] Style:         Regular
+[DEBUG] Configuration: <?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <basedir default-value="${basedir}"/>
+  <buildDirectory default-value="${project.build.directory}"/>
+  <compileSourceRoots default-value="${project.testCompileSourceRoots}"/>
+  <compilerId default-value="javac">${maven.compiler.compilerId}</compilerId>
+  <compilerReuseStrategy default-value="${reuseCreated}">${maven.compiler.compilerReuseStrategy}</compilerReuseStrategy>
+  <compilerVersion>${maven.compiler.compilerVersion}</compilerVersion>
+  <createMissingPackageInfoClass default-value="true">${maven.compiler.createMissingPackageInfoClass}</createMissingPackageInfoClass>
+  <debug default-value="true">${maven.compiler.debug}</debug>
+  <debugFileName default-value="javac-test"/>
+  <debuglevel>${maven.compiler.debuglevel}</debuglevel>
+  <enablePreview default-value="false">${maven.compiler.enablePreview}</enablePreview>
+  <encoding default-value="${project.build.sourceEncoding}">${encoding}</encoding>
+  <executable>${maven.compiler.executable}</executable>
+  <failOnError default-value="true">${maven.compiler.failOnError}</failOnError>
+  <failOnWarning default-value="false">${maven.compiler.failOnWarning}</failOnWarning>
+  <forceJavacCompilerUse default-value="false">${maven.compiler.forceJavacCompilerUse}</forceJavacCompilerUse>
+  <fork default-value="false">${maven.compiler.fork}</fork>
+  <generatedTestSourcesDirectory default-value="${project.build.directory}/generated-test-sources/test-annotations"/>
+  <implicit>${maven.compiler.implicit}</implicit>
+  <maxmem>${maven.compiler.maxmem}</maxmem>
+  <meminitial>${maven.compiler.meminitial}</meminitial>
+  <mojoExecution default-value="${mojoExecution}"/>
+  <optimize default-value="false">${maven.compiler.optimize}</optimize>
+  <outputDirectory default-value="${project.build.testOutputDirectory}"/>
+  <parameters default-value="false">${maven.compiler.parameters}</parameters>
+  <project default-value="${project}"/>
+  <release>21</release>
+  <session default-value="${session}"/>
+  <showCompilationChanges default-value="false">${maven.compiler.showCompilationChanges}</showCompilationChanges>
+  <showDeprecation default-value="false">${maven.compiler.showDeprecation}</showDeprecation>
+  <showWarnings default-value="true">${maven.compiler.showWarnings}</showWarnings>
+  <skip>${maven.test.skip}</skip>
+  <skipMultiThreadWarning default-value="false">${maven.compiler.skipMultiThreadWarning}</skipMultiThreadWarning>
+  <source default-value="1.8">${maven.compiler.source}</source>
+  <staleMillis default-value="0">${lastModGranularityMs}</staleMillis>
+  <target default-value="1.8">${maven.compiler.target}</target>
+  <testPath default-value="${project.testClasspathElements}"/>
+  <testRelease>${maven.compiler.testRelease}</testRelease>
+  <testSource>${maven.compiler.testSource}</testSource>
+  <testTarget>${maven.compiler.testTarget}</testTarget>
+  <useIncrementalCompilation default-value="true">${maven.compiler.useIncrementalCompilation}</useIncrementalCompilation>
+  <useModulePath default-value="true"/>
+  <verbose default-value="false">${maven.compiler.verbose}</verbose>
+</configuration>
+[DEBUG] -----------------------------------------------------------------------
+[DEBUG] Goal:          org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test (default-test)
+[DEBUG] Style:         Regular
+[DEBUG] Configuration: <?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <additionalClasspathDependencies>${maven.test.additionalClasspathDependencies}</additionalClasspathDependencies>
+  <additionalClasspathElements>${maven.test.additionalClasspath}</additionalClasspathElements>
+  <argLine>${argLine}</argLine>
+  <basedir default-value="${basedir}"/>
+  <childDelegation default-value="false">${childDelegation}</childDelegation>
+  <classesDirectory default-value="${project.build.outputDirectory}"/>
+  <classpathDependencyExcludes>${maven.test.dependency.excludes}</classpathDependencyExcludes>
+  <debugForkedProcess>${maven.surefire.debug}</debugForkedProcess>
+  <dependenciesToScan>${dependenciesToScan}</dependenciesToScan>
+  <disableXmlReport default-value="false">${disableXmlReport}</disableXmlReport>
+  <enableAssertions default-value="true">${enableAssertions}</enableAssertions>
+  <enableProcessChecker>${surefire.enableProcessChecker}</enableProcessChecker>
+  <encoding default-value="${project.reporting.outputEncoding}">${surefire.encoding}</encoding>
+  <excludeJUnit5Engines>${surefire.excludeJUnit5Engines}</excludeJUnit5Engines>
+  <excludedEnvironmentVariables>${surefire.excludedEnvironmentVariables}</excludedEnvironmentVariables>
+  <excludedGroups>${excludedGroups}</excludedGroups>
+  <excludes>${surefire.excludes}</excludes>
+  <excludesFile>${surefire.excludesFile}</excludesFile>
+  <failIfNoSpecifiedTests default-value="true">${surefire.failIfNoSpecifiedTests}</failIfNoSpecifiedTests>
+  <failIfNoTests default-value="false">${failIfNoTests}</failIfNoTests>
+  <failOnFlakeCount default-value="0">${surefire.failOnFlakeCount}</failOnFlakeCount>
+  <forkCount default-value="1">${forkCount}</forkCount>
+  <forkNode>${surefire.forkNode}</forkNode>
+  <forkedProcessExitTimeoutInSeconds default-value="30">${surefire.exitTimeout}</forkedProcessExitTimeoutInSeconds>
+  <forkedProcessTimeoutInSeconds>${surefire.timeout}</forkedProcessTimeoutInSeconds>
+  <groups>${groups}</groups>
+  <includeJUnit5Engines>${surefire.includeJUnit5Engines}</includeJUnit5Engines>
+  <includes>${surefire.includes}</includes>
+  <includesFile>${surefire.includesFile}</includesFile>
+  <junitArtifactName default-value="junit:junit">${junitArtifactName}</junitArtifactName>
+  <jvm>${jvm}</jvm>
+  <objectFactory>${objectFactory}</objectFactory>
+  <parallel>${parallel}</parallel>
+  <parallelMavenExecution default-value="${session.parallel}"/>
+  <parallelOptimized default-value="true">${parallelOptimized}</parallelOptimized>
+  <parallelTestsTimeoutForcedInSeconds>${surefire.parallel.forcedTimeout}</parallelTestsTimeoutForcedInSeconds>
+  <parallelTestsTimeoutInSeconds>${surefire.parallel.timeout}</parallelTestsTimeoutInSeconds>
+  <perCoreThreadCount default-value="true">${perCoreThreadCount}</perCoreThreadCount>
+  <pluginArtifactMap>${plugin.artifactMap}</pluginArtifactMap>
+  <pluginDescriptor default-value="${plugin}"/>
+  <printSummary default-value="true">${surefire.printSummary}</printSummary>
+  <project default-value="${project}"/>
+  <projectArtifactMap>${project.artifactMap}</projectArtifactMap>
+  <projectBuildDirectory default-value="${project.build.directory}"/>
+  <redirectTestOutputToFile default-value="false">${maven.test.redirectTestOutputToFile}</redirectTestOutputToFile>
+  <reportFormat default-value="brief">${surefire.reportFormat}</reportFormat>
+  <reportNameSuffix default-value="">${surefire.reportNameSuffix}</reportNameSuffix>
+  <reportsDirectory default-value="${project.build.directory}/surefire-reports"/>
+  <rerunFailingTestsCount default-value="0">${surefire.rerunFailingTestsCount}</rerunFailingTestsCount>
+  <reuseForks default-value="true">${reuseForks}</reuseForks>
+  <runOrder default-value="filesystem">${surefire.runOrder}</runOrder>
+  <runOrderRandomSeed>${surefire.runOrder.random.seed}</runOrderRandomSeed>
+  <session default-value="${session}"/>
+  <shutdown default-value="exit">${surefire.shutdown}</shutdown>
+  <skip default-value="false">${maven.test.skip}</skip>
+  <skipAfterFailureCount default-value="0">${surefire.skipAfterFailureCount}</skipAfterFailureCount>
+  <skipExec>${maven.test.skip.exec}</skipExec>
+  <skipTests default-value="false">${skipTests}</skipTests>
+  <suiteXmlFiles>${surefire.suiteXmlFiles}</suiteXmlFiles>
+  <systemPropertiesFile>${surefire.systemPropertiesFile}</systemPropertiesFile>
+  <tempDir default-value="surefire">${tempDir}</tempDir>
+  <test>${test}</test>
+  <testClassesDirectory default-value="${project.build.testOutputDirectory}"/>
+  <testFailureIgnore default-value="false">${maven.test.failure.ignore}</testFailureIgnore>
+  <testNGArtifactName default-value="org.testng:testng">${testNGArtifactName}</testNGArtifactName>
+  <testSourceDirectory default-value="${project.build.testSourceDirectory}"/>
+  <threadCount>${threadCount}</threadCount>
+  <threadCountClasses default-value="0">${threadCountClasses}</threadCountClasses>
+  <threadCountMethods default-value="0">${threadCountMethods}</threadCountMethods>
+  <threadCountSuites default-value="0">${threadCountSuites}</threadCountSuites>
+  <trimStackTrace default-value="false">${trimStackTrace}</trimStackTrace>
+  <useFile default-value="true">${surefire.useFile}</useFile>
+  <useManifestOnlyJar default-value="true">${surefire.useManifestOnlyJar}</useManifestOnlyJar>
+  <useModulePath default-value="true">${surefire.useModulePath}</useModulePath>
+  <useSystemClassLoader default-value="true">${surefire.useSystemClassLoader}</useSystemClassLoader>
+  <useUnlimitedThreads default-value="false">${useUnlimitedThreads}</useUnlimitedThreads>
+  <workingDirectory>${basedir}</workingDirectory>
+</configuration>
+[DEBUG] =======================================================================
+[DEBUG] Using mirror maven-default-http-blocker (http://0.0.0.0/) for apache.snapshots (http://repository.apache.org/snapshots).
+[DEBUG] Dependency collection stats {ConflictMarker.analyzeTime=1754900, ConflictMarker.markTime=309900, ConflictMarker.nodeCount=58, ConflictIdSorter.graphTime=746300, ConflictIdSorter.topsortTime=744600, ConflictIdSorter.conflictIdCount=23, ConflictIdSorter.conflictIdCycleCount=4, ConflictResolver.totalTime=6150500, ConflictResolver.conflictItemCount=39, DfDependencyCollector.collectTime=262117000, DfDependencyCollector.transformTime=13694500}
+[DEBUG] com.hotelbooking:HotelBookingSystem:jar:1.0-SNAPSHOT
+[DEBUG]    org.openjfx:javafx-controls:jar:21.0.9:compile
+[DEBUG]       org.openjfx:javafx-controls:jar:win:21.0.9:compile
+[DEBUG]       org.openjfx:javafx-graphics:jar:21.0.9:compile
+[DEBUG]          org.openjfx:javafx-graphics:jar:win:21.0.9:compile
+[DEBUG]          org.openjfx:javafx-base:jar:21.0.9:compile
+[DEBUG]             org.openjfx:javafx-base:jar:win:21.0.9:compile
+[DEBUG]    org.openjfx:javafx-fxml:jar:21.0.9:compile
+[DEBUG]       org.openjfx:javafx-fxml:jar:win:21.0.9:compile
+[DEBUG]    org.apache.derby:derby:jar:10.14.2.0:compile
+[DEBUG]    org.mockito:mockito-core:jar:5.3.1:test
+[DEBUG]       net.bytebuddy:byte-buddy:jar:1.14.4:test
+[DEBUG]       net.bytebuddy:byte-buddy-agent:jar:1.14.4:test
+[DEBUG]       org.objenesis:objenesis:jar:3.3:test
+[DEBUG]    org.mockito:mockito-junit-jupiter:jar:5.3.1:test
+[DEBUG]    org.junit.jupiter:junit-jupiter-api:jar:5.9.2:test
+[DEBUG]       org.opentest4j:opentest4j:jar:1.2.0:test
+[DEBUG]       org.junit.platform:junit-platform-commons:jar:1.9.2:test
+[DEBUG]       org.apiguardian:apiguardian-api:jar:1.1.2:test
+[DEBUG]    org.junit.jupiter:junit-jupiter-engine:jar:5.9.2:test
+[DEBUG]       org.junit.platform:junit-platform-engine:jar:1.9.2:test
+[DEBUG]    org.junit.jupiter:junit-jupiter:jar:5.10.0:test
+[DEBUG]       org.junit.jupiter:junit-jupiter-params:jar:5.10.0:test
+[DEBUG]    org.mockito:mockito-inline:jar:4.0.0:test
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ HotelBookingSystem ---
+[DEBUG] Dependency collection stats {ConflictMarker.analyzeTime=80800, ConflictMarker.markTime=95900, ConflictMarker.nodeCount=13, ConflictIdSorter.graphTime=32700, ConflictIdSorter.topsortTime=30200, ConflictIdSorter.conflictIdCount=9, ConflictIdSorter.conflictIdCycleCount=0, ConflictResolver.totalTime=678700, ConflictResolver.conflictItemCount=13, DfDependencyCollector.collectTime=129474600, DfDependencyCollector.transformTime=946800}
+[DEBUG] org.apache.maven.plugins:maven-resources-plugin:jar:3.3.1
+[DEBUG]    org.codehaus.plexus:plexus-interpolation:jar:1.26:runtime
+[DEBUG]    org.codehaus.plexus:plexus-utils:jar:3.5.1:compile
+[DEBUG]    org.apache.maven.shared:maven-filtering:jar:3.3.1:compile
+[DEBUG]       javax.inject:javax.inject:jar:1:compile
+[DEBUG]       org.slf4j:slf4j-api:jar:1.7.36:compile
+[DEBUG]       org.sonatype.plexus:plexus-build-api:jar:0.0.7:compile
+[DEBUG]    commons-io:commons-io:jar:2.11.0:compile
+[DEBUG]    org.apache.commons:commons-lang3:jar:3.12.0:compile
+[DEBUG] Created new class realm plugin>org.apache.maven.plugins:maven-resources-plugin:3.3.1
+[DEBUG] Importing foreign packages into class realm plugin>org.apache.maven.plugins:maven-resources-plugin:3.3.1
+[DEBUG]   Imported:  < maven.api
+[DEBUG] Populating class realm plugin>org.apache.maven.plugins:maven-resources-plugin:3.3.1
+[DEBUG]   Included: org.apache.maven.plugins:maven-resources-plugin:jar:3.3.1
+[DEBUG]   Included: org.codehaus.plexus:plexus-interpolation:jar:1.26
+[DEBUG]   Included: org.codehaus.plexus:plexus-utils:jar:3.5.1
+[DEBUG]   Included: org.apache.maven.shared:maven-filtering:jar:3.3.1
+[DEBUG]   Included: org.sonatype.plexus:plexus-build-api:jar:0.0.7
+[DEBUG]   Included: commons-io:commons-io:jar:2.11.0
+[DEBUG]   Included: org.apache.commons:commons-lang3:jar:3.12.0
+[DEBUG] Loading mojo org.apache.maven.plugins:maven-resources-plugin:3.3.1:resources from plugin realm ClassRealm[plugin>org.apache.maven.plugins:maven-resources-plugin:3.3.1, parent: jdk.internal.loader.ClassLoaders$AppClassLoader@6bc7c054]
+[DEBUG] Configuring mojo execution 'org.apache.maven.plugins:maven-resources-plugin:3.3.1:resources:default-resources' with basic configurator -->
+[DEBUG]   (f) addDefaultExcludes = true
+[DEBUG]   (f) buildFilters = []
+[DEBUG]   (f) encoding = UTF-8
+[DEBUG]   (f) escapeWindowsPaths = true
+[DEBUG]   (f) fileNameFiltering = false
+[DEBUG]   (s) includeEmptyDirs = false
+[DEBUG]   (s) outputDirectory = D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes
+[DEBUG]   (s) overwrite = false
+[DEBUG]   (f) project = MavenProject: com.hotelbooking:HotelBookingSystem:1.0-SNAPSHOT @ D:\Desktop\HotelBookingSystem-complete-backup(2)\pom.xml
+[DEBUG]   (s) resources = [Resource {targetPath: null, filtering: false, FileSet {directory: D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\resources, PatternSet [includes: {}, excludes: {}]}}]
+[DEBUG]   (f) session = org.apache.maven.execution.MavenSession@741f8dbe
+[DEBUG]   (f) skip = false
+[DEBUG]   (f) supportMultiLineFiltering = false
+[DEBUG]   (f) useBuildFilters = true
+[DEBUG]   (s) useDefaultDelimiters = true
+[DEBUG] -- end configuration --
+[DEBUG] properties used:
+[DEBUG] classworlds.conf: D:\Program Files\NetBeans-23\netbeans\java\maven\bin\m2.conf
+[DEBUG] env.=::: ::\
+[DEBUG] env.=C:: C:\Users\28031
+[DEBUG] env.=D:: D:\Desktop\HotelBookingSystem-complete-backup(2)
+[DEBUG] env.=EXITCODE: 00000000
+[DEBUG] env.ACSETUPSVCPORT: 23210
+[DEBUG] env.ACSVCPORT: 17532
+[DEBUG] env.ALLUSERSPROFILE: C:\ProgramData
+[DEBUG] env.APPDATA: C:\Users\28031\AppData\Roaming
+[DEBUG] env.CATALINA_BASE: D:\apache-tomcat-10.1.45
+[DEBUG] env.CATALINA_HOME: D:\apache-tomcat-10.1.45
+[DEBUG] env.CATALINA_TMPDIR: D:\apache-tomcat-10.1.45\temp
+[DEBUG] env.CLASSPATH: .;D:\derby\lib\derby.jar;D:\derby\lib\derbytools.jar;D:\derby\lib\derbynet.jar;D:\apache-tomcat-10.1.45\lib\mysql-connector-java-8.0.18.jar;D:\Program Files\Java\jdk-21\lib\mysql-connector-java-8.0.18.jar
+[DEBUG] env.CLASSWORLDS_JAR: "D:\Program Files\NetBeans-23\netbeans\java\maven\boot\plexus-classworlds-2.8.0.jar"
+[DEBUG] env.CLASSWORLDS_LAUNCHER: org.codehaus.plexus.classworlds.launcher.Launcher
+[DEBUG] env.COMMONPROGRAMFILES: C:\Program Files\Common Files
+[DEBUG] env.COMMONPROGRAMFILES(X86): C:\Program Files (x86)\Common Files
+[DEBUG] env.COMMONPROGRAMW6432: C:\Program Files\Common Files
+[DEBUG] env.COMPUTERNAME: LAPTOP-SIQH4LJA
+[DEBUG] env.COMSPEC: C:\WINDOWS\system32\cmd.exe
+[DEBUG] env.DERBY_HOME: D:\derby
+[DEBUG] env.DRIVERDATA: C:\Windows\System32\Drivers\DriverData
+[DEBUG] env.EFC_38216_1262719628: 1
+[DEBUG] env.EFC_38216_1592913036: 1
+[DEBUG] env.EFC_38216_2283032206: 1
+[DEBUG] env.EFC_38216_2775293581: 1
+[DEBUG] env.EFC_38216_3789132940: 1
+[DEBUG] env.ERROR_CODE: 0
+[DEBUG] env.EXEC_DIR: D:\Desktop\HotelBookingSystem-complete-backup(2)
+[DEBUG] env.EXEPATH: D:\Program Files\Git
+[DEBUG] env.FPS_BROWSER_APP_PROFILE_STRING: Internet Explorer
+[DEBUG] env.FPS_BROWSER_USER_PROFILE_STRING: Default
+[DEBUG] env.HOME: C:\Users\28031
+[DEBUG] env.HOMEDRIVE: C:
+[DEBUG] env.HOMEPATH: \Users\28031
+[DEBUG] env.IGCCSVC_DB: AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAiPQs6dQPzU6tnhAb5KckbQQAAAACAAAAAAAQZgAAAAEAACAAAACEVFORvdmaVAWwnKHMQHu8+JjJUxOtV5TARsuLFucRLgAAAAAOgAAAAAIAACAAAACSQDgmkTSyW0bbifDRCJt9Ja0aTd6ejAyr0BOSmjvquWAAAABRs08InTHcyuae75meX8jKaaTrpMu+EP/zo3Q0IWpBX4T54W8+K2cagujusGNMfGlSYbgcacdF1UWMi2j54UFmtAQURN7xeDmIdx6X4mJmsOYsaW7nY0c1rk4EH5iM1QxAAAAAcWpTbzeZwub94S4g7k/vxp9qnlH05nbMyoL05o74P7P7vqZrCa2uZLFJcNenJy7fvOxxXdSRrQZCpGEbxIPBKQ==
+[DEBUG] env.INCLUDE: D:\Program Files\OpenSSL-Win64\include
+[DEBUG] env.JAVACMD: D:\Program Files\Java\jdk-21\bin\java.exe
+[DEBUG] env.JAVA_HOME: D:\Program Files\Java\jdk-21
+[DEBUG] env.JVMCONFIG: \.mvn\jvm.config
+[DEBUG] env.KMP_BLOCKTIME: 0
+[DEBUG] env.LIB: D:\Program Files\OpenSSL-Win64\lib
+[DEBUG] env.LOCALAPPDATA: C:\Users\28031\AppData\Local
+[DEBUG] env.LOGONSERVER: \\LAPTOP-SIQH4LJA
+[DEBUG] env.MAVEN_CMD_LINE_ARGS: test -Dtest=RoomDAOTest -e -X
+[DEBUG] env.MAVEN_HOME: D:\Program Files\NetBeans-23\netbeans\java\maven
+[DEBUG] env.MAVEN_PROJECTBASEDIR: D:\Desktop\HotelBookingSystem-complete-backup(2)
+[DEBUG] env.MSMPI_BENCHMARKS: C:\Program Files\Microsoft MPI\Benchmarks\
+[DEBUG] env.MSMPI_BIN: C:\Program Files\Microsoft MPI\Bin\
+[DEBUG] env.MSYSTEM: MINGW64
+[DEBUG] env.NUMBER_OF_PROCESSORS: 20
+[DEBUG] env.OMP_WAIT_POLICY: PASSIVE
+[DEBUG] env.ONEDRIVE: C:\Users\28031\OneDrive
+[DEBUG] env.ONEDRIVECONSUMER: C:\Users\28031\OneDrive
+[DEBUG] env.OPENSSL_IA32CAP: ~0x200000200000000
+[DEBUG] env.OS: Windows_NT
+[DEBUG] env.PATH: D:\Program Files\Git\cmd;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\Microsoft MPI\Bin\;C:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\dotnet\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Microsoft SQL Server\160\Tools\Binn\;C:\Program Files\Microsoft SQL Server\160\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;%JAVA_HOME%\bin;D:\apache-tomcat-10.1.45\bin;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;D:\Program Files\Git\cmd;D:\Program Files\NetBeans-23\netbeans\java\maven\bin;D:\derby\bin;C:\Users\28031\AppData\Local\Microsoft\WindowsApps;D:\Users\28031\AppData\Local\Programs\Microsoft VS Code\bin;D:\Program Files\OpenSSL-Win64\bin;D:\Program Files\OpenSSL-Win64\include;D:\Program Files\OpenSSL-Win64\lib;D:\Users\28031\AppData\Local\Programs\cursor\resources\app\bin;C:\Users\28031\AppData\Local\Python\bin
+[DEBUG] env.PATHEXT: .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+[DEBUG] env.PLINK_PROTOCOL: ssh
+[DEBUG] env.PROCESSOR_ARCHITECTURE: AMD64
+[DEBUG] env.PROCESSOR_IDENTIFIER: Intel64 Family 6 Model 186 Stepping 2, GenuineIntel
+[DEBUG] env.PROCESSOR_LEVEL: 6
+[DEBUG] env.PROCESSOR_REVISION: ba02
+[DEBUG] env.PROGRAMDATA: C:\ProgramData
+[DEBUG] env.PROGRAMFILES: C:\Program Files
+[DEBUG] env.PROGRAMFILES(X86): C:\Program Files (x86)
+[DEBUG] env.PROGRAMW6432: C:\Program Files
+[DEBUG] env.PROMPT: $P$G
+[DEBUG] env.PSMODULEPATH: C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules;C:\Program Files (x86)\Microsoft SQL Server\160\Tools\PowerShell\Modules\
+[DEBUG] env.PT7HOME: D:\Program Files\Cisco Packet Tracer 7.0
+[DEBUG] env.PUBLIC: C:\Users\Public
+[DEBUG] env.RLSSVCPORT: 22112
+[DEBUG] env.SESSIONNAME: Console
+[DEBUG] env.SYSTEMDRIVE: C:
+[DEBUG] env.SYSTEMROOT: C:\WINDOWS
+[DEBUG] env.TEMP: C:\Users\28031\AppData\Local\Temp
+[DEBUG] env.TMP: C:\Users\28031\AppData\Local\Temp
+[DEBUG] env.USERDOMAIN: LAPTOP-SIQH4LJA
+[DEBUG] env.USERDOMAIN_ROAMINGPROFILE: LAPTOP-SIQH4LJA
+[DEBUG] env.USERNAME: 28031
+[DEBUG] env.USERPROFILE: C:\Users\28031
+[DEBUG] env.WDIR: D:\
+[DEBUG] env.WINDIR: C:\WINDOWS
+[DEBUG] env.ZES_ENABLE_SYSMAN: 1
+[DEBUG] file.encoding: UTF-8
+[DEBUG] file.separator: \
+[DEBUG] java.class.path: D:\Program Files\NetBeans-23\netbeans\java\maven\boot\plexus-classworlds-2.8.0.jar
+[DEBUG] java.class.version: 65.0
+[DEBUG] java.home: D:\Program Files\Java\jdk-21
+[DEBUG] java.io.tmpdir: C:\Users\28031\AppData\Local\Temp\
+[DEBUG] java.library.path: D:\Program Files\Java\jdk-21\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;D:\Program Files\Git\cmd;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\Microsoft MPI\Bin\;C:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\dotnet\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Microsoft SQL Server\160\Tools\Binn\;C:\Program Files\Microsoft SQL Server\160\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;%JAVA_HOME%\bin;D:\apache-tomcat-10.1.45\bin;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;D:\Program Files\Git\cmd;D:\Program Files\NetBeans-23\netbeans\java\maven\bin;D:\derby\bin;C:\Users\28031\AppData\Local\Microsoft\WindowsApps;D:\Users\28031\AppData\Local\Programs\Microsoft VS Code\bin;D:\Program Files\OpenSSL-Win64\bin;D:\Program Files\OpenSSL-Win64\include;D:\Program Files\OpenSSL-Win64\lib;D:\Users\28031\AppData\Local\Programs\cursor\resources\app\bin;C:\Users\28031\AppData\Local\Python\bin;.
+[DEBUG] java.runtime.name: Java(TM) SE Runtime Environment
+[DEBUG] java.runtime.version: 21.0.7+8-LTS-245
+[DEBUG] java.specification.name: Java Platform API Specification
+[DEBUG] java.specification.vendor: Oracle Corporation
+[DEBUG] java.specification.version: 21
+[DEBUG] java.vendor: Oracle Corporation
+[DEBUG] java.vendor.url: https://java.oracle.com/
+[DEBUG] java.vendor.url.bug: https://bugreport.java.com/bugreport/
+[DEBUG] java.version: 21.0.7
+[DEBUG] java.version.date: 2025-04-15
+[DEBUG] java.vm.compressedOopsMode: Zero based
+[DEBUG] java.vm.info: mixed mode, sharing
+[DEBUG] java.vm.name: Java HotSpot(TM) 64-Bit Server VM
+[DEBUG] java.vm.specification.name: Java Virtual Machine Specification
+[DEBUG] java.vm.specification.vendor: Oracle Corporation
+[DEBUG] java.vm.specification.version: 21
+[DEBUG] java.vm.vendor: Oracle Corporation
+[DEBUG] java.vm.version: 21.0.7+8-LTS-245
+[DEBUG] javafx.version: 21.0.9
+[DEBUG] jdk.debug: release
+[DEBUG] library.jansi.path: D:\Program Files\NetBeans-23\netbeans\java\maven\lib\jansi-native
+[DEBUG] line.separator: 
+
+[DEBUG] mainClass: com.hotelbooking.Main
+[DEBUG] maven.build.timestamp: 2025-12-03T04:39:42Z
+[DEBUG] maven.build.version: Apache Maven 3.9.9 (8e8579a9e76f7d015ee5ec7bfcdc97d260186937)
+[DEBUG] maven.compiler.source: 21
+[DEBUG] maven.compiler.target: 21
+[DEBUG] maven.conf: D:\Program Files\NetBeans-23\netbeans\java\maven/conf
+[DEBUG] maven.home: D:\Program Files\NetBeans-23\netbeans\java\maven
+[DEBUG] maven.multiModuleProjectDirectory: D:\Desktop\HotelBookingSystem-complete-backup(2)
+[DEBUG] maven.version: 3.9.9
+[DEBUG] native.encoding: GBK
+[DEBUG] os.arch: amd64
+[DEBUG] os.name: Windows 11
+[DEBUG] os.version: 10.0
+[DEBUG] path.separator: ;
+[DEBUG] project.baseUri: file:/D:/Desktop/HotelBookingSystem-complete-backup(2)/
+[DEBUG] project.build.sourceEncoding: UTF-8
+[DEBUG] stderr.encoding: GBK
+[DEBUG] stdout.encoding: GBK
+[DEBUG] sun.arch.data.model: 64
+[DEBUG] sun.boot.library.path: D:\Program Files\Java\jdk-21\bin
+[DEBUG] sun.cpu.endian: little
+[DEBUG] sun.cpu.isalist: amd64
+[DEBUG] sun.io.unicode.encoding: UnicodeLittle
+[DEBUG] sun.java.command: org.codehaus.plexus.classworlds.launcher.Launcher test -Dtest=RoomDAOTest -e -X
+[DEBUG] sun.java.launcher: SUN_STANDARD
+[DEBUG] sun.jnu.encoding: GBK
+[DEBUG] sun.management.compiler: HotSpot 64-Bit Tiered Compilers
+[DEBUG] sun.os.patch.level: 
+[DEBUG] test: RoomDAOTest
+[DEBUG] user.country: CN
+[DEBUG] user.dir: D:\Desktop\HotelBookingSystem-complete-backup(2)
+[DEBUG] user.home: C:\Users\28031
+[DEBUG] user.language: zh
+[DEBUG] user.name: 28031
+[DEBUG] user.script: 
+[DEBUG] user.variant: 
+[DEBUG] Using 'UTF-8' encoding to copy filtered resources.
+[DEBUG] Using 'UTF-8' encoding to copy filtered properties files.
+[DEBUG] resource with targetPath null
+directory D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\resources
+excludes []
+includes []
+[DEBUG] ignoreDelta true
+[INFO] Copying 15 resources from src\main\resources to target\classes
+[DEBUG] Copying file com\hotelbooking\assets\background.jpg
+[DEBUG] file background.jpg has a non filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'background.jpg'.
+[DEBUG] copy D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\resources\com\hotelbooking\assets\background.jpg to D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes\com\hotelbooking\assets\background.jpg
+[DEBUG] Copying file com\hotelbooking\assets\background.png
+[DEBUG] file background.png has a non filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'background.png'.
+[DEBUG] copy D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\resources\com\hotelbooking\assets\background.png to D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes\com\hotelbooking\assets\background.png
+[DEBUG] Copying file com\hotelbooking\assets\theme.css
+[DEBUG] file theme.css has a filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'theme.css'.
+[DEBUG] copy D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\resources\com\hotelbooking\assets\theme.css to D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes\com\hotelbooking\assets\theme.css
+[DEBUG] Copying file com\hotelbooking\view\components\TopNavigationBar.fxml
+[DEBUG] file TopNavigationBar.fxml has a filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'TopNavigationBar.fxml'.
+[DEBUG] copy D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\resources\com\hotelbooking\view\components\TopNavigationBar.fxml to D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes\com\hotelbooking\view\components\TopNavigationBar.fxml
+[DEBUG] Copying file com\hotelbooking\view\edit_profile.fxml
+[DEBUG] file edit_profile.fxml has a filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'edit_profile.fxml'.
+[DEBUG] copy D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\resources\com\hotelbooking\view\edit_profile.fxml to D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes\com\hotelbooking\view\edit_profile.fxml
+[DEBUG] Copying file com\hotelbooking\view\hotel_rooms.fxml
+[DEBUG] file hotel_rooms.fxml has a filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'hotel_rooms.fxml'.
+[DEBUG] copy D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\resources\com\hotelbooking\view\hotel_rooms.fxml to D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes\com\hotelbooking\view\hotel_rooms.fxml
+[DEBUG] Copying file com\hotelbooking\view\login.fxml
+[DEBUG] file login.fxml has a filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'login.fxml'.
+[DEBUG] copy D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\resources\com\hotelbooking\view\login.fxml to D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes\com\hotelbooking\view\login.fxml
+[DEBUG] Copying file com\hotelbooking\view\main_dashboard.fxml
+[DEBUG] file main_dashboard.fxml has a filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'main_dashboard.fxml'.
+[DEBUG] copy D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\resources\com\hotelbooking\view\main_dashboard.fxml to D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes\com\hotelbooking\view\main_dashboard.fxml
+[DEBUG] Copying file com\hotelbooking\view\my_bookings.fxml
+[DEBUG] file my_bookings.fxml has a filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'my_bookings.fxml'.
+[DEBUG] copy D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\resources\com\hotelbooking\view\my_bookings.fxml to D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes\com\hotelbooking\view\my_bookings.fxml
+[DEBUG] Copying file com\hotelbooking\view\payment.fxml
+[DEBUG] file payment.fxml has a filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'payment.fxml'.
+[DEBUG] copy D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\resources\com\hotelbooking\view\payment.fxml to D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes\com\hotelbooking\view\payment.fxml
+[DEBUG] Copying file com\hotelbooking\view\register.fxml
+[DEBUG] file register.fxml has a filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'register.fxml'.
+[DEBUG] copy D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\resources\com\hotelbooking\view\register.fxml to D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes\com\hotelbooking\view\register.fxml
+[DEBUG] Copying file com\hotelbooking\view\RoomsGuestsSelector.fxml
+[DEBUG] file RoomsGuestsSelector.fxml has a filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'RoomsGuestsSelector.fxml'.
+[DEBUG] copy D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\resources\com\hotelbooking\view\RoomsGuestsSelector.fxml to D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes\com\hotelbooking\view\RoomsGuestsSelector.fxml
+[DEBUG] Copying file com\hotelbooking\view\search_hotels.fxml
+[DEBUG] file search_hotels.fxml has a filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'search_hotels.fxml'.
+[DEBUG] copy D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\resources\com\hotelbooking\view\search_hotels.fxml to D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes\com\hotelbooking\view\search_hotels.fxml
+[DEBUG] Copying file com\hotelbooking\view\user_profile.fxml
+[DEBUG] file user_profile.fxml has a filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'user_profile.fxml'.
+[DEBUG] copy D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\resources\com\hotelbooking\view\user_profile.fxml to D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes\com\hotelbooking\view\user_profile.fxml
+[DEBUG] Copying file database.properties
+[DEBUG] file database.properties has a filtered file extension
+[DEBUG] Using 'UTF-8' encoding to copy filtered resource 'database.properties'.
+[DEBUG] copy D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\resources\database.properties to D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes\database.properties
+[DEBUG] no user filter components
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ HotelBookingSystem ---
+[DEBUG] Dependency collection stats {ConflictMarker.analyzeTime=72700, ConflictMarker.markTime=60500, ConflictMarker.nodeCount=17, ConflictIdSorter.graphTime=32800, ConflictIdSorter.topsortTime=21200, ConflictIdSorter.conflictIdCount=12, ConflictIdSorter.conflictIdCycleCount=0, ConflictResolver.totalTime=581000, ConflictResolver.conflictItemCount=17, DfDependencyCollector.collectTime=179537800, DfDependencyCollector.transformTime=791400}
+[DEBUG] org.apache.maven.plugins:maven-compiler-plugin:jar:3.11.0
+[DEBUG]    org.apache.maven.shared:maven-shared-utils:jar:3.3.4:compile
+[DEBUG]       commons-io:commons-io:jar:2.6:compile
+[DEBUG]    org.apache.maven.shared:maven-shared-incremental:jar:1.1:compile
+[DEBUG]       org.codehaus.plexus:plexus-component-annotations:jar:1.5.5:compile
+[DEBUG]    org.codehaus.plexus:plexus-java:jar:1.1.2:compile
+[DEBUG]       org.ow2.asm:asm:jar:9.4:compile
+[DEBUG]       com.thoughtworks.qdox:qdox:jar:2.0.3:compile (version managed from default)
+[DEBUG]    org.codehaus.plexus:plexus-compiler-api:jar:2.13.0:compile
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:3.5.0:compile (version managed from default)
+[DEBUG]    org.codehaus.plexus:plexus-compiler-manager:jar:2.13.0:compile
+[DEBUG]    org.codehaus.plexus:plexus-compiler-javac:jar:2.13.0:runtime
+[DEBUG] Created new class realm plugin>org.apache.maven.plugins:maven-compiler-plugin:3.11.0
+[DEBUG] Importing foreign packages into class realm plugin>org.apache.maven.plugins:maven-compiler-plugin:3.11.0
+[DEBUG]   Imported:  < maven.api
+[DEBUG] Populating class realm plugin>org.apache.maven.plugins:maven-compiler-plugin:3.11.0
+[DEBUG]   Included: org.apache.maven.plugins:maven-compiler-plugin:jar:3.11.0
+[DEBUG]   Included: org.apache.maven.shared:maven-shared-utils:jar:3.3.4
+[DEBUG]   Included: commons-io:commons-io:jar:2.6
+[DEBUG]   Included: org.apache.maven.shared:maven-shared-incremental:jar:1.1
+[DEBUG]   Included: org.codehaus.plexus:plexus-component-annotations:jar:1.5.5
+[DEBUG]   Included: org.codehaus.plexus:plexus-java:jar:1.1.2
+[DEBUG]   Included: org.ow2.asm:asm:jar:9.4
+[DEBUG]   Included: com.thoughtworks.qdox:qdox:jar:2.0.3
+[DEBUG]   Included: org.codehaus.plexus:plexus-compiler-api:jar:2.13.0
+[DEBUG]   Included: org.codehaus.plexus:plexus-utils:jar:3.5.0
+[DEBUG]   Included: org.codehaus.plexus:plexus-compiler-manager:jar:2.13.0
+[DEBUG]   Included: org.codehaus.plexus:plexus-compiler-javac:jar:2.13.0
+[DEBUG] Loading mojo org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile from plugin realm ClassRealm[plugin>org.apache.maven.plugins:maven-compiler-plugin:3.11.0, parent: jdk.internal.loader.ClassLoaders$AppClassLoader@6bc7c054]
+[DEBUG] Configuring mojo execution 'org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile:default-compile' with basic configurator -->
+[DEBUG]   (f) basedir = D:\Desktop\HotelBookingSystem-complete-backup(2)
+[DEBUG]   (f) buildDirectory = D:\Desktop\HotelBookingSystem-complete-backup(2)\target
+[DEBUG]   (f) compilePath = [D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes, C:\Users\28031\.m2\repository\org\openjfx\javafx-controls\21.0.9\javafx-controls-21.0.9.jar, C:\Users\28031\.m2\repository\org\openjfx\javafx-controls\21.0.9\javafx-controls-21.0.9-win.jar, C:\Users\28031\.m2\repository\org\openjfx\javafx-graphics\21.0.9\javafx-graphics-21.0.9.jar, C:\Users\28031\.m2\repository\org\openjfx\javafx-graphics\21.0.9\javafx-graphics-21.0.9-win.jar, C:\Users\28031\.m2\repository\org\openjfx\javafx-base\21.0.9\javafx-base-21.0.9.jar, C:\Users\28031\.m2\repository\org\openjfx\javafx-base\21.0.9\javafx-base-21.0.9-win.jar, C:\Users\28031\.m2\repository\org\openjfx\javafx-fxml\21.0.9\javafx-fxml-21.0.9.jar, C:\Users\28031\.m2\repository\org\openjfx\javafx-fxml\21.0.9\javafx-fxml-21.0.9-win.jar, C:\Users\28031\.m2\repository\org\apache\derby\derby\10.14.2.0\derby-10.14.2.0.jar]
+[DEBUG]   (f) compileSourceRoots = [D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\java]
+[DEBUG]   (f) compilerId = javac
+[DEBUG]   (f) createMissingPackageInfoClass = true
+[DEBUG]   (f) debug = true
+[DEBUG]   (f) debugFileName = javac
+[DEBUG]   (f) enablePreview = false
+[DEBUG]   (f) encoding = UTF-8
+[DEBUG]   (f) failOnError = true
+[DEBUG]   (f) failOnWarning = false
+[DEBUG]   (f) forceJavacCompilerUse = false
+[DEBUG]   (f) fork = false
+[DEBUG]   (f) generatedSourcesDirectory = D:\Desktop\HotelBookingSystem-complete-backup(2)\target\generated-sources\annotations
+[DEBUG]   (f) mojoExecution = org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile {execution: default-compile}
+[DEBUG]   (f) optimize = false
+[DEBUG]   (f) outputDirectory = D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes
+[DEBUG]   (f) parameters = false
+[DEBUG]   (f) project = MavenProject: com.hotelbooking:HotelBookingSystem:1.0-SNAPSHOT @ D:\Desktop\HotelBookingSystem-complete-backup(2)\pom.xml
+[DEBUG]   (f) projectArtifact = com.hotelbooking:HotelBookingSystem:jar:1.0-SNAPSHOT
+[DEBUG]   (s) release = 21
+[DEBUG]   (f) session = org.apache.maven.execution.MavenSession@741f8dbe
+[DEBUG]   (f) showCompilationChanges = false
+[DEBUG]   (f) showDeprecation = false
+[DEBUG]   (f) showWarnings = true
+[DEBUG]   (f) skipMultiThreadWarning = false
+[DEBUG]   (f) source = 21
+[DEBUG]   (f) staleMillis = 0
+[DEBUG]   (s) target = 21
+[DEBUG]   (f) useIncrementalCompilation = true
+[DEBUG]   (f) verbose = false
+[DEBUG] -- end configuration --
+[DEBUG] Using compiler 'javac'.
+[DEBUG] Adding D:\Desktop\HotelBookingSystem-complete-backup(2)\target\generated-sources\annotations to compile source roots:
+  D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\java
+[DEBUG] New compile source roots:
+  D:\Desktop\HotelBookingSystem-complete-backup(2)\src\main\java
+  D:\Desktop\HotelBookingSystem-complete-backup(2)\target\generated-sources\annotations
+[DEBUG] CompilerReuseStrategy: reuseCreated
+[DEBUG] useIncrementalCompilation enabled
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ HotelBookingSystem ---
+[DEBUG] Loading mojo org.apache.maven.plugins:maven-resources-plugin:3.3.1:testResources from plugin realm ClassRealm[plugin>org.apache.maven.plugins:maven-resources-plugin:3.3.1, parent: jdk.internal.loader.ClassLoaders$AppClassLoader@6bc7c054]
+[DEBUG] Configuring mojo execution 'org.apache.maven.plugins:maven-resources-plugin:3.3.1:testResources:default-testResources' with basic configurator -->
+[DEBUG]   (f) addDefaultExcludes = true
+[DEBUG]   (f) buildFilters = []
+[DEBUG]   (f) encoding = UTF-8
+[DEBUG]   (f) escapeWindowsPaths = true
+[DEBUG]   (f) fileNameFiltering = false
+[DEBUG]   (s) includeEmptyDirs = false
+[DEBUG]   (s) outputDirectory = D:\Desktop\HotelBookingSystem-complete-backup(2)\target\test-classes
+[DEBUG]   (s) overwrite = false
+[DEBUG]   (f) project = MavenProject: com.hotelbooking:HotelBookingSystem:1.0-SNAPSHOT @ D:\Desktop\HotelBookingSystem-complete-backup(2)\pom.xml
+[DEBUG]   (s) resources = [Resource {targetPath: null, filtering: false, FileSet {directory: D:\Desktop\HotelBookingSystem-complete-backup(2)\src\test\resources, PatternSet [includes: {}, excludes: {}]}}]
+[DEBUG]   (f) session = org.apache.maven.execution.MavenSession@741f8dbe
+[DEBUG]   (f) skip = false
+[DEBUG]   (f) supportMultiLineFiltering = false
+[DEBUG]   (f) useBuildFilters = true
+[DEBUG]   (s) useDefaultDelimiters = true
+[DEBUG] -- end configuration --
+[DEBUG] properties used:
+[DEBUG] classworlds.conf: D:\Program Files\NetBeans-23\netbeans\java\maven\bin\m2.conf
+[DEBUG] env.=::: ::\
+[DEBUG] env.=C:: C:\Users\28031
+[DEBUG] env.=D:: D:\Desktop\HotelBookingSystem-complete-backup(2)
+[DEBUG] env.=EXITCODE: 00000000
+[DEBUG] env.ACSETUPSVCPORT: 23210
+[DEBUG] env.ACSVCPORT: 17532
+[DEBUG] env.ALLUSERSPROFILE: C:\ProgramData
+[DEBUG] env.APPDATA: C:\Users\28031\AppData\Roaming
+[DEBUG] env.CATALINA_BASE: D:\apache-tomcat-10.1.45
+[DEBUG] env.CATALINA_HOME: D:\apache-tomcat-10.1.45
+[DEBUG] env.CATALINA_TMPDIR: D:\apache-tomcat-10.1.45\temp
+[DEBUG] env.CLASSPATH: .;D:\derby\lib\derby.jar;D:\derby\lib\derbytools.jar;D:\derby\lib\derbynet.jar;D:\apache-tomcat-10.1.45\lib\mysql-connector-java-8.0.18.jar;D:\Program Files\Java\jdk-21\lib\mysql-connector-java-8.0.18.jar
+[DEBUG] env.CLASSWORLDS_JAR: "D:\Program Files\NetBeans-23\netbeans\java\maven\boot\plexus-classworlds-2.8.0.jar"
+[DEBUG] env.CLASSWORLDS_LAUNCHER: org.codehaus.plexus.classworlds.launcher.Launcher
+[DEBUG] env.COMMONPROGRAMFILES: C:\Program Files\Common Files
+[DEBUG] env.COMMONPROGRAMFILES(X86): C:\Program Files (x86)\Common Files
+[DEBUG] env.COMMONPROGRAMW6432: C:\Program Files\Common Files
+[DEBUG] env.COMPUTERNAME: LAPTOP-SIQH4LJA
+[DEBUG] env.COMSPEC: C:\WINDOWS\system32\cmd.exe
+[DEBUG] env.DERBY_HOME: D:\derby
+[DEBUG] env.DRIVERDATA: C:\Windows\System32\Drivers\DriverData
+[DEBUG] env.EFC_38216_1262719628: 1
+[DEBUG] env.EFC_38216_1592913036: 1
+[DEBUG] env.EFC_38216_2283032206: 1
+[DEBUG] env.EFC_38216_2775293581: 1
+[DEBUG] env.EFC_38216_3789132940: 1
+[DEBUG] env.ERROR_CODE: 0
+[DEBUG] env.EXEC_DIR: D:\Desktop\HotelBookingSystem-complete-backup(2)
+[DEBUG] env.EXEPATH: D:\Program Files\Git
+[DEBUG] env.FPS_BROWSER_APP_PROFILE_STRING: Internet Explorer
+[DEBUG] env.FPS_BROWSER_USER_PROFILE_STRING: Default
+[DEBUG] env.HOME: C:\Users\28031
+[DEBUG] env.HOMEDRIVE: C:
+[DEBUG] env.HOMEPATH: \Users\28031
+[DEBUG] env.IGCCSVC_DB: AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAiPQs6dQPzU6tnhAb5KckbQQAAAACAAAAAAAQZgAAAAEAACAAAACEVFORvdmaVAWwnKHMQHu8+JjJUxOtV5TARsuLFucRLgAAAAAOgAAAAAIAACAAAACSQDgmkTSyW0bbifDRCJt9Ja0aTd6ejAyr0BOSmjvquWAAAABRs08InTHcyuae75meX8jKaaTrpMu+EP/zo3Q0IWpBX4T54W8+K2cagujusGNMfGlSYbgcacdF1UWMi2j54UFmtAQURN7xeDmIdx6X4mJmsOYsaW7nY0c1rk4EH5iM1QxAAAAAcWpTbzeZwub94S4g7k/vxp9qnlH05nbMyoL05o74P7P7vqZrCa2uZLFJcNenJy7fvOxxXdSRrQZCpGEbxIPBKQ==
+[DEBUG] env.INCLUDE: D:\Program Files\OpenSSL-Win64\include
+[DEBUG] env.JAVACMD: D:\Program Files\Java\jdk-21\bin\java.exe
+[DEBUG] env.JAVA_HOME: D:\Program Files\Java\jdk-21
+[DEBUG] env.JVMCONFIG: \.mvn\jvm.config
+[DEBUG] env.KMP_BLOCKTIME: 0
+[DEBUG] env.LIB: D:\Program Files\OpenSSL-Win64\lib
+[DEBUG] env.LOCALAPPDATA: C:\Users\28031\AppData\Local
+[DEBUG] env.LOGONSERVER: \\LAPTOP-SIQH4LJA
+[DEBUG] env.MAVEN_CMD_LINE_ARGS: test -Dtest=RoomDAOTest -e -X
+[DEBUG] env.MAVEN_HOME: D:\Program Files\NetBeans-23\netbeans\java\maven
+[DEBUG] env.MAVEN_PROJECTBASEDIR: D:\Desktop\HotelBookingSystem-complete-backup(2)
+[DEBUG] env.MSMPI_BENCHMARKS: C:\Program Files\Microsoft MPI\Benchmarks\
+[DEBUG] env.MSMPI_BIN: C:\Program Files\Microsoft MPI\Bin\
+[DEBUG] env.MSYSTEM: MINGW64
+[DEBUG] env.NUMBER_OF_PROCESSORS: 20
+[DEBUG] env.OMP_WAIT_POLICY: PASSIVE
+[DEBUG] env.ONEDRIVE: C:\Users\28031\OneDrive
+[DEBUG] env.ONEDRIVECONSUMER: C:\Users\28031\OneDrive
+[DEBUG] env.OPENSSL_IA32CAP: ~0x200000200000000
+[DEBUG] env.OS: Windows_NT
+[DEBUG] env.PATH: D:\Program Files\Git\cmd;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\Microsoft MPI\Bin\;C:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\dotnet\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Microsoft SQL Server\160\Tools\Binn\;C:\Program Files\Microsoft SQL Server\160\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;%JAVA_HOME%\bin;D:\apache-tomcat-10.1.45\bin;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;D:\Program Files\Git\cmd;D:\Program Files\NetBeans-23\netbeans\java\maven\bin;D:\derby\bin;C:\Users\28031\AppData\Local\Microsoft\WindowsApps;D:\Users\28031\AppData\Local\Programs\Microsoft VS Code\bin;D:\Program Files\OpenSSL-Win64\bin;D:\Program Files\OpenSSL-Win64\include;D:\Program Files\OpenSSL-Win64\lib;D:\Users\28031\AppData\Local\Programs\cursor\resources\app\bin;C:\Users\28031\AppData\Local\Python\bin
+[DEBUG] env.PATHEXT: .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+[DEBUG] env.PLINK_PROTOCOL: ssh
+[DEBUG] env.PROCESSOR_ARCHITECTURE: AMD64
+[DEBUG] env.PROCESSOR_IDENTIFIER: Intel64 Family 6 Model 186 Stepping 2, GenuineIntel
+[DEBUG] env.PROCESSOR_LEVEL: 6
+[DEBUG] env.PROCESSOR_REVISION: ba02
+[DEBUG] env.PROGRAMDATA: C:\ProgramData
+[DEBUG] env.PROGRAMFILES: C:\Program Files
+[DEBUG] env.PROGRAMFILES(X86): C:\Program Files (x86)
+[DEBUG] env.PROGRAMW6432: C:\Program Files
+[DEBUG] env.PROMPT: $P$G
+[DEBUG] env.PSMODULEPATH: C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules;C:\Program Files (x86)\Microsoft SQL Server\160\Tools\PowerShell\Modules\
+[DEBUG] env.PT7HOME: D:\Program Files\Cisco Packet Tracer 7.0
+[DEBUG] env.PUBLIC: C:\Users\Public
+[DEBUG] env.RLSSVCPORT: 22112
+[DEBUG] env.SESSIONNAME: Console
+[DEBUG] env.SYSTEMDRIVE: C:
+[DEBUG] env.SYSTEMROOT: C:\WINDOWS
+[DEBUG] env.TEMP: C:\Users\28031\AppData\Local\Temp
+[DEBUG] env.TMP: C:\Users\28031\AppData\Local\Temp
+[DEBUG] env.USERDOMAIN: LAPTOP-SIQH4LJA
+[DEBUG] env.USERDOMAIN_ROAMINGPROFILE: LAPTOP-SIQH4LJA
+[DEBUG] env.USERNAME: 28031
+[DEBUG] env.USERPROFILE: C:\Users\28031
+[DEBUG] env.WDIR: D:\
+[DEBUG] env.WINDIR: C:\WINDOWS
+[DEBUG] env.ZES_ENABLE_SYSMAN: 1
+[DEBUG] file.encoding: UTF-8
+[DEBUG] file.separator: \
+[DEBUG] java.class.path: D:\Program Files\NetBeans-23\netbeans\java\maven\boot\plexus-classworlds-2.8.0.jar
+[DEBUG] java.class.version: 65.0
+[DEBUG] java.home: D:\Program Files\Java\jdk-21
+[DEBUG] java.io.tmpdir: C:\Users\28031\AppData\Local\Temp\
+[DEBUG] java.library.path: D:\Program Files\Java\jdk-21\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;D:\Program Files\Git\cmd;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\Microsoft MPI\Bin\;C:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\dotnet\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Microsoft SQL Server\160\Tools\Binn\;C:\Program Files\Microsoft SQL Server\160\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;%JAVA_HOME%\bin;D:\apache-tomcat-10.1.45\bin;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;D:\Program Files\Git\cmd;D:\Program Files\NetBeans-23\netbeans\java\maven\bin;D:\derby\bin;C:\Users\28031\AppData\Local\Microsoft\WindowsApps;D:\Users\28031\AppData\Local\Programs\Microsoft VS Code\bin;D:\Program Files\OpenSSL-Win64\bin;D:\Program Files\OpenSSL-Win64\include;D:\Program Files\OpenSSL-Win64\lib;D:\Users\28031\AppData\Local\Programs\cursor\resources\app\bin;C:\Users\28031\AppData\Local\Python\bin;.
+[DEBUG] java.runtime.name: Java(TM) SE Runtime Environment
+[DEBUG] java.runtime.version: 21.0.7+8-LTS-245
+[DEBUG] java.specification.name: Java Platform API Specification
+[DEBUG] java.specification.vendor: Oracle Corporation
+[DEBUG] java.specification.version: 21
+[DEBUG] java.vendor: Oracle Corporation
+[DEBUG] java.vendor.url: https://java.oracle.com/
+[DEBUG] java.vendor.url.bug: https://bugreport.java.com/bugreport/
+[DEBUG] java.version: 21.0.7
+[DEBUG] java.version.date: 2025-04-15
+[DEBUG] java.vm.compressedOopsMode: Zero based
+[DEBUG] java.vm.info: mixed mode, sharing
+[DEBUG] java.vm.name: Java HotSpot(TM) 64-Bit Server VM
+[DEBUG] java.vm.specification.name: Java Virtual Machine Specification
+[DEBUG] java.vm.specification.vendor: Oracle Corporation
+[DEBUG] java.vm.specification.version: 21
+[DEBUG] java.vm.vendor: Oracle Corporation
+[DEBUG] java.vm.version: 21.0.7+8-LTS-245
+[DEBUG] javafx.version: 21.0.9
+[DEBUG] jdk.debug: release
+[DEBUG] library.jansi.path: D:\Program Files\NetBeans-23\netbeans\java\maven\lib\jansi-native
+[DEBUG] line.separator: 
+
+[DEBUG] mainClass: com.hotelbooking.Main
+[DEBUG] maven.build.timestamp: 2025-12-03T04:39:42Z
+[DEBUG] maven.build.version: Apache Maven 3.9.9 (8e8579a9e76f7d015ee5ec7bfcdc97d260186937)
+[DEBUG] maven.compiler.source: 21
+[DEBUG] maven.compiler.target: 21
+[DEBUG] maven.conf: D:\Program Files\NetBeans-23\netbeans\java\maven/conf
+[DEBUG] maven.home: D:\Program Files\NetBeans-23\netbeans\java\maven
+[DEBUG] maven.multiModuleProjectDirectory: D:\Desktop\HotelBookingSystem-complete-backup(2)
+[DEBUG] maven.version: 3.9.9
+[DEBUG] native.encoding: GBK
+[DEBUG] os.arch: amd64
+[DEBUG] os.name: Windows 11
+[DEBUG] os.version: 10.0
+[DEBUG] path.separator: ;
+[DEBUG] project.baseUri: file:/D:/Desktop/HotelBookingSystem-complete-backup(2)/
+[DEBUG] project.build.sourceEncoding: UTF-8
+[DEBUG] stderr.encoding: GBK
+[DEBUG] stdout.encoding: GBK
+[DEBUG] sun.arch.data.model: 64
+[DEBUG] sun.boot.library.path: D:\Program Files\Java\jdk-21\bin
+[DEBUG] sun.cpu.endian: little
+[DEBUG] sun.cpu.isalist: amd64
+[DEBUG] sun.io.unicode.encoding: UnicodeLittle
+[DEBUG] sun.java.command: org.codehaus.plexus.classworlds.launcher.Launcher test -Dtest=RoomDAOTest -e -X
+[DEBUG] sun.java.launcher: SUN_STANDARD
+[DEBUG] sun.jnu.encoding: GBK
+[DEBUG] sun.management.compiler: HotSpot 64-Bit Tiered Compilers
+[DEBUG] sun.os.patch.level: 
+[DEBUG] test: RoomDAOTest
+[DEBUG] user.country: CN
+[DEBUG] user.dir: D:\Desktop\HotelBookingSystem-complete-backup(2)
+[DEBUG] user.home: C:\Users\28031
+[DEBUG] user.language: zh
+[DEBUG] user.name: 28031
+[DEBUG] user.script: 
+[DEBUG] user.variant: 
+[DEBUG] Using 'UTF-8' encoding to copy filtered resources.
+[DEBUG] Using 'UTF-8' encoding to copy filtered properties files.
+[DEBUG] resource with targetPath null
+directory D:\Desktop\HotelBookingSystem-complete-backup(2)\src\test\resources
+excludes []
+includes []
+[INFO] skip non existing resourceDirectory D:\Desktop\HotelBookingSystem-complete-backup(2)\src\test\resources
+[DEBUG] no user filter components
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ HotelBookingSystem ---
+[DEBUG] Loading mojo org.apache.maven.plugins:maven-compiler-plugin:3.11.0:testCompile from plugin realm ClassRealm[plugin>org.apache.maven.plugins:maven-compiler-plugin:3.11.0, parent: jdk.internal.loader.ClassLoaders$AppClassLoader@6bc7c054]
+[DEBUG] Configuring mojo execution 'org.apache.maven.plugins:maven-compiler-plugin:3.11.0:testCompile:default-testCompile' with basic configurator -->
+[DEBUG]   (f) basedir = D:\Desktop\HotelBookingSystem-complete-backup(2)
+[DEBUG]   (f) buildDirectory = D:\Desktop\HotelBookingSystem-complete-backup(2)\target
+[DEBUG]   (f) compileSourceRoots = [D:\Desktop\HotelBookingSystem-complete-backup(2)\src\test\java]
+[DEBUG]   (f) compilerId = javac
+[DEBUG]   (f) createMissingPackageInfoClass = true
+[DEBUG]   (f) debug = true
+[DEBUG]   (f) debugFileName = javac-test
+[DEBUG]   (f) enablePreview = false
+[DEBUG]   (f) encoding = UTF-8
+[DEBUG]   (f) failOnError = true
+[DEBUG]   (f) failOnWarning = false
+[DEBUG]   (f) forceJavacCompilerUse = false
+[DEBUG]   (f) fork = false
+[DEBUG]   (f) generatedTestSourcesDirectory = D:\Desktop\HotelBookingSystem-complete-backup(2)\target\generated-test-sources\test-annotations
+[DEBUG]   (f) mojoExecution = org.apache.maven.plugins:maven-compiler-plugin:3.11.0:testCompile {execution: default-testCompile}
+[DEBUG]   (f) optimize = false
+[DEBUG]   (f) outputDirectory = D:\Desktop\HotelBookingSystem-complete-backup(2)\target\test-classes
+[DEBUG]   (f) parameters = false
+[DEBUG]   (f) project = MavenProject: com.hotelbooking:HotelBookingSystem:1.0-SNAPSHOT @ D:\Desktop\HotelBookingSystem-complete-backup(2)\pom.xml
+[DEBUG]   (s) release = 21
+[DEBUG]   (f) session = org.apache.maven.execution.MavenSession@741f8dbe
+[DEBUG]   (f) showCompilationChanges = false
+[DEBUG]   (f) showDeprecation = false
+[DEBUG]   (f) showWarnings = true
+[DEBUG]   (f) skipMultiThreadWarning = false
+[DEBUG]   (f) source = 21
+[DEBUG]   (f) staleMillis = 0
+[DEBUG]   (s) target = 21
+[DEBUG]   (f) testPath = [D:\Desktop\HotelBookingSystem-complete-backup(2)\target\test-classes, D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes, C:\Users\28031\.m2\repository\org\openjfx\javafx-controls\21.0.9\javafx-controls-21.0.9.jar, C:\Users\28031\.m2\repository\org\openjfx\javafx-controls\21.0.9\javafx-controls-21.0.9-win.jar, C:\Users\28031\.m2\repository\org\openjfx\javafx-graphics\21.0.9\javafx-graphics-21.0.9.jar, C:\Users\28031\.m2\repository\org\openjfx\javafx-graphics\21.0.9\javafx-graphics-21.0.9-win.jar, C:\Users\28031\.m2\repository\org\openjfx\javafx-base\21.0.9\javafx-base-21.0.9.jar, C:\Users\28031\.m2\repository\org\openjfx\javafx-base\21.0.9\javafx-base-21.0.9-win.jar, C:\Users\28031\.m2\repository\org\openjfx\javafx-fxml\21.0.9\javafx-fxml-21.0.9.jar, C:\Users\28031\.m2\repository\org\openjfx\javafx-fxml\21.0.9\javafx-fxml-21.0.9-win.jar, C:\Users\28031\.m2\repository\org\apache\derby\derby\10.14.2.0\derby-10.14.2.0.jar, C:\Users\28031\.m2\repository\org\mockito\mockito-core\5.3.1\mockito-core-5.3.1.jar, C:\Users\28031\.m2\repository\net\bytebuddy\byte-buddy\1.14.4\byte-buddy-1.14.4.jar, C:\Users\28031\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.4\byte-buddy-agent-1.14.4.jar, C:\Users\28031\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar, C:\Users\28031\.m2\repository\org\mockito\mockito-junit-jupiter\5.3.1\mockito-junit-jupiter-5.3.1.jar, C:\Users\28031\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.9.2\junit-jupiter-api-5.9.2.jar, C:\Users\28031\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar, C:\Users\28031\.m2\repository\org\junit\platform\junit-platform-commons\1.9.2\junit-platform-commons-1.9.2.jar, C:\Users\28031\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar, C:\Users\28031\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.9.2\junit-jupiter-engine-5.9.2.jar, C:\Users\28031\.m2\repository\org\junit\platform\junit-platform-engine\1.9.2\junit-platform-engine-1.9.2.jar, C:\Users\28031\.m2\repository\org\junit\jupiter\junit-jupiter\5.10.0\junit-jupiter-5.10.0.jar, C:\Users\28031\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.0\junit-jupiter-params-5.10.0.jar, C:\Users\28031\.m2\repository\org\mockito\mockito-inline\4.0.0\mockito-inline-4.0.0.jar]
+[DEBUG]   (f) useIncrementalCompilation = true
+[DEBUG]   (f) useModulePath = true
+[DEBUG]   (f) verbose = false
+[DEBUG] -- end configuration --
+[DEBUG] Using compiler 'javac'.
+[DEBUG] Adding D:\Desktop\HotelBookingSystem-complete-backup(2)\target\generated-test-sources\test-annotations to test-compile source roots:
+  D:\Desktop\HotelBookingSystem-complete-backup(2)\src\test\java
+[DEBUG] New test-compile source roots:
+  D:\Desktop\HotelBookingSystem-complete-backup(2)\src\test\java
+  D:\Desktop\HotelBookingSystem-complete-backup(2)\target\generated-test-sources\test-annotations
+[DEBUG] CompilerReuseStrategy: reuseCreated
+[DEBUG] useIncrementalCompilation enabled
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ HotelBookingSystem ---
+[DEBUG] Using mirror maven-default-http-blocker (http://0.0.0.0/) for jboss-public-repository-group (http://repository.jboss.org/nexus/content/groups/public).
+[DEBUG] Dependency collection stats {ConflictMarker.analyzeTime=246600, ConflictMarker.markTime=143600, ConflictMarker.nodeCount=78, ConflictIdSorter.graphTime=103000, ConflictIdSorter.topsortTime=46400, ConflictIdSorter.conflictIdCount=39, ConflictIdSorter.conflictIdCycleCount=0, ConflictResolver.totalTime=1021000, ConflictResolver.conflictItemCount=76, DfDependencyCollector.collectTime=347708000, DfDependencyCollector.transformTime=1592100}
+[DEBUG] org.apache.maven.plugins:maven-surefire-plugin:jar:3.2.5
+[DEBUG]    org.apache.maven.surefire:maven-surefire-common:jar:3.2.5:compile
+[DEBUG]       org.apache.maven.surefire:surefire-api:jar:3.2.5:compile
+[DEBUG]          org.apache.maven.surefire:surefire-logger-api:jar:3.2.5:compile
+[DEBUG]       org.apache.maven.surefire:surefire-extensions-api:jar:3.2.5:compile
+[DEBUG]       org.apache.maven.surefire:surefire-booter:jar:3.2.5:compile
+[DEBUG]          org.apache.maven.surefire:surefire-extensions-spi:jar:3.2.5:compile
+[DEBUG]       org.eclipse.aether:aether-util:jar:1.0.0.v20140518:compile
+[DEBUG]          org.eclipse.aether:aether-api:jar:1.0.0.v20140518:compile
+[DEBUG]       org.apache.maven.shared:maven-common-artifact-filters:jar:3.1.1:compile (version managed from default) (exclusions managed from default)
+[DEBUG]          org.apache.maven:maven-artifact:jar:3.2.5:provided (scope managed from default) (version managed from default)
+[DEBUG]             org.codehaus.plexus:plexus-utils:jar:4.0.0:provided (version managed from default)
+[DEBUG]          org.apache.maven:maven-core:jar:3.2.5:provided (scope managed from default) (version managed from default)
+[DEBUG]             org.apache.maven:maven-settings:jar:3.2.5:provided (version managed from default)
+[DEBUG]             org.apache.maven:maven-settings-builder:jar:3.2.5:provided
+[DEBUG]             org.apache.maven:maven-repository-metadata:jar:3.2.5:provided
+[DEBUG]             org.apache.maven:maven-model-builder:jar:3.2.5:provided
+[DEBUG]             org.apache.maven:maven-aether-provider:jar:3.2.5:provided
+[DEBUG]                org.eclipse.aether:aether-spi:jar:1.0.0.v20140518:provided
+[DEBUG]             org.eclipse.aether:aether-impl:jar:1.0.0.v20140518:provided
+[DEBUG]             org.eclipse.sisu:org.eclipse.sisu.plexus:jar:0.9.0.M2:provided (version managed from default)
+[DEBUG]                javax.annotation:javax.annotation-api:jar:1.2:provided
+[DEBUG]                javax.enterprise:cdi-api:jar:1.2:provided
+[DEBUG]                org.eclipse.sisu:org.eclipse.sisu.inject:jar:0.9.0.M2:provided (version managed from default)
+[DEBUG]             org.sonatype.sisu:sisu-guice:jar:no_aop:3.2.3:provided
+[DEBUG]                javax.inject:javax.inject:jar:1:provided
+[DEBUG]                aopalliance:aopalliance:jar:1.0:provided
+[DEBUG]                com.google.guava:guava:jar:16.0.1:provided
+[DEBUG]             org.codehaus.plexus:plexus-interpolation:jar:1.21:provided
+[DEBUG]             org.codehaus.plexus:plexus-classworlds:jar:2.5.2:provided
+[DEBUG]             org.codehaus.plexus:plexus-component-annotations:jar:1.5.5:provided
+[DEBUG]             org.sonatype.plexus:plexus-sec-dispatcher:jar:1.3:provided
+[DEBUG]                org.sonatype.plexus:plexus-cipher:jar:1.4:provided
+[DEBUG]          org.apache.maven:maven-plugin-api:jar:3.2.5:provided (scope managed from default) (version managed from default)
+[DEBUG]          commons-io:commons-io:jar:2.15.1:compile (version managed from default)
+[DEBUG]       org.codehaus.plexus:plexus-java:jar:1.2.0:compile (version managed from default)
+[DEBUG]          org.ow2.asm:asm:jar:9.6:compile
+[DEBUG]          com.thoughtworks.qdox:qdox:jar:2.0.3:compile
+[DEBUG]       org.apache.maven.surefire:surefire-shared-utils:jar:3.2.5:compile
+[DEBUG] Created new class realm plugin>org.apache.maven.plugins:maven-surefire-plugin:3.2.5
+[DEBUG] Importing foreign packages into class realm plugin>org.apache.maven.plugins:maven-surefire-plugin:3.2.5
+[DEBUG]   Imported:  < maven.api
+[DEBUG] Populating class realm plugin>org.apache.maven.plugins:maven-surefire-plugin:3.2.5
+[DEBUG]   Included: org.apache.maven.plugins:maven-surefire-plugin:jar:3.2.5
+[DEBUG]   Included: org.apache.maven.surefire:maven-surefire-common:jar:3.2.5
+[DEBUG]   Included: org.apache.maven.surefire:surefire-api:jar:3.2.5
+[DEBUG]   Included: org.apache.maven.surefire:surefire-logger-api:jar:3.2.5
+[DEBUG]   Included: org.apache.maven.surefire:surefire-extensions-api:jar:3.2.5
+[DEBUG]   Included: org.apache.maven.surefire:surefire-booter:jar:3.2.5
+[DEBUG]   Included: org.apache.maven.surefire:surefire-extensions-spi:jar:3.2.5
+[DEBUG]   Included: org.apache.maven.shared:maven-common-artifact-filters:jar:3.1.1
+[DEBUG]   Included: commons-io:commons-io:jar:2.15.1
+[DEBUG]   Included: org.codehaus.plexus:plexus-java:jar:1.2.0
+[DEBUG]   Included: org.ow2.asm:asm:jar:9.6
+[DEBUG]   Included: com.thoughtworks.qdox:qdox:jar:2.0.3
+[DEBUG]   Included: org.apache.maven.surefire:surefire-shared-utils:jar:3.2.5
+[DEBUG] Loading mojo org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test from plugin realm ClassRealm[plugin>org.apache.maven.plugins:maven-surefire-plugin:3.2.5, parent: jdk.internal.loader.ClassLoaders$AppClassLoader@6bc7c054]
+[DEBUG] Configuring mojo execution 'org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test:default-test' with basic configurator -->
+[DEBUG]   (f) additionalClasspathDependencies = []
+[DEBUG]   (s) additionalClasspathElements = []
+[DEBUG]   (s) basedir = D:\Desktop\HotelBookingSystem-complete-backup(2)
+[DEBUG]   (s) childDelegation = false
+[DEBUG]   (f) classesDirectory = D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes
+[DEBUG]   (s) classpathDependencyExcludes = []
+[DEBUG]   (s) dependenciesToScan = []
+[DEBUG]   (s) disableXmlReport = false
+[DEBUG]   (s) enableAssertions = true
+[DEBUG]   (s) excludeJUnit5Engines = []
+[DEBUG]   (f) excludedEnvironmentVariables = []
+[DEBUG]   (s) excludes = []
+[DEBUG]   (s) failIfNoSpecifiedTests = true
+[DEBUG]   (s) failIfNoTests = false
+[DEBUG]   (s) failOnFlakeCount = 0
+[DEBUG]   (f) forkCount = 1
+[DEBUG]   (s) forkedProcessExitTimeoutInSeconds = 30
+[DEBUG]   (s) includeJUnit5Engines = []
+[DEBUG]   (s) includes = []
+[DEBUG]   (s) junitArtifactName = junit:junit
+[DEBUG]   (f) parallelMavenExecution = false
+[DEBUG]   (s) parallelOptimized = true
+[DEBUG]   (s) perCoreThreadCount = true
+[DEBUG]   (s) pluginArtifactMap = {org.apache.maven.plugins:maven-surefire-plugin=org.apache.maven.plugins:maven-surefire-plugin:maven-plugin:3.2.5:, org.apache.maven.surefire:maven-surefire-common=org.apache.maven.surefire:maven-surefire-common:jar:3.2.5:compile, org.apache.maven.surefire:surefire-api=org.apache.maven.surefire:surefire-api:jar:3.2.5:compile, org.apache.maven.surefire:surefire-logger-api=org.apache.maven.surefire:surefire-logger-api:jar:3.2.5:compile, org.apache.maven.surefire:surefire-extensions-api=org.apache.maven.surefire:surefire-extensions-api:jar:3.2.5:compile, org.apache.maven.surefire:surefire-booter=org.apache.maven.surefire:surefire-booter:jar:3.2.5:compile, org.apache.maven.surefire:surefire-extensions-spi=org.apache.maven.surefire:surefire-extensions-spi:jar:3.2.5:compile, org.eclipse.aether:aether-util=org.eclipse.aether:aether-util:jar:1.0.0.v20140518:compile, org.eclipse.aether:aether-api=org.eclipse.aether:aether-api:jar:1.0.0.v20140518:compile, org.apache.maven.shared:maven-common-artifact-filters=org.apache.maven.shared:maven-common-artifact-filters:jar:3.1.1:compile, commons-io:commons-io=commons-io:commons-io:jar:2.15.1:compile, org.codehaus.plexus:plexus-java=org.codehaus.plexus:plexus-java:jar:1.2.0:compile, org.ow2.asm:asm=org.ow2.asm:asm:jar:9.6:compile, com.thoughtworks.qdox:qdox=com.thoughtworks.qdox:qdox:jar:2.0.3:compile, org.apache.maven.surefire:surefire-shared-utils=org.apache.maven.surefire:surefire-shared-utils:jar:3.2.5:compile}
+[DEBUG]   (f) pluginDescriptor = Component Descriptor: role: 'org.apache.maven.plugin.Mojo', implementation: 'org.apache.maven.plugins.maven_surefire_plugin.HelpMojo', role hint: 'org.apache.maven.plugins:maven-surefire-plugin:3.2.5:help'
+role: 'org.apache.maven.plugin.Mojo', implementation: 'org.apache.maven.plugin.surefire.SurefirePlugin', role hint: 'org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test'
+---
+[DEBUG]   (s) printSummary = true
+[DEBUG]   (s) project = MavenProject: com.hotelbooking:HotelBookingSystem:1.0-SNAPSHOT @ D:\Desktop\HotelBookingSystem-complete-backup(2)\pom.xml
+[DEBUG]   (s) projectArtifactMap = {org.openjfx:javafx-controls=org.openjfx:javafx-controls:jar:win:21.0.9:compile, org.openjfx:javafx-graphics=org.openjfx:javafx-graphics:jar:win:21.0.9:compile, org.openjfx:javafx-base=org.openjfx:javafx-base:jar:win:21.0.9:compile, org.openjfx:javafx-fxml=org.openjfx:javafx-fxml:jar:win:21.0.9:compile, org.apache.derby:derby=org.apache.derby:derby:jar:10.14.2.0:compile, org.mockito:mockito-core=org.mockito:mockito-core:jar:5.3.1:test, net.bytebuddy:byte-buddy=net.bytebuddy:byte-buddy:jar:1.14.4:test, net.bytebuddy:byte-buddy-agent=net.bytebuddy:byte-buddy-agent:jar:1.14.4:test, org.objenesis:objenesis=org.objenesis:objenesis:jar:3.3:test, org.mockito:mockito-junit-jupiter=org.mockito:mockito-junit-jupiter:jar:5.3.1:test, org.junit.jupiter:junit-jupiter-api=org.junit.jupiter:junit-jupiter-api:jar:5.9.2:test, org.opentest4j:opentest4j=org.opentest4j:opentest4j:jar:1.2.0:test, org.junit.platform:junit-platform-commons=org.junit.platform:junit-platform-commons:jar:1.9.2:test, org.apiguardian:apiguardian-api=org.apiguardian:apiguardian-api:jar:1.1.2:test, org.junit.jupiter:junit-jupiter-engine=org.junit.jupiter:junit-jupiter-engine:jar:5.9.2:test, org.junit.platform:junit-platform-engine=org.junit.platform:junit-platform-engine:jar:1.9.2:test, org.junit.jupiter:junit-jupiter=org.junit.jupiter:junit-jupiter:jar:5.10.0:test, org.junit.jupiter:junit-jupiter-params=org.junit.jupiter:junit-jupiter-params:jar:5.10.0:test, org.mockito:mockito-inline=org.mockito:mockito-inline:jar:4.0.0:test}
+[DEBUG]   (s) projectBuildDirectory = D:\Desktop\HotelBookingSystem-complete-backup(2)\target
+[DEBUG]   (s) redirectTestOutputToFile = false
+[DEBUG]   (s) reportFormat = brief
+[DEBUG]   (s) reportsDirectory = D:\Desktop\HotelBookingSystem-complete-backup(2)\target\surefire-reports
+[DEBUG]   (f) rerunFailingTestsCount = 0
+[DEBUG]   (f) reuseForks = true
+[DEBUG]   (s) runOrder = filesystem
+[DEBUG]   (s) session = org.apache.maven.execution.MavenSession@741f8dbe
+[DEBUG]   (f) shutdown = exit
+[DEBUG]   (s) skip = false
+[DEBUG]   (f) skipAfterFailureCount = 0
+[DEBUG]   (s) skipTests = false
+[DEBUG]   (s) suiteXmlFiles = []
+[DEBUG]   (s) tempDir = surefire
+[DEBUG]   (s) test = RoomDAOTest
+[DEBUG]   (s) testClassesDirectory = D:\Desktop\HotelBookingSystem-complete-backup(2)\target\test-classes
+[DEBUG]   (s) testFailureIgnore = false
+[DEBUG]   (s) testNGArtifactName = org.testng:testng
+[DEBUG]   (s) testSourceDirectory = D:\Desktop\HotelBookingSystem-complete-backup(2)\src\test\java
+[DEBUG]   (s) threadCountClasses = 0
+[DEBUG]   (s) threadCountMethods = 0
+[DEBUG]   (s) threadCountSuites = 0
+[DEBUG]   (s) trimStackTrace = false
+[DEBUG]   (s) useFile = true
+[DEBUG]   (s) useManifestOnlyJar = true
+[DEBUG]   (f) useModulePath = true
+[DEBUG]   (s) useSystemClassLoader = true
+[DEBUG]   (s) useUnlimitedThreads = false
+[DEBUG]   (s) workingDirectory = D:\Desktop\HotelBookingSystem-complete-backup(2)
+[DEBUG] -- end configuration --
+[DEBUG] Using JVM: D:\Program Files\Java\jdk-21\bin\java with Java version 21.0
+[DEBUG] Resolved included and excluded patterns: RoomDAOTest
+[DEBUG] Surefire report directory: D:\Desktop\HotelBookingSystem-complete-backup(2)\target\surefire-reports
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[DEBUG] Using the provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[DEBUG] Setting system property [basedir]=[D:\Desktop\HotelBookingSystem-complete-backup(2)]
+[DEBUG] Setting system property [test]=[RoomDAOTest]
+[DEBUG] Setting system property [localRepository]=[C:\Users\28031\.m2\repository]
+[DEBUG] Dependency collection stats {ConflictMarker.analyzeTime=55900, ConflictMarker.markTime=21300, ConflictMarker.nodeCount=7, ConflictIdSorter.graphTime=11900, ConflictIdSorter.topsortTime=12100, ConflictIdSorter.conflictIdCount=5, ConflictIdSorter.conflictIdCycleCount=0, ConflictResolver.totalTime=160500, ConflictResolver.conflictItemCount=6, DfDependencyCollector.collectTime=7598300, DfDependencyCollector.transformTime=280500}
+[DEBUG] Found implementation of fork node factory: org.apache.maven.plugin.surefire.extensions.LegacyForkNodeFactory
+[DEBUG] Using fork starter with configuration implementation org.apache.maven.plugin.surefire.booterclient.JarManifestForkConfiguration
+[DEBUG] Dependency collection stats {ConflictMarker.analyzeTime=47700, ConflictMarker.markTime=27800, ConflictMarker.nodeCount=15, ConflictIdSorter.graphTime=21900, ConflictIdSorter.topsortTime=13300, ConflictIdSorter.conflictIdCount=10, ConflictIdSorter.conflictIdCycleCount=0, ConflictResolver.totalTime=418400, ConflictResolver.conflictItemCount=14, DfDependencyCollector.collectTime=29206600, DfDependencyCollector.transformTime=551700}
+[DEBUG] Resolving artifact org.junit.platform:junit-platform-launcher:1.9.2
+[DEBUG] Dependency collection stats {ConflictMarker.analyzeTime=168800, ConflictMarker.markTime=137700, ConflictMarker.nodeCount=8, ConflictIdSorter.graphTime=75500, ConflictIdSorter.topsortTime=25300, ConflictIdSorter.conflictIdCount=5, ConflictIdSorter.conflictIdCycleCount=0, ConflictResolver.totalTime=242500, ConflictResolver.conflictItemCount=7, DfDependencyCollector.collectTime=4409600, DfDependencyCollector.transformTime=674400}
+[DEBUG] Resolved artifact org.junit.platform:junit-platform-launcher:1.9.2 to [org.junit.platform:junit-platform-launcher:jar:1.9.2, org.junit.platform:junit-platform-engine:jar:1.9.2, org.opentest4j:opentest4j:jar:1.2.0, org.junit.platform:junit-platform-commons:jar:1.9.2, org.apiguardian:apiguardian-api:jar:1.1.2]
+[DEBUG] test classpath:  D:\Desktop\HotelBookingSystem-complete-backup(2)\target\test-classes  D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes  C:\Users\28031\.m2\repository\org\openjfx\javafx-controls\21.0.9\javafx-controls-21.0.9.jar  C:\Users\28031\.m2\repository\org\openjfx\javafx-controls\21.0.9\javafx-controls-21.0.9-win.jar  C:\Users\28031\.m2\repository\org\openjfx\javafx-graphics\21.0.9\javafx-graphics-21.0.9.jar  C:\Users\28031\.m2\repository\org\openjfx\javafx-graphics\21.0.9\javafx-graphics-21.0.9-win.jar  C:\Users\28031\.m2\repository\org\openjfx\javafx-base\21.0.9\javafx-base-21.0.9.jar  C:\Users\28031\.m2\repository\org\openjfx\javafx-base\21.0.9\javafx-base-21.0.9-win.jar  C:\Users\28031\.m2\repository\org\openjfx\javafx-fxml\21.0.9\javafx-fxml-21.0.9.jar  C:\Users\28031\.m2\repository\org\openjfx\javafx-fxml\21.0.9\javafx-fxml-21.0.9-win.jar  C:\Users\28031\.m2\repository\org\apache\derby\derby\10.14.2.0\derby-10.14.2.0.jar  C:\Users\28031\.m2\repository\org\mockito\mockito-core\5.3.1\mockito-core-5.3.1.jar  C:\Users\28031\.m2\repository\net\bytebuddy\byte-buddy\1.14.4\byte-buddy-1.14.4.jar  C:\Users\28031\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.4\byte-buddy-agent-1.14.4.jar  C:\Users\28031\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar  C:\Users\28031\.m2\repository\org\mockito\mockito-junit-jupiter\5.3.1\mockito-junit-jupiter-5.3.1.jar  C:\Users\28031\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.9.2\junit-jupiter-api-5.9.2.jar  C:\Users\28031\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar  C:\Users\28031\.m2\repository\org\junit\platform\junit-platform-commons\1.9.2\junit-platform-commons-1.9.2.jar  C:\Users\28031\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar  C:\Users\28031\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.9.2\junit-jupiter-engine-5.9.2.jar  C:\Users\28031\.m2\repository\org\junit\platform\junit-platform-engine\1.9.2\junit-platform-engine-1.9.2.jar  C:\Users\28031\.m2\repository\org\junit\jupiter\junit-jupiter\5.10.0\junit-jupiter-5.10.0.jar  C:\Users\28031\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.0\junit-jupiter-params-5.10.0.jar  C:\Users\28031\.m2\repository\org\mockito\mockito-inline\4.0.0\mockito-inline-4.0.0.jar
+[DEBUG] provider classpath:  C:\Users\28031\.m2\repository\org\apache\maven\surefire\surefire-junit-platform\3.2.5\surefire-junit-platform-3.2.5.jar  C:\Users\28031\.m2\repository\org\apache\maven\surefire\surefire-api\3.2.5\surefire-api-3.2.5.jar  C:\Users\28031\.m2\repository\org\apache\maven\surefire\surefire-logger-api\3.2.5\surefire-logger-api-3.2.5.jar  C:\Users\28031\.m2\repository\org\apache\maven\surefire\surefire-shared-utils\3.2.5\surefire-shared-utils-3.2.5.jar  C:\Users\28031\.m2\repository\org\apache\maven\surefire\common-java5\3.2.5\common-java5-3.2.5.jar  C:\Users\28031\.m2\repository\org\junit\platform\junit-platform-launcher\1.9.2\junit-platform-launcher-1.9.2.jar
+[DEBUG] test(compact) classpath:  test-classes  classes  javafx-controls-21.0.9.jar  javafx-controls-21.0.9-win.jar  javafx-graphics-21.0.9.jar  javafx-graphics-21.0.9-win.jar  javafx-base-21.0.9.jar  javafx-base-21.0.9-win.jar  javafx-fxml-21.0.9.jar  javafx-fxml-21.0.9-win.jar  derby-10.14.2.0.jar  mockito-core-5.3.1.jar  byte-buddy-1.14.4.jar  byte-buddy-agent-1.14.4.jar  objenesis-3.3.jar  mockito-junit-jupiter-5.3.1.jar  junit-jupiter-api-5.9.2.jar  opentest4j-1.2.0.jar  junit-platform-commons-1.9.2.jar  apiguardian-api-1.1.2.jar  junit-jupiter-engine-5.9.2.jar  junit-platform-engine-1.9.2.jar  junit-jupiter-5.10.0.jar  junit-jupiter-params-5.10.0.jar  mockito-inline-4.0.0.jar
+[DEBUG] provider(compact) classpath:  surefire-junit-platform-3.2.5.jar  surefire-api-3.2.5.jar  surefire-logger-api-3.2.5.jar  surefire-shared-utils-3.2.5.jar  common-java5-3.2.5.jar  junit-platform-launcher-1.9.2.jar
+[DEBUG] in-process classpath:  C:\Users\28031\.m2\repository\org\apache\maven\surefire\surefire-junit-platform\3.2.5\surefire-junit-platform-3.2.5.jar  C:\Users\28031\.m2\repository\org\apache\maven\surefire\surefire-api\3.2.5\surefire-api-3.2.5.jar  C:\Users\28031\.m2\repository\org\apache\maven\surefire\surefire-logger-api\3.2.5\surefire-logger-api-3.2.5.jar  C:\Users\28031\.m2\repository\org\apache\maven\surefire\surefire-shared-utils\3.2.5\surefire-shared-utils-3.2.5.jar  C:\Users\28031\.m2\repository\org\apache\maven\surefire\common-java5\3.2.5\common-java5-3.2.5.jar  C:\Users\28031\.m2\repository\org\junit\platform\junit-platform-launcher\1.9.2\junit-platform-launcher-1.9.2.jar  C:\Users\28031\.m2\repository\org\apache\maven\surefire\maven-surefire-common\3.2.5\maven-surefire-common-3.2.5.jar  C:\Users\28031\.m2\repository\org\apache\maven\surefire\surefire-booter\3.2.5\surefire-booter-3.2.5.jar  C:\Users\28031\.m2\repository\org\apache\maven\surefire\surefire-extensions-api\3.2.5\surefire-extensions-api-3.2.5.jar  C:\Users\28031\.m2\repository\org\apache\maven\surefire\surefire-extensions-spi\3.2.5\surefire-extensions-spi-3.2.5.jar
+[DEBUG] in-process(compact) classpath:  surefire-junit-platform-3.2.5.jar  surefire-api-3.2.5.jar  surefire-logger-api-3.2.5.jar  surefire-shared-utils-3.2.5.jar  common-java5-3.2.5.jar  junit-platform-launcher-1.9.2.jar  maven-surefire-common-3.2.5.jar  surefire-booter-3.2.5.jar  surefire-extensions-api-3.2.5.jar  surefire-extensions-spi-3.2.5.jar
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[DEBUG] Determined Maven Process ID 42968
+[DEBUG] Fork Channel [1] connection string 'pipe://1' for the implementation class org.apache.maven.plugin.surefire.extensions.LegacyForkChannel
+[DEBUG] boot classpath:  C:\Users\28031\.m2\repository\org\apache\maven\surefire\surefire-booter\3.2.5\surefire-booter-3.2.5.jar  C:\Users\28031\.m2\repository\org\apache\maven\surefire\surefire-api\3.2.5\surefire-api-3.2.5.jar  C:\Users\28031\.m2\repository\org\apache\maven\surefire\surefire-logger-api\3.2.5\surefire-logger-api-3.2.5.jar  C:\Users\28031\.m2\repository\org\apache\maven\surefire\surefire-shared-utils\3.2.5\surefire-shared-utils-3.2.5.jar  C:\Users\28031\.m2\repository\org\apache\maven\surefire\surefire-extensions-spi\3.2.5\surefire-extensions-spi-3.2.5.jar  D:\Desktop\HotelBookingSystem-complete-backup(2)\target\test-classes  D:\Desktop\HotelBookingSystem-complete-backup(2)\target\classes  C:\Users\28031\.m2\repository\org\openjfx\javafx-controls\21.0.9\javafx-controls-21.0.9.jar  C:\Users\28031\.m2\repository\org\openjfx\javafx-controls\21.0.9\javafx-controls-21.0.9-win.jar  C:\Users\28031\.m2\repository\org\openjfx\javafx-graphics\21.0.9\javafx-graphics-21.0.9.jar  C:\Users\28031\.m2\repository\org\openjfx\javafx-graphics\21.0.9\javafx-graphics-21.0.9-win.jar  C:\Users\28031\.m2\repository\org\openjfx\javafx-base\21.0.9\javafx-base-21.0.9.jar  C:\Users\28031\.m2\repository\org\openjfx\javafx-base\21.0.9\javafx-base-21.0.9-win.jar  C:\Users\28031\.m2\repository\org\openjfx\javafx-fxml\21.0.9\javafx-fxml-21.0.9.jar  C:\Users\28031\.m2\repository\org\openjfx\javafx-fxml\21.0.9\javafx-fxml-21.0.9-win.jar  C:\Users\28031\.m2\repository\org\apache\derby\derby\10.14.2.0\derby-10.14.2.0.jar  C:\Users\28031\.m2\repository\org\mockito\mockito-core\5.3.1\mockito-core-5.3.1.jar  C:\Users\28031\.m2\repository\net\bytebuddy\byte-buddy\1.14.4\byte-buddy-1.14.4.jar  C:\Users\28031\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.4\byte-buddy-agent-1.14.4.jar  C:\Users\28031\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar  C:\Users\28031\.m2\repository\org\mockito\mockito-junit-jupiter\5.3.1\mockito-junit-jupiter-5.3.1.jar  C:\Users\28031\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.9.2\junit-jupiter-api-5.9.2.jar  C:\Users\28031\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar  C:\Users\28031\.m2\repository\org\junit\platform\junit-platform-commons\1.9.2\junit-platform-commons-1.9.2.jar  C:\Users\28031\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar  C:\Users\28031\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.9.2\junit-jupiter-engine-5.9.2.jar  C:\Users\28031\.m2\repository\org\junit\platform\junit-platform-engine\1.9.2\junit-platform-engine-1.9.2.jar  C:\Users\28031\.m2\repository\org\junit\jupiter\junit-jupiter\5.10.0\junit-jupiter-5.10.0.jar  C:\Users\28031\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.0\junit-jupiter-params-5.10.0.jar  C:\Users\28031\.m2\repository\org\mockito\mockito-inline\4.0.0\mockito-inline-4.0.0.jar  C:\Users\28031\.m2\repository\org\apache\maven\surefire\surefire-junit-platform\3.2.5\surefire-junit-platform-3.2.5.jar  C:\Users\28031\.m2\repository\org\apache\maven\surefire\common-java5\3.2.5\common-java5-3.2.5.jar  C:\Users\28031\.m2\repository\org\junit\platform\junit-platform-launcher\1.9.2\junit-platform-launcher-1.9.2.jar
+[DEBUG] boot(compact) classpath:  surefire-booter-3.2.5.jar  surefire-api-3.2.5.jar  surefire-logger-api-3.2.5.jar  surefire-shared-utils-3.2.5.jar  surefire-extensions-spi-3.2.5.jar  test-classes  classes  javafx-controls-21.0.9.jar  javafx-controls-21.0.9-win.jar  javafx-graphics-21.0.9.jar  javafx-graphics-21.0.9-win.jar  javafx-base-21.0.9.jar  javafx-base-21.0.9-win.jar  javafx-fxml-21.0.9.jar  javafx-fxml-21.0.9-win.jar  derby-10.14.2.0.jar  mockito-core-5.3.1.jar  byte-buddy-1.14.4.jar  byte-buddy-agent-1.14.4.jar  objenesis-3.3.jar  mockito-junit-jupiter-5.3.1.jar  junit-jupiter-api-5.9.2.jar  opentest4j-1.2.0.jar  junit-platform-commons-1.9.2.jar  apiguardian-api-1.1.2.jar  junit-jupiter-engine-5.9.2.jar  junit-platform-engine-1.9.2.jar  junit-jupiter-5.10.0.jar  junit-jupiter-params-5.10.0.jar  mockito-inline-4.0.0.jar  surefire-junit-platform-3.2.5.jar  common-java5-3.2.5.jar  junit-platform-launcher-1.9.2.jar
+[DEBUG] Forking command line: cmd.exe /X /C ""D:\Program Files\Java\jdk-21\bin\java" -jar C:\Users\28031\AppData\Local\Temp\surefire10163161990986123843\surefirebooter-20251203123943349_3.jar C:\Users\28031\AppData\Local\Temp\surefire10163161990986123843 2025-12-03T12-39-43_141-jvmRun1 surefire-20251203123943349_1tmp surefire_0-20251203123943349_2tmp"
+[DEBUG] Fork Channel [1] connected to the client.
+[INFO] Running com.hotelbooking.dao.RoomDAOTest
+Derby database driver loaded successfully
+Clear data error: Table/View 'PAYMENTS' does not exist.
+Database initialized successfully
+Test data cleared
+Tables already exist
+Test data cleared
+Tables already exist
+Test data cleared
+Tables already exist
+Test data cleared
+Tables already exist
+Test data cleared
+Tables already exist
+Test data cleared
+Tables already exist
+Test data cleared
+Tables already exist
+Test data cleared
+Tables already exist
+Test data cleared
+Tables already exist
+Test data cleared
+Tables already exist
+Test data cleared
+Tables already exist
+[ERROR] Tests run: 12, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 1.997 s <<< FAILURE! -- in com.hotelbooking.dao.RoomDAOTest
+[ERROR] com.hotelbooking.dao.RoomDAOTest.getAllAvailableRooms_ShouldReturnAllAvailableRooms -- Time elapsed: 0.098 s <<< ERROR!
+java.lang.RuntimeException: Error getting all available rooms
+	at com.hotelbooking.dao.RoomDAO.getAllAvailableRooms(RoomDAO.java:247)
+	at com.hotelbooking.dao.RoomDAOTest.getAllAvailableRooms_ShouldReturnAllAvailableRooms(RoomDAOTest.java:311)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:727)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:147)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$7(TestMethodTestDescriptor.java:217)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:213)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:138)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:68)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:151)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:56)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+Caused by: java.sql.SQLSyntaxErrorException: Comparisons between 'SMALLINT' and 'BOOLEAN' are not supported. Types must be comparable. String types must also have matching collation. If collation does not match, a possible solution is to cast operands to force them to the default collation (e.g. SELECT tablename FROM sys.systables WHERE CAST(tablename AS VARCHAR(128)) = 'T1')
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.wrapInSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.ConnectionChild.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement.<init>(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement42.<init>(Unknown Source)
+	at org.apache.derby.jdbc.Driver42.newEmbedPreparedStatement(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.prepareStatement(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.prepareStatement(Unknown Source)
+	at com.hotelbooking.dao.RoomDAO.getAllAvailableRooms(RoomDAO.java:238)
+	... 70 more
+Caused by: ERROR 42818: Comparisons between 'SMALLINT' and 'BOOLEAN' are not supported. Types must be comparable. String types must also have matching collation. If collation does not match, a possible solution is to cast operands to force them to the default collation (e.g. SELECT tablename FROM sys.systables WHERE CAST(tablename AS VARCHAR(128)) = 'T1')
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
+	at org.apache.derby.impl.sql.compile.BinaryComparisonOperatorNode.bindComparisonOperator(Unknown Source)
+	at org.apache.derby.impl.sql.compile.BinaryComparisonOperatorNode.bindExpression(Unknown Source)
+	at org.apache.derby.impl.sql.compile.SelectNode.bindExpressions(Unknown Source)
+	at org.apache.derby.impl.sql.compile.DMLStatementNode.bindExpressions(Unknown Source)
+	at org.apache.derby.impl.sql.compile.DMLStatementNode.bind(Unknown Source)
+	at org.apache.derby.impl.sql.compile.CursorNode.bindStatement(Unknown Source)
+	at org.apache.derby.impl.sql.GenericStatement.prepMinion(Unknown Source)
+	at org.apache.derby.impl.sql.GenericStatement.prepare(Unknown Source)
+	at org.apache.derby.impl.sql.conn.GenericLanguageConnectionContext.prepareInternalStatement(Unknown Source)
+	... 76 more
+
+[ERROR] com.hotelbooking.dao.RoomDAOTest.getRoomsByPriceRange_ShouldReturnRoomsInPriceRange -- Time elapsed: 0.045 s <<< ERROR!
+java.lang.RuntimeException: Error getting rooms by price range: 75 - 150
+	at com.hotelbooking.dao.RoomDAO.getRoomsByPriceRange(RoomDAO.java:141)
+	at com.hotelbooking.dao.RoomDAOTest.getRoomsByPriceRange_ShouldReturnRoomsInPriceRange(RoomDAOTest.java:232)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:727)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:147)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$7(TestMethodTestDescriptor.java:217)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:213)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:138)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:68)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:151)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:56)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+Caused by: java.sql.SQLSyntaxErrorException: Comparisons between 'SMALLINT' and 'BOOLEAN' are not supported. Types must be comparable. String types must also have matching collation. If collation does not match, a possible solution is to cast operands to force them to the default collation (e.g. SELECT tablename FROM sys.systables WHERE CAST(tablename AS VARCHAR(128)) = 'T1')
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.wrapInSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.ConnectionChild.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement.<init>(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement42.<init>(Unknown Source)
+	at org.apache.derby.jdbc.Driver42.newEmbedPreparedStatement(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.prepareStatement(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.prepareStatement(Unknown Source)
+	at com.hotelbooking.dao.RoomDAO.getRoomsByPriceRange(RoomDAO.java:129)
+	... 70 more
+Caused by: ERROR 42818: Comparisons between 'SMALLINT' and 'BOOLEAN' are not supported. Types must be comparable. String types must also have matching collation. If collation does not match, a possible solution is to cast operands to force them to the default collation (e.g. SELECT tablename FROM sys.systables WHERE CAST(tablename AS VARCHAR(128)) = 'T1')
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
+	at org.apache.derby.impl.sql.compile.BinaryComparisonOperatorNode.bindComparisonOperator(Unknown Source)
+	at org.apache.derby.impl.sql.compile.BinaryComparisonOperatorNode.bindExpression(Unknown Source)
+	at org.apache.derby.impl.sql.compile.BinaryOperatorNode.bindExpression(Unknown Source)
+	at org.apache.derby.impl.sql.compile.BinaryLogicalOperatorNode.bindExpression(Unknown Source)
+	at org.apache.derby.impl.sql.compile.AndNode.bindExpression(Unknown Source)
+	at org.apache.derby.impl.sql.compile.SelectNode.bindExpressions(Unknown Source)
+	at org.apache.derby.impl.sql.compile.DMLStatementNode.bindExpressions(Unknown Source)
+	at org.apache.derby.impl.sql.compile.DMLStatementNode.bind(Unknown Source)
+	at org.apache.derby.impl.sql.compile.CursorNode.bindStatement(Unknown Source)
+	at org.apache.derby.impl.sql.GenericStatement.prepMinion(Unknown Source)
+	at org.apache.derby.impl.sql.GenericStatement.prepare(Unknown Source)
+	at org.apache.derby.impl.sql.conn.GenericLanguageConnectionContext.prepareInternalStatement(Unknown Source)
+	... 76 more
+
+[ERROR] com.hotelbooking.dao.RoomDAOTest.getAvailableRoomsByHotelId_ShouldReturnOnlyAvailableRooms -- Time elapsed: 0.039 s <<< ERROR!
+java.lang.RuntimeException: Error getting available rooms by hotel id: 12
+	at com.hotelbooking.dao.RoomDAO.getAvailableRoomsByHotelId(RoomDAO.java:97)
+	at com.hotelbooking.dao.RoomDAOTest.getAvailableRoomsByHotelId_ShouldReturnOnlyAvailableRooms(RoomDAOTest.java:188)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:727)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:147)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$7(TestMethodTestDescriptor.java:217)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:213)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:138)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:68)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:151)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:56)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+Caused by: java.sql.SQLSyntaxErrorException: Comparisons between 'SMALLINT' and 'BOOLEAN' are not supported. Types must be comparable. String types must also have matching collation. If collation does not match, a possible solution is to cast operands to force them to the default collation (e.g. SELECT tablename FROM sys.systables WHERE CAST(tablename AS VARCHAR(128)) = 'T1')
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.wrapInSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.ConnectionChild.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement.<init>(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement42.<init>(Unknown Source)
+	at org.apache.derby.jdbc.Driver42.newEmbedPreparedStatement(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.prepareStatement(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.prepareStatement(Unknown Source)
+	at com.hotelbooking.dao.RoomDAO.getAvailableRoomsByHotelId(RoomDAO.java:86)
+	... 70 more
+Caused by: ERROR 42818: Comparisons between 'SMALLINT' and 'BOOLEAN' are not supported. Types must be comparable. String types must also have matching collation. If collation does not match, a possible solution is to cast operands to force them to the default collation (e.g. SELECT tablename FROM sys.systables WHERE CAST(tablename AS VARCHAR(128)) = 'T1')
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
+	at org.apache.derby.impl.sql.compile.BinaryComparisonOperatorNode.bindComparisonOperator(Unknown Source)
+	at org.apache.derby.impl.sql.compile.BinaryComparisonOperatorNode.bindExpression(Unknown Source)
+	at org.apache.derby.impl.sql.compile.BinaryOperatorNode.bindExpression(Unknown Source)
+	at org.apache.derby.impl.sql.compile.BinaryLogicalOperatorNode.bindExpression(Unknown Source)
+	at org.apache.derby.impl.sql.compile.AndNode.bindExpression(Unknown Source)
+	at org.apache.derby.impl.sql.compile.SelectNode.bindExpressions(Unknown Source)
+	at org.apache.derby.impl.sql.compile.DMLStatementNode.bindExpressions(Unknown Source)
+	at org.apache.derby.impl.sql.compile.DMLStatementNode.bind(Unknown Source)
+	at org.apache.derby.impl.sql.compile.CursorNode.bindStatement(Unknown Source)
+	at org.apache.derby.impl.sql.GenericStatement.prepMinion(Unknown Source)
+	at org.apache.derby.impl.sql.GenericStatement.prepare(Unknown Source)
+	at org.apache.derby.impl.sql.conn.GenericLanguageConnectionContext.prepareInternalStatement(Unknown Source)
+	... 76 more
+
+[DEBUG] Closing the fork 1 after saying GoodBye.
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   RoomDAOTest.getAllAvailableRooms_ShouldReturnAllAvailableRooms:311 ? Runtime Error getting all available rooms
+[ERROR]   RoomDAOTest.getAvailableRoomsByHotelId_ShouldReturnOnlyAvailableRooms:188 ? Runtime Error getting available rooms by hotel id: 12
+[ERROR]   RoomDAOTest.getRoomsByPriceRange_ShouldReturnRoomsInPriceRange:232 ? Runtime Error getting rooms by price range: 75 - 150
+[INFO] 
+[ERROR] Tests run: 12, Failures: 0, Errors: 3, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  5.167 s
+[INFO] Finished at: 2025-12-03T12:39:46+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test (default-test) on project HotelBookingSystem: 
+[ERROR] 
+[ERROR] Please refer to D:\Desktop\HotelBookingSystem-complete-backup(2)\target\surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+org.apache.maven.lifecycle.LifecycleExecutionException: Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test (default-test) on project HotelBookingSystem: 
+
+Please refer to D:\Desktop\HotelBookingSystem-complete-backup(2)\target\surefire-reports for the individual test results.
+Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute2 (MojoExecutor.java:333)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute (MojoExecutor.java:316)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:212)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:174)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.access$000 (MojoExecutor.java:75)
+    at org.apache.maven.lifecycle.internal.MojoExecutor$1.run (MojoExecutor.java:162)
+    at org.apache.maven.plugin.DefaultMojosExecutionStrategy.execute (DefaultMojosExecutionStrategy.java:39)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:159)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:105)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:73)
+    at org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder.build (SingleThreadedBuilder.java:53)
+    at org.apache.maven.lifecycle.internal.LifecycleStarter.execute (LifecycleStarter.java:118)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:261)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:173)
+    at org.apache.maven.DefaultMaven.execute (DefaultMaven.java:101)
+    at org.apache.maven.cli.MavenCli.execute (MavenCli.java:906)
+    at org.apache.maven.cli.MavenCli.doMain (MavenCli.java:283)
+    at org.apache.maven.cli.MavenCli.main (MavenCli.java:206)
+    at jdk.internal.reflect.DirectMethodHandleAccessor.invoke (DirectMethodHandleAccessor.java:103)
+    at java.lang.reflect.Method.invoke (Method.java:580)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced (Launcher.java:255)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.launch (Launcher.java:201)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode (Launcher.java:361)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.main (Launcher.java:314)
+Caused by: org.apache.maven.plugin.MojoFailureException: 
+
+Please refer to D:\Desktop\HotelBookingSystem-complete-backup(2)\target\surefire-reports for the individual test results.
+Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+    at org.apache.maven.plugin.surefire.SurefireHelper.throwException (SurefireHelper.java:247)
+    at org.apache.maven.plugin.surefire.SurefireHelper.reportExecution (SurefireHelper.java:159)
+    at org.apache.maven.plugin.surefire.SurefirePlugin.handleSummary (SurefirePlugin.java:542)
+    at org.apache.maven.plugin.surefire.AbstractSurefireMojo.executeAfterPreconditionsChecked (AbstractSurefireMojo.java:1102)
+    at org.apache.maven.plugin.surefire.AbstractSurefireMojo.execute (AbstractSurefireMojo.java:910)
+    at org.apache.maven.plugin.DefaultBuildPluginManager.executeMojo (DefaultBuildPluginManager.java:126)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute2 (MojoExecutor.java:328)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute (MojoExecutor.java:316)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:212)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:174)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.access$000 (MojoExecutor.java:75)
+    at org.apache.maven.lifecycle.internal.MojoExecutor$1.run (MojoExecutor.java:162)
+    at org.apache.maven.plugin.DefaultMojosExecutionStrategy.execute (DefaultMojosExecutionStrategy.java:39)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:159)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:105)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:73)
+    at org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder.build (SingleThreadedBuilder.java:53)
+    at org.apache.maven.lifecycle.internal.LifecycleStarter.execute (LifecycleStarter.java:118)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:261)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:173)
+    at org.apache.maven.DefaultMaven.execute (DefaultMaven.java:101)
+    at org.apache.maven.cli.MavenCli.execute (MavenCli.java:906)
+    at org.apache.maven.cli.MavenCli.doMain (MavenCli.java:283)
+    at org.apache.maven.cli.MavenCli.main (MavenCli.java:206)
+    at jdk.internal.reflect.DirectMethodHandleAccessor.invoke (DirectMethodHandleAccessor.java:103)
+    at java.lang.reflect.Method.invoke (Method.java:580)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced (Launcher.java:255)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.launch (Launcher.java:201)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode (Launcher.java:361)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.main (Launcher.java:314)
+[ERROR] 
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[DEBUG] Shutting down adapter factory; available factories [file-lock, rwlock-local, semaphore-local, noop]; available name mappers [discriminating, file-gav, file-hgav, file-static, gav, static]
+[DEBUG] Shutting down 'file-lock' factory
+[DEBUG] Shutting down 'rwlock-local' factory
+[DEBUG] Shutting down 'semaphore-local' factory
+[DEBUG] Shutting down 'noop' factory

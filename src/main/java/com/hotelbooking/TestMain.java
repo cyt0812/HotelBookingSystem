@@ -7,7 +7,7 @@ public class TestMain {
         System.out.println("=== 酒店预订系统测试 ===");
         
         // 测试数据库初始化
-        DatabaseInitializer.initialize();
+        DatabaseInitializer.initializeDatabase();
         
         // 测试数据库连接
         try {

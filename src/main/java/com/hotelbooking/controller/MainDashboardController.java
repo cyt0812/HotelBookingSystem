@@ -90,6 +90,15 @@ public class MainDashboardController {
     @FXML
     private void handleSearchHotel() {
         System.out.println("🔍 开始搜索酒店");
+        // 保存日期
+        SessionManager.setCheckInDate(checkInDate.getValue());
+        SessionManager.setCheckOutDate(checkOutDate.getValue());
+
+        // 保存人数
+        SessionManager.setRoomCount(roomCount);
+        SessionManager.setAdultCount(adultCount);
+        SessionManager.setChildCount(childCount);
+        
         navigateToHotelSearch();
     }
     
@@ -98,10 +107,17 @@ public class MainDashboardController {
      */
     private void navigateToHotelSearch() {
         try {
+            String keyword = txtDestination.getText().trim();
             FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/com/hotelbooking/view/search_hotels.fxml")
             );
             Parent root = loader.load();
+            
+            // ⭐⭐ 获取 search 页面 controller
+            SearchHotelsController controller = loader.getController();
+
+            // ⭐⭐ 把搜索关键词传进去
+            controller.setSearchKeyword(keyword);
             
             Stage stage = (Stage) btnLogin.getScene().getWindow();
             stage.setScene(new Scene(root));

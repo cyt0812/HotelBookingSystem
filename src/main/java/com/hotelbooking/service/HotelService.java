@@ -1,198 +1,192 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+// HotelService.java - 完整修复版本
 package com.hotelbooking.service;
 
+import com.hotelbooking.dao.HotelDAO;
 import com.hotelbooking.entity.Hotel;
 import com.hotelbooking.entity.Room;
-import java.util.*;
+import com.hotelbooking.exception.BusinessException;
+import com.hotelbooking.exception.ErrorType;
+import com.hotelbooking.exception.ValidationException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-/**
- * 酒店服务类 - 管理酒店和房间数据
- */
 public class HotelService {
     
-    // 模拟数据库存储
-    private static Map<Integer, Hotel> hotelDatabase = new HashMap<>();
-    private static Map<Integer, List<Room>> roomDatabase = new HashMap<>();
-    private static int hotelIdCounter = 1;
-    private static int roomIdCounter = 1;
+    private final HotelDAO hotelDAO;
+    private volatile List<Hotel> hotelCache; // 使用 volatile 保证可见性
     
-    // 静态初始化 - 添加测试数据
-    static {
-        initializeSampleData();
+    // 默认构造
+    public HotelService() {
+        this.hotelDAO = new HotelDAO();
+        this.hotelCache = null; // 延迟初始化
+    }
+    
+    // 支持依赖注入
+    public HotelService(HotelDAO hotelDAO) {
+        this.hotelDAO = hotelDAO != null ? hotelDAO : new HotelDAO();
+        this.hotelCache = null; // 延迟初始化
     }
     
     /**
-     * 初始化示例数据
+     * 获取酒店缓存（懒加载）
      */
-    private static void initializeSampleData() {
-        // 添加酒店1
-        Hotel hotel1 = new Hotel(
-            "Grand Luxury Hotel",
-            "123 Main Street, Singapore",
-            "Experience luxury at its finest with panoramic city views",
-            "WiFi, Pool, Gym, Restaurant, Bar, Spa"
-        );
-        hotel1.setHotelId(hotelIdCounter++);
-        hotelDatabase.put(hotel1.getHotelId(), hotel1);
-        
-        // 酒店1的房间
-        List<Room> rooms1 = new ArrayList<>();
-        rooms1.add(createRoom(hotel1.getHotelId(), "101", "Deluxe Room", 150.0, 2));
-        rooms1.add(createRoom(hotel1.getHotelId(), "102", "Superior Room", 200.0, 2));
-        rooms1.add(createRoom(hotel1.getHotelId(), "201", "Executive Suite", 350.0, 4));
-        rooms1.add(createRoom(hotel1.getHotelId(), "301", "Presidential Suite", 800.0, 6));
-        roomDatabase.put(hotel1.getHotelId(), rooms1);
-        
-        // 添加酒店2
-        Hotel hotel2 = new Hotel(
-            "Marina Bay Resort",
-            "456 Beach Road, Singapore",
-            "Beachfront paradise with world-class amenities",
-            "WiFi, Beach Access, Pool, Gym, Restaurant, Kids Club"
-        );
-        hotel2.setHotelId(hotelIdCounter++);
-        hotelDatabase.put(hotel2.getHotelId(), hotel2);
-        
-        // 酒店2的房间
-        List<Room> rooms2 = new ArrayList<>();
-        rooms2.add(createRoom(hotel2.getHotelId(), "A101", "Ocean View Room", 180.0, 2));
-        rooms2.add(createRoom(hotel2.getHotelId(), "A102", "Deluxe Ocean View", 250.0, 3));
-        rooms2.add(createRoom(hotel2.getHotelId(), "B201", "Family Suite", 400.0, 5));
-        rooms2.add(createRoom(hotel2.getHotelId(), "C301", "Penthouse", 1000.0, 8));
-        roomDatabase.put(hotel2.getHotelId(), rooms2);
-        
-        // 添加酒店3
-        Hotel hotel3 = new Hotel(
-            "Business Hub Hotel",
-            "789 Office Park, Singapore",
-            "Perfect for business travelers with modern facilities",
-            "WiFi, Meeting Rooms, Business Center, Gym, Restaurant"
-        );
-        hotel3.setHotelId(hotelIdCounter++);
-        hotelDatabase.put(hotel3.getHotelId(), hotel3);
-        
-        // 酒店3的房间
-        List<Room> rooms3 = new ArrayList<>();
-        rooms3.add(createRoom(hotel3.getHotelId(), "1001", "Business Room", 120.0, 2));
-        rooms3.add(createRoom(hotel3.getHotelId(), "1002", "Executive Room", 180.0, 2));
-        rooms3.add(createRoom(hotel3.getHotelId(), "2001", "Junior Suite", 280.0, 3));
-        roomDatabase.put(hotel3.getHotelId(), rooms3);
-        
-        // 添加酒店4
-        Hotel hotel4 = new Hotel(
-            "Garden View Inn",
-            "321 Nature Lane, Singapore",
-            "Peaceful retreat surrounded by lush gardens",
-            "WiFi, Garden, Pool, Restaurant, Spa, Yoga Classes"
-        );
-        hotel4.setHotelId(hotelIdCounter++);
-        hotelDatabase.put(hotel4.getHotelId(), hotel4);
-        
-        // 酒店4的房间
-        List<Room> rooms4 = new ArrayList<>();
-        rooms4.add(createRoom(hotel4.getHotelId(), "G01", "Garden Room", 100.0, 2));
-        rooms4.add(createRoom(hotel4.getHotelId(), "G02", "Superior Garden Room", 140.0, 2));
-        rooms4.add(createRoom(hotel4.getHotelId(), "V01", "Villa", 350.0, 4));
-        roomDatabase.put(hotel4.getHotelId(), rooms4);
-        
-        System.out.println("✅ 已加载 " + hotelDatabase.size() + " 家酒店数据");
-    }
-    
-    /**
-     * 创建房间
-     */
-    private static Room createRoom(int hotelId, String roomNumber, String roomType, 
-                                   double price, int maxOccupancy) {
-        Room room = new Room(hotelId, roomNumber, roomType, price, maxOccupancy);
-        room.setRoomId(roomIdCounter++);
-        return room;
-    }
-    
-    /**
-     * 搜索酒店
-     */
-    public List<Hotel> searchHotels(String keyword) {
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return getAllHotels();
-        }
-        
-        List<Hotel> results = new ArrayList<>();
-        String lowerKeyword = keyword.toLowerCase();
-        
-        for (Hotel hotel : hotelDatabase.values()) {
-            if (hotel.getName().toLowerCase().contains(lowerKeyword) ||
-                hotel.getAddress().toLowerCase().contains(lowerKeyword) ||
-                hotel.getDescription().toLowerCase().contains(lowerKeyword)) {
-                results.add(hotel);
+    private List<Hotel> getHotelCache() {
+        if (hotelCache == null) {
+            synchronized (this) {
+                if (hotelCache == null) {
+                    hotelCache = hotelDAO.getAllHotels();
+                }
             }
         }
-        
-        System.out.println("🔍 搜索 '" + keyword + "' 找到 " + results.size() + " 家酒店");
-        return results;
+        return hotelCache;
+    }
+    
+    /**
+     * 清空缓存（用于测试或数据更新后）
+     */
+    public void clearCache() {
+        synchronized (this) {
+            hotelCache = null;
+        }
+    }
+    
+    /**
+     * 创建酒店
+     */
+    public Hotel createHotel(String name, String location, String description, String amenities, Integer availableRooms) {
+        try {
+            // 参数验证
+            validateHotelParameters(name, location, availableRooms);
+            
+            Hotel hotel = new Hotel(name.trim(), location.trim(), description, amenities, availableRooms);
+            Hotel createdHotel = hotelDAO.createHotel(hotel);
+            
+            // 创建成功后清空缓存
+            clearCache();
+            
+            return createdHotel;
+        } catch (ValidationException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
+                "创建酒店失败: " + e.getMessage(), e);
+        }
+    }
+    
+    /**
+     * 参数验证
+     */
+    private void validateHotelParameters(String name, String location, Integer availableRooms) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new ValidationException("酒店名称不能为空");
+        }
+        if (location == null || location.trim().isEmpty()) {
+            throw new ValidationException("位置不能为空");
+        }
+        if (availableRooms == null || availableRooms < 0) {
+            throw new ValidationException("可用房间数必须为非负数");
+        }
+    }
+    
+    /**
+     * 根据ID获取酒店
+     */
+    public Optional<Hotel> getHotelById(Integer id) {
+        try {
+            return hotelDAO.getHotelById(id);
+        } catch (Exception e) {
+            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
+                "获取酒店信息失败: " + e.getMessage(), e);
+        }
     }
     
     /**
      * 获取所有酒店
      */
     public List<Hotel> getAllHotels() {
-        return new ArrayList<>(hotelDatabase.values());
+        try {
+            return hotelDAO.getAllHotels();
+        } catch (Exception e) {
+            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
+                "获取酒店列表失败: " + e.getMessage(), e);
+        }
     }
     
     /**
-     * 根据ID获取酒店
+     * 根据位置获取酒店
      */
-    public Hotel getHotelById(int hotelId) {
-        return hotelDatabase.get(hotelId);
+    public List<Hotel> getHotelsByLocation(String location) {
+        try {
+            if (location == null || location.trim().isEmpty()) {
+                return List.of();
+            }
+            return hotelDAO.getHotelsByLocation(location.trim());
+        } catch (Exception e) {
+            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
+                "根据位置获取酒店失败: " + e.getMessage(), e);
+        }
     }
     
     /**
-     * 获取酒店的所有房间
+     * 更新酒店信息
+     */
+    public boolean updateHotel(Hotel hotel) {
+        try {
+            if (hotel == null || hotel.getId() == null) {
+                return false;
+            }
+            boolean result = hotelDAO.updateHotel(hotel);
+            if (result) {
+                clearCache(); // 更新成功后清空缓存
+            }
+            return result;
+        } catch (Exception e) {
+            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
+                "更新酒店信息失败: " + e.getMessage(), e);
+        }
+    }
+    
+    /**
+     * 删除酒店
+     */
+    public boolean deleteHotel(Integer hotelId) {
+        try {
+            boolean result = hotelDAO.deleteHotel(hotelId);
+            if (result) {
+                clearCache(); // 删除成功后清空缓存
+            }
+            return result;
+        } catch (Exception e) {
+            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
+                "删除酒店失败: " + e.getMessage(), e);
+        }
+    }
+    
+    /**
+     * 搜索酒店
+     */
+    public List<Hotel> searchHotels(String keyword) {
+        try {
+            if (keyword == null || keyword.trim().isEmpty()) {
+                return getAllHotels();
+            }
+            return hotelDAO.searchHotels(keyword.trim());
+        } catch (Exception e) {
+            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR,
+                "搜索酒店失败: " + e.getMessage(), e);
+        }
+    }
+    
+    /**
+     * 根据酒店ID获取房间
      */
     public List<Room> getRoomsByHotelId(int hotelId) {
-        return roomDatabase.getOrDefault(hotelId, new ArrayList<>());
-    }
-    
-    /**
-     * 获取酒店的可用房间
-     */
-    public List<Room> getAvailableRooms(int hotelId) {
-        List<Room> allRooms = getRoomsByHotelId(hotelId);
-        List<Room> availableRooms = new ArrayList<>();
-        
-        for (Room room : allRooms) {
-            if (room.isAvailable()) {
-                availableRooms.add(room);
-            }
+        try {
+            return hotelDAO.getRoomsByHotelId(hotelId);
+        } catch (Exception e) {
+            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
+                "根据酒店ID获取房间失败: " + e.getMessage(), e);
         }
-        
-        return availableRooms;
-    }
-    
-    /**
-     * 根据ID获取房间
-     */
-    public Room getRoomById(int roomId) {
-        for (List<Room> rooms : roomDatabase.values()) {
-            for (Room room : rooms) {
-                if (room.getRoomId() == roomId) {
-                    return room;
-                }
-            }
-        }
-        return null;
-    }
-    
-    /**
-     * 获取最低价格
-     */
-    public double getMinPrice(int hotelId) {
-        List<Room> rooms = getRoomsByHotelId(hotelId);
-        return rooms.stream()
-                .mapToDouble(Room::getPricePerNight)
-                .min()
-                .orElse(0.0);
     }
 }

@@ -1,5 +1,6 @@
 package com.hotelbooking.controller;
 
+import com.hotelbooking.dao.HotelDAO;
 import com.hotelbooking.entity.Hotel;
 import com.hotelbooking.service.HotelService;
 import javafx.fxml.FXML;
@@ -20,14 +21,12 @@ public class SearchHotelsController {
     @FXML private VBox hotelListContainer;
     @FXML private Button btnLogin;
     
-    private HotelService hotelService = new HotelService();
+    private HotelService hotelService;
     
     @FXML
     public void initialize() {
         System.out.println("✅ 酒店搜索页面初始化");
-        
-        // 默认显示所有酒店
-        displayHotels(hotelService.getAllHotels());
+        hotelService = new HotelService(); // ✅❗一定用无参构造
     }
     
     /**
@@ -37,6 +36,20 @@ public class SearchHotelsController {
     private void handleSearch() {
         String keyword = txtSearch.getText().trim();
         List<Hotel> results = hotelService.searchHotels(keyword);
+        displayHotels(results);
+    }
+    
+    // ⭐⭐ 主界面传入 keyword 后，会调用这个方法
+    public void setSearchKeyword(String keyword) {
+        System.out.println("🔍 收到 keyword: " + keyword);
+
+        List<Hotel> results;
+        if (keyword == null || keyword.isEmpty()) {
+            results = hotelService.getAllHotels();
+        } else {
+            results = hotelService.searchHotels(keyword);
+        }
+
         displayHotels(results);
     }
     
@@ -137,14 +150,14 @@ public class SearchHotelsController {
         Label lblFromPrice = new Label("From");
         lblFromPrice.setStyle("-fx-font-size: 12px; -fx-text-fill: #999;");
         
-        double minPrice = hotelService.getMinPrice(hotel.getHotelId());
-        Label lblPrice = new Label("$" + String.format("%.0f", minPrice));
-        lblPrice.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #8B4513;");
+//        double minPrice = hotelService.getMinPrice(hotel.getHotelId());
+//        Label lblPrice = new Label("$" + String.format("%.0f", minPrice));
+//        lblPrice.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #8B4513;");
         
         Label lblPerNight = new Label("per night");
         lblPerNight.setStyle("-fx-font-size: 12px; -fx-text-fill: #999;");
         
-        priceBox.getChildren().addAll(lblFromPrice, lblPrice, lblPerNight);
+//        priceBox.getChildren().addAll(lblFromPrice, lblPrice, lblPerNight);
         
         // 查看详情按钮
         Region spacer = new Region();

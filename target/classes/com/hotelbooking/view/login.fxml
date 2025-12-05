@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" 
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.hotelbooking.controller.LoginController"
+            style="-fx-background-color: #f5f5f5;">
+    
+    <!-- 顶部导航栏 -->
+    <top>
+        <HBox alignment="CENTER_RIGHT" 
+              spacing="20"
+              style="-fx-background-color: white; -fx-padding: 15 30; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;">
+            
+            <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                <Label text="🏨 Hotel Booking System" 
+                       onMouseClicked="#backToHome"
+                       style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a; -fx-cursor: hand;"/>
+            </HBox>
+            
+            <Button text="Help" style="-fx-background-color: transparent; -fx-text-fill: #333; -fx-font-size: 14px;"/>
+            <Button text="My Trips" style="-fx-background-color: transparent; -fx-text-fill: #333; -fx-font-size: 14px;"/>
+        </HBox>
+    </top>
+    
+    <!-- 主要内容 -->
+    <center>
+        <VBox alignment="CENTER" spacing="30" style="-fx-padding: 50;">
+            
+            <!-- 登录卡片 -->
+            <VBox spacing="25" alignment="CENTER"
+                  style="-fx-background-color: white; 
+                         -fx-padding: 50; 
+                         -fx-border-radius: 10; 
+                         -fx-background-radius: 10; 
+                         -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);
+                         -fx-pref-width: 450px;">
+                
+                <!-- 标题 -->
+                <VBox spacing="10" alignment="CENTER">
+                    <Label text="Welcome Back!" 
+                           style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;"/>
+                    <Label text="Sign in to continue your booking" 
+                           style="-fx-font-size: 14px; -fx-text-fill: #666;"/>
+                </VBox>
+                
+                <!-- 用户名输入 -->
+                <VBox spacing="8">
+                    <Label text="Username" 
+                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #333;"/>
+                    <TextField fx:id="usernameField" 
+                               promptText="Enter your username"
+                               style="-fx-pref-width: 350px; 
+                                      -fx-pref-height: 45px; 
+                                      -fx-font-size: 15px;
+                                      -fx-border-color: #cccccc;
+                                      -fx-border-radius: 5;
+                                      -fx-background-radius: 5;
+                                      -fx-padding: 10 15;"/>
+                </VBox>
+                
+                <!-- 密码输入 -->
+                <VBox spacing="8">
+                    <Label text="Password" 
+                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #333;"/>
+                    <PasswordField fx:id="passwordField" 
+                                   promptText="Enter your password"
+                                   style="-fx-pref-width: 350px; 
+                                          -fx-pref-height: 45px; 
+                                          -fx-font-size: 15px;
+                                          -fx-border-color: #cccccc;
+                                          -fx-border-radius: 5;
+                                          -fx-background-radius: 5;
+                                          -fx-padding: 10 15;"/>
+                </VBox>
+                
+                <!-- 错误提示 -->
+                <Label fx:id="errorLabel" 
+                       text="" 
+                       style="-fx-text-fill: #dc3545; -fx-font-size: 14px;"
+                       wrapText="true"/>
+                
+                <!-- 登录按钮 -->
+                <Button fx:id="loginButton" 
+                        text="Sign In" 
+                        onAction="#handleLogin"
+                        defaultButton="true"
+                        style="-fx-background-color: #8B4513; 
+                               -fx-text-fill: white; 
+                               -fx-font-size: 18px;
+                               -fx-font-weight: bold;
+                               -fx-pref-width: 350px;
+                               -fx-pref-height: 50px;
+                               -fx-border-radius: 5;
+                               -fx-background-radius: 5;
+                               -fx-cursor: hand;"/>
+                
+                <!-- 分隔线 -->
+                <HBox alignment="CENTER" spacing="10">
+                    <Separator HBox.hgrow="ALWAYS" style="-fx-pref-width: 140px;"/>
+                    <Label text="OR" style="-fx-text-fill: #999; -fx-font-size: 12px;"/>
+                    <Separator HBox.hgrow="ALWAYS" style="-fx-pref-width: 140px;"/>
+                </HBox>
+                
+                <!-- 注册链接 -->
+                <HBox spacing="5" alignment="CENTER">
+                    <Label text="Don't have an account?" 
+                           style="-fx-font-size: 14px; -fx-text-fill: #666;"/>
+                    <Label text="Sign Up" 
+                           onMouseClicked="#goToRegister"
+                           style="-fx-font-size: 14px; 
+                                  -fx-text-fill: #8B4513; 
+                                  -fx-font-weight: bold;
+                                  -fx-cursor: hand;
+                                  -fx-underline: true;"/>
+                </HBox>
+                
+            </VBox>
+            
+        </VBox>
+    </center>
+    
+</BorderPane>

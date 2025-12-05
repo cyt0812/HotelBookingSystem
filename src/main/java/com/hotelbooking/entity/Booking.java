@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 
 public class Booking {
     private Integer id;
+    private String bookingId;  // 添加 bookingId 字段
     private Integer userId;
     private Integer hotelId;
     private Integer roomId;
@@ -35,6 +36,7 @@ public class Booking {
         this.totalPrice = totalPrice;
         this.status = status;
         this.createdAt = LocalDateTime.now();
+        this.bookingId = "BOOK_" + System.currentTimeMillis() + "_" + userId;  // 自动生成 bookingId
     }
     
     // Getter 和 Setter
@@ -44,6 +46,18 @@ public class Booking {
     
     public void setId(Integer id) {
         this.id = id;
+    }
+    
+    public String getBookingId() {
+        // 如果 bookingId 为 null，自动生成一个
+        if (bookingId == null && userId != null) {
+            bookingId = "BOOK_" + System.currentTimeMillis() + "_" + userId;
+        }
+        return bookingId;
+    }
+    
+    public void setBookingId(String bookingId) {
+        this.bookingId = bookingId;
     }
     
     public Integer getUserId() {
@@ -114,6 +128,7 @@ public class Booking {
     public String toString() {
         return "Booking{" +
                 "id=" + id +
+                ", bookingId='" + bookingId + '\'' +  // 添加 bookingId 到 toString
                 ", userId=" + userId +
                 ", hotelId=" + hotelId +
                 ", roomId=" + roomId +

@@ -1,5 +1,6 @@
 package com.hotelbooking.controller;
 
+import com.hotelbooking.dao.HotelDAO;
 import com.hotelbooking.entity.Hotel;
 import com.hotelbooking.entity.Room;
 import com.hotelbooking.service.HotelService;
@@ -22,7 +23,7 @@ public class HotelRoomsController {
     @FXML private Label lblRoomCount;
     @FXML private VBox roomListContainer;
     
-    private HotelService hotelService = new HotelService();
+//    private HotelService hotelService = new HotelService();
     private Hotel currentHotel;
     
     /**
@@ -52,8 +53,17 @@ public class HotelRoomsController {
     private void displayRooms() {
         if (currentHotel == null) return;
         
-        List<Room> rooms = hotelService.getRoomsByHotelId(currentHotel.getHotelId());
+        System.out.println("✅ 当前酒店ID = " + currentHotel.getId());
         
+        // 假设你已经有了一个 DatabaseConnection 类来获取数据库连接
+        HotelDAO hotelDAO = new HotelDAO();  // 创建 HotelDAO 实例
+
+        // 创建 HotelService 实例
+        HotelService hotelService = new HotelService(hotelDAO);
+
+        
+        // 通过实例调用 getRoomsByHotelId 方法
+        List<Room> rooms = hotelService.getRoomsByHotelId(currentHotel.getId());
         lblRoomCount.setText("(" + rooms.size() + " room" + (rooms.size() != 1 ? "s" : "") + ")");
         
         roomListContainer.getChildren().clear();

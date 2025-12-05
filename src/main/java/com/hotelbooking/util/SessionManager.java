@@ -5,9 +5,65 @@
 package com.hotelbooking.util;
 
 import com.hotelbooking.entity.User;
+import java.time.LocalDate;
 
 public class SessionManager {
+      private static LocalDate checkInDate;
+        private static LocalDate checkOutDate;
+        private static int roomCount;
+        private static int adultCount;
+        private static int childCount;
 
+        // ====== 设置方法 ======
+        public static void setCheckInDate(LocalDate date) {
+            checkInDate = date;
+        }
+
+        public static void setCheckOutDate(LocalDate date) {
+            checkOutDate = date;
+        }
+
+        public static void setRoomCount(int count) {
+            roomCount = count;
+        }
+
+        public static void setAdultCount(int count) {
+            adultCount = count;
+        }
+
+        public static void setChildCount(int count) {
+            childCount = count;
+        }
+
+        // ====== 获取方法 ======
+        public static LocalDate getCheckInDate() {
+            return checkInDate;
+        }
+
+        public static LocalDate getCheckOutDate() {
+            return checkOutDate;
+        }
+
+        public static int getRoomCount() {
+            return roomCount;
+        }
+
+        public static int getAdultCount() {
+            return adultCount;
+        }
+
+        public static int getChildCount() {
+            return childCount;
+        }
+
+        // ====== 清空状态 ======
+        public static void clear() {
+            checkInDate = null;
+            checkOutDate = null;
+            roomCount = 1;
+            adultCount = 1;
+            childCount = 0;
+        }
 //    private static String loggedInUser;
 //
 //    public static void login(String username) {

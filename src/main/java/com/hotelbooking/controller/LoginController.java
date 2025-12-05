@@ -1,6 +1,7 @@
 package com.hotelbooking.controller;
 
 import com.hotelbooking.entity.User;
+import com.hotelbooking.dao.UserDAO;
 import com.hotelbooking.service.UserService;
 import com.hotelbooking.util.SessionManager;
 import javafx.fxml.FXML;
@@ -9,15 +10,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import java.util.Optional;
 
 public class LoginController {
     
     @FXML private TextField usernameField;
+    @FXML private TextField emailField;
+    @FXML private TextField confirmPasswordField;
     @FXML private PasswordField passwordField;
     @FXML private Button loginButton;
     @FXML private Label errorLabel;
     
-    private UserService userService = new UserService();
+    UserDAO userDAO = new UserDAO();
+    private UserService userService = new UserService(userDAO);
     
     @FXML
     public void initialize() {
@@ -32,35 +37,68 @@ public class LoginController {
     /**
      * 处理登录
      */
+    
     @FXML
     private void handleLogin() {
         System.out.println("🔘 登录按钮被点击");
-        
+
         // 验证输入
         if (usernameField == null || passwordField == null) {
             showError("界面初始化失败");
             return;
         }
-        
+
         String username = usernameField.getText().trim();
         String password = passwordField.getText();
-        
+
         if (username.isEmpty() || password.isEmpty()) {
             showError("用户名和密码不能为空");
             return;
         }
-        
-        // 调用 UserService 登录
-        User user = userService.loginUser(username, password);
-        
+
+        // 调用 UserService 登录（不再使用 Optional）
+        User user = userService.loginUser(username, password); // 注意这里返回 User 或 null
+
         if (user != null) {
             // 登录成功
             SessionManager.login(user);
             navigateToMainDashboard();
         } else {
+            // 用户不存在或密码错误
             showError("用户名或密码错误");
         }
     }
+//    @FXML
+//    private void handleLogin() {
+//        System.out.println("🔘 登录按钮被点击");
+//        
+//        // 验证输入
+//        if (usernameField == null || passwordField == null) {
+//            showError("界面初始化失败");
+//            return;
+//        }
+//        
+//        String username = usernameField.getText().trim();
+//        String password = passwordField.getText();
+//        
+//        if (username.isEmpty() || password.isEmpty()) {
+//            showError("用户名和密码不能为空");
+//            return;
+//        }
+//        
+//        // 调用 UserService 登录
+//        Optional<User> user = userService.loginUser(username, password);
+//
+//        
+//        if (user.isPresent()) {
+//            // 登录成功
+//            SessionManager.login(user.get());
+//            navigateToMainDashboard();
+//        } else {
+//            // 用户不存在或密码错误
+//            showError("用户名或密码错误");
+//        }
+//    }
     
     /**
      * 跳转到注册页面
