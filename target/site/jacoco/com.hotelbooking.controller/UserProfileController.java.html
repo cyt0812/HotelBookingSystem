@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserProfileController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.controller</a> &gt; <span class="el_source">UserProfileController.java</span></div><h1>UserProfileController.java</h1><pre class="source lang-java linenums">package com.hotelbooking.controller;
+
+import com.hotelbooking.entity.User;
+import com.hotelbooking.util.NavigationManager;
+import com.hotelbooking.util.SessionManager;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
+<span class="nc" id="L21">public class UserProfileController {</span>
+    
+    @FXML private Label usernameLabel;
+    @FXML private Label emailLabel;
+    @FXML private Label fullNameLabel;
+    @FXML private Label memberSinceLabel;
+    @FXML private Label roleLabel;
+    
+    private User currentUser;
+    
+    @FXML
+    public void initialize() {
+<span class="nc" id="L33">        loadUserProfile();</span>
+<span class="nc" id="L34">    }</span>
+    
+    private void loadUserProfile() {
+<span class="nc" id="L37">        currentUser = SessionManager.getCurrentUser();</span>
+        
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (currentUser == null) {</span>
+<span class="nc" id="L40">            showAlert(Alert.AlertType.WARNING, &quot;Error&quot;, &quot;No user logged in!&quot;);</span>
+<span class="nc" id="L41">            return;</span>
+        }
+        
+<span class="nc" id="L44">        usernameLabel.setText(currentUser.getUsername());</span>
+<span class="nc" id="L45">        emailLabel.setText(currentUser.getEmail());</span>
+<span class="nc" id="L46">        fullNameLabel.setText(</span>
+<span class="nc bnc" id="L47" title="All 4 branches missed.">            currentUser.getFullName() != null &amp;&amp; !currentUser.getFullName().isEmpty() </span>
+<span class="nc" id="L48">            ? currentUser.getFullName() </span>
+<span class="nc" id="L49">            : &quot;Not set&quot;</span>
+        );
+<span class="nc" id="L51">        roleLabel.setText(capitalizeRole(currentUser.getRole()));</span>
+<span class="nc" id="L52">        memberSinceLabel.setText(formatDate(currentUser.getCreatedAt()));</span>
+        
+<span class="nc" id="L54">        System.out.println(&quot;✅ User profile loaded: &quot; + currentUser.getUsername());</span>
+<span class="nc" id="L55">    }</span>
+    
+    
+    
+    
+    @FXML
+    private void handleEditProfile() {
+        try {
+            // 在任何导航前调用
+<span class="nc" id="L64">            NavigationManager.getInstance().push(</span>
+                &quot;/com/hotelbooking/view/edit_profile.fxml&quot;,
+                &quot;Edit Profile&quot;
+            );
+            
+<span class="nc" id="L69">            FXMLLoader loader = new FXMLLoader(</span>
+<span class="nc" id="L70">                getClass().getResource(&quot;/com/hotelbooking/view/edit_profile.fxml&quot;)</span>
+            );
+<span class="nc" id="L72">            Parent root = loader.load();</span>
+<span class="nc" id="L73">            EditProfileController controller = loader.getController();</span>
+            
+<span class="nc" id="L75">            controller.setOnSaveCallback(this::refreshProfile);</span>
+            
+<span class="nc" id="L77">            Stage stage = new Stage();</span>
+<span class="nc" id="L78">            stage.setTitle(&quot;Edit Profile&quot;);</span>
+<span class="nc" id="L79">            stage.setScene(new Scene(root));</span>
+<span class="nc" id="L80">            stage.showAndWait();</span>
+            
+<span class="nc" id="L82">            System.out.println(&quot;➡ Edit profile window opened&quot;);</span>
+<span class="nc" id="L83">        } catch (Exception e) {</span>
+<span class="nc" id="L84">            System.err.println(&quot;❌ Failed to open edit profile window&quot;);</span>
+<span class="nc" id="L85">            e.printStackTrace();</span>
+<span class="nc" id="L86">            showAlert(Alert.AlertType.ERROR, &quot;Error&quot;, &quot;Could not open edit profile window&quot;);</span>
+<span class="nc" id="L87">        }</span>
+<span class="nc" id="L88">    }</span>
+    
+    @FXML
+    private void handleChangePassword() {
+        try {
+<span class="nc" id="L93">            FXMLLoader loader = new FXMLLoader(</span>
+<span class="nc" id="L94">                getClass().getResource(&quot;/com/hotelbooking/view/change_password.fxml&quot;)</span>
+            );
+<span class="nc" id="L96">            Parent root = loader.load();</span>
+            
+<span class="nc" id="L98">            Stage stage = new Stage();</span>
+<span class="nc" id="L99">            stage.setTitle(&quot;Change Password&quot;);</span>
+<span class="nc" id="L100">            stage.setScene(new Scene(root));</span>
+<span class="nc" id="L101">            stage.showAndWait();</span>
+            
+<span class="nc" id="L103">            System.out.println(&quot;➡ Change password window opened&quot;);</span>
+<span class="nc" id="L104">        } catch (Exception e) {</span>
+<span class="nc" id="L105">            System.err.println(&quot;❌ Failed to open change password window&quot;);</span>
+<span class="nc" id="L106">            e.printStackTrace();</span>
+<span class="nc" id="L107">            showAlert(Alert.AlertType.ERROR, &quot;Error&quot;, &quot;Could not open change password window&quot;);</span>
+<span class="nc" id="L108">        }</span>
+<span class="nc" id="L109">    }</span>
+    
+    @FXML
+    private void handleLogout() {
+        try {
+<span class="nc" id="L114">            SessionManager.logout();</span>
+            
+<span class="nc" id="L116">            FXMLLoader loader = new FXMLLoader(</span>
+<span class="nc" id="L117">                getClass().getResource(&quot;/com/hotelbooking/view/login.fxml&quot;)</span>
+            );
+<span class="nc" id="L119">            Parent root = loader.load();</span>
+            
+<span class="nc" id="L121">            Stage stage = (Stage) usernameLabel.getScene().getWindow();</span>
+<span class="nc" id="L122">            stage.setScene(new Scene(root));</span>
+<span class="nc" id="L123">            stage.setTitle(&quot;Hotel Booking System - Login&quot;);</span>
+            
+<span class="nc" id="L125">            System.out.println(&quot;🚪 User logged out successfully&quot;);</span>
+<span class="nc" id="L126">        } catch (Exception e) {</span>
+<span class="nc" id="L127">            System.err.println(&quot;❌ Failed to logout&quot;);</span>
+<span class="nc" id="L128">            e.printStackTrace();</span>
+<span class="nc" id="L129">            showAlert(Alert.AlertType.ERROR, &quot;Error&quot;, &quot;Failed to logout&quot;);</span>
+<span class="nc" id="L130">        }</span>
+<span class="nc" id="L131">    }</span>
+    
+    @FXML
+    private void backToHome() {
+        try {
+<span class="nc" id="L136">            FXMLLoader loader = new FXMLLoader(</span>
+<span class="nc" id="L137">                getClass().getResource(&quot;/com/hotelbooking/view/main_dashboard.fxml&quot;)</span>
+            );
+<span class="nc" id="L139">            Parent root = loader.load();</span>
+            
+<span class="nc" id="L141">            Stage stage = (Stage) usernameLabel.getScene().getWindow();</span>
+<span class="nc" id="L142">            stage.setScene(new Scene(root));</span>
+<span class="nc" id="L143">            stage.setTitle(&quot;Hotel Booking System&quot;);</span>
+            
+<span class="nc" id="L145">            System.out.println(&quot;🏠 Back to home&quot;);</span>
+<span class="nc" id="L146">        } catch (Exception e) {</span>
+<span class="nc" id="L147">            System.err.println(&quot;❌ Failed to navigate to home&quot;);</span>
+<span class="nc" id="L148">            e.printStackTrace();</span>
+<span class="nc" id="L149">        }</span>
+<span class="nc" id="L150">    }</span>
+    
+    private void refreshProfile() {
+<span class="nc" id="L153">        currentUser = SessionManager.getCurrentUser();</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if (currentUser != null) {</span>
+<span class="nc" id="L155">            loadUserProfile();</span>
+<span class="nc" id="L156">            showAlert(Alert.AlertType.INFORMATION, &quot;Success&quot;, &quot;Profile updated successfully!&quot;);</span>
+<span class="nc" id="L157">            System.out.println(&quot;🔄 Profile refreshed&quot;);</span>
+        }
+<span class="nc" id="L159">    }</span>
+    
+    private String formatDate(LocalDateTime dateTime) {
+<span class="nc bnc" id="L162" title="All 2 branches missed.">        if (dateTime == null) return &quot;Unknown&quot;;</span>
+<span class="nc" id="L163">        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;MMM dd, yyyy&quot;, Locale.ENGLISH);</span>
+<span class="nc" id="L164">        return dateTime.format(formatter);</span>
+    }
+    
+    private String capitalizeRole(String role) {
+<span class="nc bnc" id="L168" title="All 4 branches missed.">        if (role == null || role.isEmpty()) return &quot;User&quot;;</span>
+<span class="nc" id="L169">        return role.substring(0, 1).toUpperCase() + role.substring(1).toLowerCase();</span>
+    }
+    
+    private void showAlert(Alert.AlertType type, String title, String message) {
+<span class="nc" id="L173">        Alert alert = new Alert(type);</span>
+<span class="nc" id="L174">        alert.setTitle(title);</span>
+<span class="nc" id="L175">        alert.setHeaderText(null);</span>
+<span class="nc" id="L176">        alert.setContentText(message);</span>
+<span class="nc" id="L177">        alert.showAndWait();</span>
+<span class="nc" id="L178">    }</span>
+}
+///*
+// * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+// * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+// */
+//package com.hotelbooking.controller;
+//
+///**
+// *
+// * @author a1-6
+// */
+//import com.hotelbooking.entity.User;
+//import com.hotelbooking.util.SessionManager;
+//
+//import javafx.fxml.FXML;
+//import javafx.scene.control.*;
+//import javafx.scene.image.Image;
+//import javafx.scene.image.ImageView;
+//import javafx.stage.FileChooser;
+//
+//import java.io.File;
+//import javafx.fxml.FXMLLoader;
+//import javafx.scene.Parent;
+//import javafx.scene.Scene;
+//import javafx.stage.Stage;
+//
+//public class UserProfileController {
+//
+//    @FXML private Label lblUsername;
+//    @FXML private Label lblEmail;
+//    @FXML private Label lblFullName;
+//
+//    private User currentUser;
+//
+//    @FXML
+//    public void initialize() {
+//        // 从 SessionManager 获取当前登录用户
+//        currentUser = SessionManager.getCurrentUser();
+//
+//        if (currentUser == null) {
+//            System.out.println(&quot;No user logged in!&quot;);
+//            return;
+//        }
+//
+//        lblUsername.setText(currentUser.getUsername());
+//        lblEmail.setText(currentUser.getEmail());
+//        lblFullName.setText(currentUser.getFullName());
+//
+//    }
+//
+//    @FXML
+//    private void handleEditProfile() {
+//        try {
+//            FXMLLoader loader = new FXMLLoader(
+//                getClass().getResource(&quot;/com/hotelbooking/view/edit_profile.fxml&quot;)
+//            );
+//            Parent root = loader.load();
+//
+//            EditProfileController controller = loader.getController();
+//            // 设置回调：保存后刷新页面
+//            controller.setOnSaveCallback(this::refreshProfile);
+//
+//            Stage stage = new Stage();
+//            stage.setTitle(&quot;Edit Profile&quot;);
+//            stage.setScene(new Scene(root));
+//            stage.show();
+//
+//            System.out.println(&quot;➡ 打开编辑资料窗口&quot;);
+//
+//        } catch (Exception e) {
+//            System.err.println(&quot;❌ 无法打开编辑资料窗口&quot;);
+//            e.printStackTrace();
+//        }
+//    }
+//
+//
+//
+//    private void refreshProfile() {
+//    currentUser = SessionManager.getCurrentUser();
+//    if (currentUser != null) {
+//        lblUsername.setText(currentUser.getUsername());
+//        lblEmail.setText(currentUser.getEmail());
+//        lblFullName.setText(currentUser.getFullName()); // 如果 lblMemberSince 要显示 fullName
+//    }
+//        System.out.println(&quot;🔄 用户资料已刷新&quot;);
+//    }
+//}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

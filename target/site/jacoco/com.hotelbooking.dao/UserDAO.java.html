@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.dao</a> &gt; <span class="el_source">UserDAO.java</span></div><h1>UserDAO.java</h1><pre class="source lang-java linenums">package com.hotelbooking.dao;
+
+import com.hotelbooking.entity.User;
+import com.hotelbooking.util.DatabaseConnection;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+<span class="fc" id="L10">public class UserDAO {</span>
+    
+    public User createUser(User user) {
+<span class="fc" id="L13">        String sql = &quot;INSERT INTO users (username, email, password, role, created_at) VALUES (?, ?, ?, ?, ?)&quot;;</span>
+        
+<span class="fc" id="L15">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L16">             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {</span>
+<span class="fc" id="L17">            System.out.println(&quot;⏳ Writing user to database: &quot; + user.getUsername());</span>
+<span class="fc" id="L18">            stmt.setString(1, user.getUsername());</span>
+<span class="fc" id="L19">            stmt.setString(2, user.getEmail());</span>
+<span class="fc" id="L20">            stmt.setString(3, user.getPassword());</span>
+<span class="fc" id="L21">            stmt.setString(4, user.getRole());</span>
+<span class="fc" id="L22">            stmt.setTimestamp(5, Timestamp.valueOf(user.getCreatedAt()));</span>
+            
+<span class="fc" id="L24">            int affectedRows = stmt.executeUpdate();</span>
+<span class="pc bpc" id="L25" title="1 of 2 branches missed.">            if (affectedRows &gt; 0) {</span>
+<span class="fc" id="L26">                try (ResultSet rs = stmt.getGeneratedKeys()) {</span>
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">                    if (rs.next()) {</span>
+<span class="fc" id="L28">                        user.setId(rs.getInt(1));</span>
+                    }
+                }
+            }
+<span class="fc" id="L32">            return user;</span>
+<span class="nc" id="L33">        } catch (SQLException e) {</span>
+<span class="nc" id="L34">            throw new RuntimeException(&quot;Error creating user&quot;, e);</span>
+        }
+    }
+
+    public Optional&lt;User&gt; getUserById(Integer id) {
+<span class="fc" id="L39">        String sql = &quot;SELECT * FROM users WHERE id = ?&quot;;</span>
+        
+<span class="fc" id="L41">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L42">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L44">            stmt.setInt(1, id);</span>
+<span class="fc" id="L45">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="fc bfc" id="L47" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L48">                return Optional.of(mapResultSetToUser(rs));</span>
+            }
+<span class="fc" id="L50">            return Optional.empty();</span>
+            
+<span class="pc bpc" id="L52" title="2 of 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L53">            throw new RuntimeException(&quot;Error getting user by id: &quot; + id, e);</span>
+        }
+    }
+
+    public Optional&lt;User&gt; getUserByUsername(String username) {
+<span class="fc" id="L58">        String sql = &quot;SELECT * FROM users WHERE username = ?&quot;;</span>
+        
+<span class="fc" id="L60">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L61">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L63">            stmt.setString(1, username);</span>
+<span class="fc" id="L64">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L67">                return Optional.of(mapResultSetToUser(rs));</span>
+            }
+<span class="nc" id="L69">            return Optional.empty();</span>
+            
+<span class="pc bpc" id="L71" title="2 of 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L72">            throw new RuntimeException(&quot;Error getting user by username: &quot; + username, e);</span>
+        }
+    }
+
+    public Optional&lt;User&gt; getUserByEmail(String email) {
+<span class="nc" id="L77">        String sql = &quot;SELECT * FROM users WHERE email = ?&quot;;</span>
+        
+<span class="nc" id="L79">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L80">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="nc" id="L82">            stmt.setString(1, email);</span>
+<span class="nc" id="L83">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="nc bnc" id="L85" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L86">                return Optional.of(mapResultSetToUser(rs));</span>
+            }
+<span class="nc" id="L88">            return Optional.empty();</span>
+            
+<span class="nc bnc" id="L90" title="All 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L91">            throw new RuntimeException(&quot;Error getting user by email: &quot; + email, e);</span>
+        }
+    }
+
+    /**
+     * 用户登录验证
+     */
+    public Optional&lt;User&gt; authenticateUser(String username, String password) {
+<span class="nc" id="L99">        String sql = &quot;SELECT * FROM users WHERE username = ? AND password = ?&quot;;</span>
+        
+<span class="nc" id="L101">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L102">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+<span class="nc" id="L103">            System.out.println(&quot;⏳ Attempting to authenticate user from database: &quot; + username);</span>
+<span class="nc" id="L104">            stmt.setString(1, username);</span>
+<span class="nc" id="L105">            stmt.setString(2, password);</span>
+<span class="nc" id="L106">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="nc bnc" id="L108" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L109">                return Optional.of(mapResultSetToUser(rs));</span>
+            }
+<span class="nc" id="L111">            return Optional.empty();</span>
+            
+<span class="nc bnc" id="L113" title="All 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L114">            throw new RuntimeException(&quot;Error authenticating user: &quot; + username, e);</span>
+        }
+    }
+
+    /**
+     * 检查用户名是否已存在
+     */
+    public boolean isUsernameExists(String username) {
+<span class="nc" id="L122">        String sql = &quot;SELECT COUNT(*) FROM users WHERE username = ?&quot;;</span>
+        
+<span class="nc" id="L124">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L125">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="nc" id="L127">            stmt.setString(1, username);</span>
+<span class="nc" id="L128">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="nc bnc" id="L130" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">                return rs.getInt(1) &gt; 0;</span>
+            }
+<span class="nc" id="L133">            return false;</span>
+            
+<span class="nc bnc" id="L135" title="All 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L136">            throw new RuntimeException(&quot;Error checking username existence: &quot; + username, e);</span>
+        }
+    }
+
+    /**
+     * 检查邮箱是否已存在
+     */
+    public boolean isEmailExists(String email) {
+<span class="nc" id="L144">        String sql = &quot;SELECT COUNT(*) FROM users WHERE email = ?&quot;;</span>
+        
+<span class="nc" id="L146">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L147">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="nc" id="L149">            stmt.setString(1, email);</span>
+<span class="nc" id="L150">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="nc bnc" id="L152" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">                return rs.getInt(1) &gt; 0;</span>
+            }
+<span class="nc" id="L155">            return false;</span>
+            
+<span class="nc bnc" id="L157" title="All 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L158">            throw new RuntimeException(&quot;Error checking email existence: &quot; + email, e);</span>
+        }
+    }
+
+    public List&lt;User&gt; getAllUsers() {
+<span class="fc" id="L163">        String sql = &quot;SELECT * FROM users ORDER BY created_at DESC&quot;;</span>
+<span class="fc" id="L164">        List&lt;User&gt; users = new ArrayList&lt;&gt;();</span>
+        
+<span class="fc" id="L166">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L167">             PreparedStatement stmt = conn.prepareStatement(sql);</span>
+<span class="fc" id="L168">             ResultSet rs = stmt.executeQuery()) {</span>
+            
+<span class="fc bfc" id="L170" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L171">                users.add(mapResultSetToUser(rs));</span>
+            }
+<span class="fc" id="L173">            return users;</span>
+            
+<span class="nc" id="L175">        } catch (SQLException e) {</span>
+<span class="nc" id="L176">            throw new RuntimeException(&quot;Error getting all users&quot;, e);</span>
+        }
+    }
+
+    /**
+     * 根据角色获取用户列表
+     */
+    public List&lt;User&gt; getUsersByRole(String role) {
+<span class="nc" id="L184">        String sql = &quot;SELECT * FROM users WHERE role = ? ORDER BY created_at DESC&quot;;</span>
+<span class="nc" id="L185">        List&lt;User&gt; users = new ArrayList&lt;&gt;();</span>
+        
+<span class="nc" id="L187">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L188">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="nc" id="L190">            stmt.setString(1, role);</span>
+<span class="nc" id="L191">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="nc bnc" id="L193" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L194">                users.add(mapResultSetToUser(rs));</span>
+            }
+<span class="nc" id="L196">            return users;</span>
+            
+<span class="nc" id="L198">        } catch (SQLException e) {</span>
+<span class="nc" id="L199">            throw new RuntimeException(&quot;Error getting users by role: &quot; + role, e);</span>
+        }
+    }
+
+    /**
+     * 更新用户密码
+     */
+    public boolean updateUserPassword(Integer userId, String newPassword) {
+<span class="nc" id="L207">        String sql = &quot;UPDATE users SET password = ? WHERE id = ?&quot;;</span>
+        
+<span class="nc" id="L209">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L210">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="nc" id="L212">            stmt.setString(1, newPassword);</span>
+<span class="nc" id="L213">            stmt.setInt(2, userId);</span>
+<span class="nc" id="L214">            int affectedRows = stmt.executeUpdate();</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">            return affectedRows &gt; 0;</span>
+            
+<span class="nc" id="L217">        } catch (SQLException e) {</span>
+<span class="nc" id="L218">            throw new RuntimeException(&quot;Error updating user password: &quot; + userId, e);</span>
+        }
+    }
+
+    /**
+     * 更新用户角色
+     */
+    public boolean updateUserRole(Integer userId, String newRole) {
+<span class="nc" id="L226">        String sql = &quot;UPDATE users SET role = ? WHERE id = ?&quot;;</span>
+        
+<span class="nc" id="L228">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L229">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="nc" id="L231">            stmt.setString(1, newRole);</span>
+<span class="nc" id="L232">            stmt.setInt(2, userId);</span>
+<span class="nc" id="L233">            int affectedRows = stmt.executeUpdate();</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">            return affectedRows &gt; 0;</span>
+            
+<span class="nc" id="L236">        } catch (SQLException e) {</span>
+<span class="nc" id="L237">            throw new RuntimeException(&quot;Error updating user role: &quot; + userId, e);</span>
+        }
+    }
+
+    /**
+     * 更新用户基本信息（不包含密码）
+     */
+    public boolean updateUserProfile(Integer userId, String username, String email) {
+<span class="nc" id="L245">        String sql = &quot;UPDATE users SET username = ?, email = ? WHERE id = ?&quot;;</span>
+        
+<span class="nc" id="L247">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L248">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="nc" id="L250">            stmt.setString(1, username);</span>
+<span class="nc" id="L251">            stmt.setString(2, email);</span>
+<span class="nc" id="L252">            stmt.setInt(3, userId);</span>
+<span class="nc" id="L253">            int affectedRows = stmt.executeUpdate();</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">            return affectedRows &gt; 0;</span>
+            
+<span class="nc" id="L256">        } catch (SQLException e) {</span>
+<span class="nc" id="L257">            throw new RuntimeException(&quot;Error updating user profile: &quot; + userId, e);</span>
+        }
+    }
+
+    /**
+     * 获取用户数量统计
+     */
+    public int getUserCount() {
+<span class="nc" id="L265">        String sql = &quot;SELECT COUNT(*) FROM users&quot;;</span>
+        
+<span class="nc" id="L267">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L268">             PreparedStatement stmt = conn.prepareStatement(sql);</span>
+<span class="nc" id="L269">             ResultSet rs = stmt.executeQuery()) {</span>
+            
+<span class="nc bnc" id="L271" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L272">                return rs.getInt(1);</span>
+            }
+<span class="nc" id="L274">            return 0;</span>
+            
+<span class="nc bnc" id="L276" title="All 6 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L277">            throw new RuntimeException(&quot;Error getting user count&quot;, e);</span>
+        }
+    }
+
+    /**
+     * 根据角色获取用户数量
+     */
+    public int getUserCountByRole(String role) {
+<span class="nc" id="L285">        String sql = &quot;SELECT COUNT(*) FROM users WHERE role = ?&quot;;</span>
+        
+<span class="nc" id="L287">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L288">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="nc" id="L290">            stmt.setString(1, role);</span>
+<span class="nc" id="L291">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="nc bnc" id="L293" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L294">                return rs.getInt(1);</span>
+            }
+<span class="nc" id="L296">            return 0;</span>
+            
+<span class="nc bnc" id="L298" title="All 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L299">            throw new RuntimeException(&quot;Error getting user count by role: &quot; + role, e);</span>
+        }
+    }
+
+    public boolean updateUser(User user) {
+<span class="fc" id="L304">        String sql = &quot;UPDATE users SET username = ?, email = ?, password = ?, role = ? WHERE id = ?&quot;;</span>
+        
+<span class="fc" id="L306">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L307">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L309">            stmt.setString(1, user.getUsername());</span>
+<span class="fc" id="L310">            stmt.setString(2, user.getEmail());</span>
+<span class="fc" id="L311">            stmt.setString(3, user.getPassword());</span>
+<span class="fc" id="L312">            stmt.setString(4, user.getRole());</span>
+<span class="fc" id="L313">            stmt.setInt(5, user.getId());</span>
+            
+<span class="fc" id="L315">            int affectedRows = stmt.executeUpdate();</span>
+<span class="pc bpc" id="L316" title="1 of 2 branches missed.">            return affectedRows &gt; 0;</span>
+            
+<span class="nc" id="L318">        } catch (SQLException e) {</span>
+<span class="nc" id="L319">            throw new RuntimeException(&quot;Error updating user: &quot; + user.getId(), e);</span>
+        }
+    }
+
+    public boolean deleteUser(Integer id) {
+<span class="fc" id="L324">        String sql = &quot;DELETE FROM users WHERE id = ?&quot;;</span>
+        
+<span class="fc" id="L326">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L327">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L329">            stmt.setInt(1, id);</span>
+<span class="fc" id="L330">            int affectedRows = stmt.executeUpdate();</span>
+<span class="pc bpc" id="L331" title="1 of 2 branches missed.">            return affectedRows &gt; 0;</span>
+            
+<span class="nc" id="L333">        } catch (SQLException e) {</span>
+<span class="nc" id="L334">            throw new RuntimeException(&quot;Error deleting user: &quot; + id, e);</span>
+        }
+    }
+
+    private User mapResultSetToUser(ResultSet rs) throws SQLException {
+<span class="fc" id="L339">        User user = new User();</span>
+<span class="fc" id="L340">        user.setId(rs.getInt(&quot;id&quot;));</span>
+<span class="fc" id="L341">        user.setUsername(rs.getString(&quot;username&quot;));</span>
+<span class="fc" id="L342">        user.setEmail(rs.getString(&quot;email&quot;));</span>
+<span class="fc" id="L343">        user.setPassword(rs.getString(&quot;password&quot;));</span>
+<span class="fc" id="L344">        user.setRole(rs.getString(&quot;role&quot;));</span>
+<span class="fc" id="L345">        user.setCreatedAt(rs.getTimestamp(&quot;created_at&quot;).toLocalDateTime());</span>
+<span class="fc" id="L346">        return user;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

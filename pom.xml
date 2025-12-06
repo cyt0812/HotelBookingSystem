@@ -72,26 +72,13 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-inline</artifactId>
-            <version>4.0.0</version> <!-- 你可以替换为适合的版本 -->
+            <version>4.0.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
     
     <build>
         <plugins>
-            
-            <!-- 完全移除 exec-maven-plugin，防止 NetBeans 自动使用它 -->
-            <!-- 或者只保留配置但不设置默认执行 -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.1.0</version>
-                <!-- 不设置 executions，防止默认执行 -->
-                <configuration>
-                    <skip>true</skip>  <!-- 跳过执行 -->
-                </configuration>
-            </plugin>
-            
             <!-- 添加 JavaFX 插件 -->
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -110,8 +97,6 @@
                 <configuration>
                     <mainClass>${mainClass}</mainClass>
                     <options>
-                        <option>--module-path</option>
-                        <option>D:\javafx-sdk-21.0.9\lib</option>
                         <option>--add-modules</option>
                         <option>javafx.controls,javafx.fxml</option>
                         <option>--add-opens</option>
@@ -130,6 +115,26 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
+
+<plugin>
+    <groupId>org.jacoco</groupId>
+    <artifactId>jacoco-maven-plugin</artifactId>
+    <version>0.8.10</version>
+    <executions>
+        <execution>
+            <goals>
+                <goal>prepare-agent</goal>
+            </goals>
+        </execution>
+        <execution>
+            <id>report</id>
+            <phase>test</phase>
+            <goals>
+                <goal>report</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
         </plugins>
     </build>
 </project>

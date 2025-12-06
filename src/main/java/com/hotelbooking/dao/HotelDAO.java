@@ -61,7 +61,7 @@ public class HotelDAO {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
-            System.out.println("✅ 从数据库读取所有酒店...");
+            System.out.println("✅ Reading all hotels from database...");
             
             while (rs.next()) {
                 hotels.add(mapResultSetToHotel(rs));
@@ -97,7 +97,7 @@ public class HotelDAO {
      * 搜索酒店（按名称或位置）
      */
     public List<Hotel> searchHotels(String keyword) {
-        System.out.println("✅ 已进入 HotelDAO.searchHotels");
+        System.out.println("✅ Entered HotelDAO.searchHotels");
         String sql = "SELECT * FROM hotels WHERE LOWER(name) LIKE LOWER(?) OR LOWER(location) LIKE LOWER(?) ORDER BY name ASC";
         List<Hotel> hotels = new ArrayList<>();
         
@@ -230,7 +230,7 @@ public class HotelDAO {
     }
     
     public List<Room> getRoomsByHotelId(int hotelId) {
-        System.out.println("✅ 正在用 hotel_id 查询房间 = " + hotelId);
+        System.out.println("✅ Querying rooms by hotel_id = " + hotelId);
         String sql = "SELECT * FROM rooms WHERE hotel_id = ?";  // 根据 hotel_id 查询房间
         List<Room> rooms = new ArrayList<>();
 

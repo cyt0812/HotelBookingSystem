@@ -2,7 +2,9 @@
 package com.hotelbooking;
 
 import com.hotelbooking.util.DatabaseInitializer;
+import com.hotelbooking.util.NavigationManager;
 import com.hotelbooking.util.SceneManager;
+import com.hotelbooking.util.DatabaseConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,6 +24,11 @@ public class Main extends Application {
         DatabaseInitializer.initializeDatabase();
         DatabaseInitializer.insertSampleData();
         
+        // 在任何导航前调用
+        NavigationManager.getInstance().push(
+            "/com/hotelbooking/view/main_dashboard.fxml",
+            "Hotel Booking System"
+        );
         SceneManager.setStage(stage);
         Parent root = FXMLLoader.load(getClass().getResource("/com/hotelbooking/view/main_dashboard.fxml"));
 
@@ -37,6 +44,11 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
-
+    
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        System.out.println("Closing application, shutting down database...");
+        DatabaseConnection.shutdownDatabase();
+    }
 }

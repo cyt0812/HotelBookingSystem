@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DatabaseInitializer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.util</a> &gt; <span class="el_source">DatabaseInitializer.java</span></div><h1>DatabaseInitializer.java</h1><pre class="source lang-java linenums">package com.hotelbooking.util;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+<span class="nc" id="L9">public class DatabaseInitializer {</span>
+
+    public static void initializeDatabase() {
+<span class="fc" id="L12">           String[] dropTables = {</span>
+        &quot;DROP TABLE payments&quot;,
+        &quot;DROP TABLE bookings&quot;, 
+        &quot;DROP TABLE rooms&quot;,
+        &quot;DROP TABLE hotels&quot;,
+        &quot;DROP TABLE users&quot;
+    };      
+        // 修复点：BOOLEAN → SMALLINT (Derby 不支持 BOOLEAN)
+<span class="fc" id="L20">        String createUserTable = &quot;&quot;&quot;</span>
+            CREATE TABLE users (
+                id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                username VARCHAR(50) UNIQUE NOT NULL,
+                email VARCHAR(100) UNIQUE NOT NULL,
+                password VARCHAR(100) NOT NULL,
+                role VARCHAR(20) NOT NULL,
+                created_at TIMESTAMP NOT NULL
+            )
+            &quot;&quot;&quot;;
+
+<span class="fc" id="L31">        String createHotelTable = &quot;&quot;&quot;</span>
+            CREATE TABLE hotels (
+                id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                name VARCHAR(100) NOT NULL,
+                location VARCHAR(100) NOT NULL,
+                description VARCHAR(500),
+                available_rooms INTEGER NOT NULL
+            )
+            &quot;&quot;&quot;;
+
+<span class="fc" id="L41">       String createRoomTable = &quot;&quot;&quot;</span>
+    CREATE TABLE rooms (
+        id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+        hotel_id INTEGER NOT NULL,
+        room_number VARCHAR(10) NOT NULL,
+        room_type VARCHAR(20) NOT NULL,
+        price DECIMAL(10,2) NOT NULL,
+        max_occupancy INTEGER NOT NULL,  -- 新增
+        description VARCHAR(500),        -- 新增
+        available SMALLINT NOT NULL,
+        FOREIGN KEY (hotel_id) REFERENCES hotels(id) ON DELETE CASCADE,
+        UNIQUE (hotel_id, room_number)
+    )
+    &quot;&quot;&quot;;
+
+<span class="fc" id="L56">        String createBookingTable = &quot;&quot;&quot;</span>
+            CREATE TABLE bookings (
+                id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                booking_id VARCHAR(50) UNIQUE NOT NULL,
+                user_id INTEGER NOT NULL,
+                hotel_id INTEGER NOT NULL,
+                room_id INTEGER NOT NULL,
+                check_in_date DATE NOT NULL,
+                check_out_date DATE NOT NULL,
+                total_price DECIMAL(10,2) NOT NULL,
+                status VARCHAR(20) NOT NULL,
+                created_at TIMESTAMP NOT NULL,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                FOREIGN KEY (hotel_id) REFERENCES hotels(id) ON DELETE CASCADE,
+                FOREIGN KEY (room_id) REFERENCES rooms(id) ON DELETE CASCADE,
+                CHECK (check_out_date &gt; check_in_date)
+            )
+            &quot;&quot;&quot;;
+
+<span class="fc" id="L75">        String createPaymentTable = &quot;&quot;&quot;</span>
+            CREATE TABLE payments (
+                id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                payment_id VARCHAR(50) UNIQUE NOT NULL,
+                booking_id VARCHAR(50) NOT NULL,
+                amount DECIMAL(10,2) NOT NULL,
+                payment_method VARCHAR(20) NOT NULL,
+                payment_status VARCHAR(20) NOT NULL,
+                payment_date TIMESTAMP NOT NULL,
+                transaction_id VARCHAR(100),
+                FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE
+            )
+            &quot;&quot;&quot;;
+
+<span class="fc" id="L89">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L90">             Statement stmt = conn.createStatement()) {</span>
+<span class="fc" id="L91">  System.out.println(&quot;Starting to drop old tables...&quot;);</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        for (String dropSql : dropTables) {</span>
+            try {
+<span class="fc" id="L94">                stmt.executeUpdate(dropSql);</span>
+<span class="fc" id="L95">                System.out.println(&quot;Table dropped successfully: &quot; + dropSql);</span>
+<span class="fc" id="L96">            } catch (SQLException e) {</span>
+                // 表不存在也没关系
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">                if (!&quot;42Y55&quot;.equals(e.getSQLState())) { // Derby的表不存在错误码</span>
+<span class="nc" id="L99">                    System.out.println(&quot;Warning when dropping table: &quot; + e.getMessage());</span>
+                }
+<span class="fc" id="L101">            }</span>
+        }
+        
+<span class="fc" id="L104">            stmt.executeUpdate(createUserTable);</span>
+<span class="fc" id="L105">            stmt.executeUpdate(createHotelTable);</span>
+<span class="fc" id="L106">            stmt.executeUpdate(createRoomTable);</span>
+<span class="fc" id="L107">            stmt.executeUpdate(createBookingTable);</span>
+<span class="fc" id="L108">            stmt.executeUpdate(createPaymentTable);</span>
+
+<span class="fc" id="L110">            System.out.println(&quot;Database initialized successfully&quot;);</span>
+
+<span class="nc" id="L112">        } catch (SQLException e) {</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">            if (&quot;X0Y32&quot;.equals(e.getSQLState())) {</span>
+<span class="nc" id="L114">                System.out.println(&quot;Tables already exist&quot;);</span>
+            } else {
+<span class="nc" id="L116">                System.out.println(&quot;Initialization error: &quot; + e.getMessage());</span>
+<span class="nc" id="L117">                e.printStackTrace();</span>
+            }
+<span class="fc" id="L119">        }</span>
+<span class="fc" id="L120">    }</span>
+
+    /** 清空数据 */
+    public static void clearTestData() {
+<span class="fc" id="L124">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L125">             Statement stmt = conn.createStatement()) {</span>
+
+<span class="fc" id="L127">            stmt.executeUpdate(&quot;DELETE FROM payments&quot;);</span>
+<span class="fc" id="L128">            stmt.executeUpdate(&quot;DELETE FROM bookings&quot;);</span>
+<span class="fc" id="L129">            stmt.executeUpdate(&quot;DELETE FROM rooms&quot;);</span>
+<span class="fc" id="L130">            stmt.executeUpdate(&quot;DELETE FROM hotels&quot;);</span>
+<span class="fc" id="L131">            stmt.executeUpdate(&quot;DELETE FROM users&quot;);</span>
+
+<span class="fc" id="L133">            System.out.println(&quot;Test data cleared&quot;);</span>
+
+<span class="nc" id="L135">        } catch (SQLException e) {</span>
+<span class="nc" id="L136">            System.out.println(&quot;Clear data error: &quot; + e.getMessage());</span>
+<span class="fc" id="L137">        }</span>
+<span class="fc" id="L138">    }</span>
+
+    // 重置数据库：清空所有数据并重新初始化表结构
+    public static void resetDatabase() {
+<span class="fc" id="L142">        clearTestData(); // 先清空现有数据</span>
+<span class="fc" id="L143">        initializeDatabase(); // 然后重新初始化数据库</span>
+<span class="fc" id="L144">    }</span>
+    
+    /** 插入示例数据（修复 Derby 时间语法） */
+    public static void insertSampleData() {
+<span class="fc" id="L148">    try (Connection conn = DatabaseConnection.getConnection()) {</span>
+
+        // 插入用户
+<span class="fc" id="L151">        try (Statement stmt = conn.createStatement()) {</span>
+<span class="fc" id="L152">            String insertUsers = &quot;&quot;&quot;</span>
+                INSERT INTO users (username, email, password, role, created_at) VALUES
+                ('admin','admin@hotel.com','admin123','ADMIN', CURRENT_TIMESTAMP),
+                ('manager1','manager@hotel.com','manager123','HOTEL_MANAGER', CURRENT_TIMESTAMP),
+                ('john_doe','john@example.com','password123','CUSTOMER', CURRENT_TIMESTAMP),
+                ('jane_smith','jane@example.com','password123','CUSTOMER', CURRENT_TIMESTAMP)
+                &quot;&quot;&quot;;
+<span class="fc" id="L159">            stmt.executeUpdate(insertUsers);</span>
+        }
+
+        // 插入酒店并保存生成的 ID
+<span class="fc" id="L163">        String[] hotelNames = { &quot;Grand Plaza Hotel&quot;, &quot;Sunset Resort&quot;, &quot;Mountain Lodge&quot; };</span>
+<span class="fc" id="L164">        String[] locations = { &quot;New York&quot;, &quot;Miami Beach&quot;, &quot;Colorado&quot; };</span>
+<span class="fc" id="L165">        String[] descriptions = {</span>
+            &quot;Luxury hotel in Manhattan&quot;,
+            &quot;Beachfront resort with spa&quot;,
+            &quot;Cozy mountain retreat&quot;
+        };
+<span class="fc" id="L170">        String[] amenities = {</span>
+            &quot;WiFi, Pool, Gym, Restaurant, Bar, Spa&quot;,
+            &quot;WiFi, Beach Access, Pool, Gym, Spa, Kids Club&quot;,
+            &quot;WiFi, Meeting Rooms, Business Center, Gym, Restaurant&quot;
+        };
+<span class="fc" id="L175">        int[] availableRooms = { 50, 30, 20 };</span>
+
+<span class="fc" id="L177">        int[] hotelIds = new int[hotelNames.length];</span>
+
+<span class="fc" id="L179">        String insertHotelSQL = &quot;INSERT INTO hotels (name, location, description, available_rooms) VALUES (?, ?, ?, ?)&quot;;</span>
+<span class="fc" id="L180">        try (PreparedStatement psHotel = conn.prepareStatement(insertHotelSQL, Statement.RETURN_GENERATED_KEYS)) {</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">            for (int i = 0; i &lt; hotelNames.length; i++) {</span>
+<span class="fc" id="L182">                psHotel.setString(1, hotelNames[i]);</span>
+<span class="fc" id="L183">                psHotel.setString(2, locations[i]);</span>
+<span class="fc" id="L184">                psHotel.setString(3, descriptions[i]);</span>
+<span class="fc" id="L185">                psHotel.setInt(4, availableRooms[i]);</span>
+<span class="fc" id="L186">                psHotel.executeUpdate();</span>
+
+<span class="fc" id="L188">                try (ResultSet rs = psHotel.getGeneratedKeys()) {</span>
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">                    if (rs.next()) {</span>
+<span class="fc" id="L190">                        hotelIds[i] = rs.getInt(1); // 保存自动生成的ID</span>
+                    }
+                }
+            }
+        }
+
+        // 插入房间
+<span class="fc" id="L197">        String insertRoomSQL = &quot;INSERT INTO rooms (hotel_id, room_number, room_type, price, available, max_occupancy, description) VALUES (?, ?, ?, ?, ?, ?, ?)&quot;;</span>
+<span class="fc" id="L198">            try (PreparedStatement psRoom = conn.prepareStatement(insertRoomSQL)) {</span>
+                // Grand Plaza Hotel 房间
+<span class="fc" id="L200">                psRoom.setInt(1, hotelIds[0]);</span>
+<span class="fc" id="L201">                psRoom.setString(2, &quot;101&quot;);</span>
+<span class="fc" id="L202">                psRoom.setString(3, &quot;STANDARD&quot;);</span>
+<span class="fc" id="L203">                psRoom.setDouble(4, 99.99);</span>
+<span class="fc" id="L204">                psRoom.setInt(5, 1);</span>
+<span class="fc" id="L205">                psRoom.setInt(6, 2);</span>
+<span class="fc" id="L206">                psRoom.setString(7, &quot;Standard room&quot;);</span>
+<span class="fc" id="L207">                psRoom.addBatch();</span>
+
+<span class="fc" id="L209">                psRoom.setInt(1, hotelIds[0]);</span>
+<span class="fc" id="L210">                psRoom.setString(2, &quot;102&quot;);</span>
+<span class="fc" id="L211">                psRoom.setString(3, &quot;DELUXE&quot;);</span>
+<span class="fc" id="L212">                psRoom.setDouble(4, 149.99);</span>
+<span class="fc" id="L213">                psRoom.setInt(5, 1);</span>
+<span class="fc" id="L214">                psRoom.setInt(6, 3);</span>
+<span class="fc" id="L215">                psRoom.setString(7, &quot;Deluxe room with balcony&quot;);</span>
+<span class="fc" id="L216">                psRoom.addBatch();</span>
+
+<span class="fc" id="L218">                psRoom.setInt(1, hotelIds[0]);</span>
+<span class="fc" id="L219">                psRoom.setString(2, &quot;201&quot;);</span>
+<span class="fc" id="L220">                psRoom.setString(3, &quot;SUITE&quot;);</span>
+<span class="fc" id="L221">                psRoom.setDouble(4, 249.99);</span>
+<span class="fc" id="L222">                psRoom.setInt(5, 1);</span>
+<span class="fc" id="L223">                psRoom.setInt(6, 4);</span>
+<span class="fc" id="L224">                psRoom.setString(7, &quot;Luxury suite&quot;);</span>
+<span class="fc" id="L225">                psRoom.addBatch();</span>
+
+                // Sunset Resort 房间
+<span class="fc" id="L228">                psRoom.setInt(1, hotelIds[1]);</span>
+<span class="fc" id="L229">                psRoom.setString(2, &quot;101&quot;);</span>
+<span class="fc" id="L230">                psRoom.setString(3, &quot;STANDARD&quot;);</span>
+<span class="fc" id="L231">                psRoom.setDouble(4, 79.99);</span>
+<span class="fc" id="L232">                psRoom.setInt(5, 1);</span>
+<span class="fc" id="L233">                psRoom.setInt(6, 2);</span>
+<span class="fc" id="L234">                psRoom.setString(7, &quot;Standard beachfront room&quot;);</span>
+<span class="fc" id="L235">                psRoom.addBatch();</span>
+
+<span class="fc" id="L237">                psRoom.setInt(1, hotelIds[1]);</span>
+<span class="fc" id="L238">                psRoom.setString(2, &quot;102&quot;);</span>
+<span class="fc" id="L239">                psRoom.setString(3, &quot;DELUXE&quot;);</span>
+<span class="fc" id="L240">                psRoom.setDouble(4, 129.99);</span>
+<span class="fc" id="L241">                psRoom.setInt(5, 0); // 不可用</span>
+<span class="fc" id="L242">                psRoom.setInt(6, 3);</span>
+<span class="fc" id="L243">                psRoom.setString(7, &quot;Deluxe beachfront room&quot;);</span>
+<span class="fc" id="L244">                psRoom.addBatch();</span>
+
+                // Mountain Lodge 房间
+<span class="fc" id="L247">                psRoom.setInt(1, hotelIds[2]);</span>
+<span class="fc" id="L248">                psRoom.setString(2, &quot;101&quot;);</span>
+<span class="fc" id="L249">                psRoom.setString(3, &quot;STANDARD&quot;);</span>
+<span class="fc" id="L250">                psRoom.setDouble(4, 89.99);</span>
+<span class="fc" id="L251">                psRoom.setInt(5, 1);</span>
+<span class="fc" id="L252">                psRoom.setInt(6, 2);</span>
+<span class="fc" id="L253">                psRoom.setString(7, &quot;Cozy mountain standard room&quot;);</span>
+<span class="fc" id="L254">                psRoom.addBatch();</span>
+
+<span class="fc" id="L256">                psRoom.setInt(1, hotelIds[2]);</span>
+<span class="fc" id="L257">                psRoom.setString(2, &quot;102&quot;);</span>
+<span class="fc" id="L258">                psRoom.setString(3, &quot;SUITE&quot;);</span>
+<span class="fc" id="L259">                psRoom.setDouble(4, 199.99);</span>
+<span class="fc" id="L260">                psRoom.setInt(5, 1);</span>
+<span class="fc" id="L261">                psRoom.setInt(6, 4);</span>
+<span class="fc" id="L262">                psRoom.setString(7, &quot;Mountain suite&quot;);</span>
+<span class="fc" id="L263">                psRoom.addBatch();</span>
+
+<span class="fc" id="L265">                psRoom.executeBatch();</span>
+            }
+
+<span class="fc" id="L268">            System.out.println(&quot;Sample data inserted&quot;);</span>
+
+<span class="nc" id="L270">        } catch (SQLException e) {</span>
+<span class="nc" id="L271">            System.out.println(&quot;Insert sample data error: &quot; + e.getMessage());</span>
+<span class="nc" id="L272">            e.printStackTrace();</span>
+<span class="fc" id="L273">        }</span>
+<span class="fc" id="L274">    }</span>
+//    public static void insertSampleData() {
+//        try (Connection conn = DatabaseConnection.getConnection();
+//             Statement stmt = conn.createStatement()) {
+//
+//            String insertUsers = &quot;&quot;&quot;
+//                INSERT INTO users (username, email, password, role, created_at) VALUES
+//                ('admin','admin@hotel.com','admin123','ADMIN', CURRENT_TIMESTAMP),
+//                ('manager1','manager@hotel.com','manager123','HOTEL_MANAGER', CURRENT_TIMESTAMP),
+//                ('john_doe','john@example.com','password123','CUSTOMER', CURRENT_TIMESTAMP),
+//                ('jane_smith','jane@example.com','password123','CUSTOMER', CURRENT_TIMESTAMP)
+//                &quot;&quot;&quot;;
+//
+//            // 修复点：Derby 不支持 true/false → 改成 1/0
+//            String insertRooms = &quot;&quot;&quot;
+//                INSERT INTO rooms (hotel_id, room_number, room_type, price, available) VALUES
+//                (1, '101', 'STANDARD', 99.99, 1),
+//                (1, '102', 'DELUXE', 149.99, 1),
+//                (1, '201', 'SUITE', 249.99, 1),
+//                (2, '101', 'STANDARD', 79.99, 1),
+//                (2, '102', 'DELUXE', 129.99, 0),
+//                (3, '101', 'STANDARD', 89.99, 1),
+//                (3, '102', 'SUITE', 199.99, 1)
+//                &quot;&quot;&quot;;
+//
+//            // 修复点：CURRENT_DATE + 7 → TIMESTAMPADD
+//            String insertBookings = &quot;&quot;&quot;
+//                INSERT INTO bookings (
+//                    booking_id, user_id, hotel_id, room_id,
+//                    check_in_date, check_out_date, total_price, status, created_at
+//                ) VALUES
+//                ('BOOK_001', 3, 1, 1,
+//                  {fn TIMESTAMPADD(SQL_TSI_DAY, 7, CURRENT_DATE)},
+//                  {fn TIMESTAMPADD(SQL_TSI_DAY, 9, CURRENT_DATE)},
+//                  199.98, 'CONFIRMED', CURRENT_TIMESTAMP),
+//                ('BOOK_002', 4, 2, 4,
+//                  {fn TIMESTAMPADD(SQL_TSI_DAY, 14, CURRENT_DATE)},
+//                  {fn TIMESTAMPADD(SQL_TSI_DAY, 16, CURRENT_DATE)},
+//                  159.98, 'PENDING', CURRENT_TIMESTAMP)
+//                &quot;&quot;&quot;;
+//
+//            // 修复点：INTERVAL → TIMESTAMPADD
+//            String insertPayments = &quot;&quot;&quot;
+//                INSERT INTO payments (
+//                    payment_id, booking_id, amount, payment_method, payment_status, payment_date, transaction_id
+//                ) VALUES
+//                ('PAY_001','BOOK_001',199.98,'CREDIT_CARD','COMPLETED', CURRENT_TIMESTAMP,'TXN_123456'),
+//                ('PAY_002','BOOK_002',159.98,'PAYPAL','PENDING', CURRENT_TIMESTAMP, NULL),
+//                ('PAY_003','BOOK_001',179.98,'CREDIT_CARD','COMPLETED',
+//                 {fn TIMESTAMPADD(SQL_TSI_DAY, -5, CURRENT_TIMESTAMP)}, 'TXN_789012')
+//                &quot;&quot;&quot;;
+//
+//            stmt.executeUpdate(insertUsers);
+//            stmt.executeUpdate(&quot;&quot;&quot;
+//                INSERT INTO hotels (name, location, description, available_rooms) VALUES 
+//                ('Grand Plaza Hotel', 'New York', 'Luxury hotel in Manhattan', 50),
+//                ('Sunset Resort', 'Miami Beach', 'Beachfront resort with spa', 30),
+//                ('Mountain Lodge', 'Colorado', 'Cozy mountain retreat', 20)
+//                &quot;&quot;&quot;);
+////            stmt.executeUpdate(&quot;&quot;&quot;
+////                INSERT INTO hotels (name, location, description, amenities, available_rooms) VALUES 
+////                ('Grand Plaza Hotel', 'New York', 'Luxury hotel in Manhattan','WiFi, Pool, Gym, Restaurant, Bar, Spa', 50),
+////                ('Sunset Resort', 'Miami Beach', 'Beachfront resort with spa','WiFi, Beach Access, Pool, Gym, Spa, Kids Club', 30),
+////                ('Mountain Lodge', 'Colorado', 'Cozy mountain retreat','WiFi, Meeting Rooms, Business Center, Gym, Restaurant', 20)
+////                &quot;&quot;&quot;);
+//            stmt.executeUpdate(insertRooms);
+//            stmt.executeUpdate(insertBookings);
+//            stmt.executeUpdate(insertPayments);
+//
+//            System.out.println(&quot;Sample data inserted&quot;);
+//
+//        } catch (SQLException e) {
+//            System.out.println(&quot;Insert sample data error: &quot; + e.getMessage());
+//        }
+//    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

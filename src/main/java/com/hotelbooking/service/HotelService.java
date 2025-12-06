@@ -1,4 +1,4 @@
-// HotelService.java - 完整修复版本
+// HotelService.java - Complete fixed version
 package com.hotelbooking.service;
 
 import com.hotelbooking.dao.HotelDAO;
@@ -14,22 +14,22 @@ import java.util.Optional;
 public class HotelService {
     
     private final HotelDAO hotelDAO;
-    private volatile List<Hotel> hotelCache; // 使用 volatile 保证可见性
+    private volatile List<Hotel> hotelCache; // Use volatile to ensure visibility
     
-    // 默认构造
+    // Default constructor
     public HotelService() {
         this.hotelDAO = new HotelDAO();
-        this.hotelCache = null; // 延迟初始化
+        this.hotelCache = null; // Lazy initialization
     }
     
-    // 支持依赖注入
+    // Support dependency injection
     public HotelService(HotelDAO hotelDAO) {
         this.hotelDAO = hotelDAO != null ? hotelDAO : new HotelDAO();
-        this.hotelCache = null; // 延迟初始化
+        this.hotelCache = null; // Lazy initialization
     }
     
     /**
-     * 获取酒店缓存（懒加载）
+     * Get hotel cache (lazy loading)
      */
     private List<Hotel> getHotelCache() {
         if (hotelCache == null) {
@@ -43,7 +43,7 @@ public class HotelService {
     }
     
     /**
-     * 清空缓存（用于测试或数据更新后）
+     * Clear cache (used after testing or data updates)
      */
     public void clearCache() {
         synchronized (this) {
@@ -52,17 +52,17 @@ public class HotelService {
     }
     
     /**
-     * 创建酒店
+     * Create hotel
      */
     public Hotel createHotel(String name, String location, String description, String amenities, Integer availableRooms) {
         try {
-            // 参数验证
+            // Parameter validation
             validateHotelParameters(name, location, availableRooms);
             
             Hotel hotel = new Hotel(name.trim(), location.trim(), description, amenities, availableRooms);
             Hotel createdHotel = hotelDAO.createHotel(hotel);
             
-            // 创建成功后清空缓存
+            // Clear cache after successful creation
             clearCache();
             
             return createdHotel;
@@ -70,51 +70,51 @@ public class HotelService {
             throw e;
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "创建酒店失败: " + e.getMessage(), e);
+                "Failed to create hotel: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 参数验证
+     * Parameter validation
      */
     private void validateHotelParameters(String name, String location, Integer availableRooms) {
         if (name == null || name.trim().isEmpty()) {
-            throw new ValidationException("酒店名称不能为空");
+            throw new ValidationException("Hotel name cannot be empty");
         }
         if (location == null || location.trim().isEmpty()) {
-            throw new ValidationException("位置不能为空");
+            throw new ValidationException("Location cannot be empty");
         }
         if (availableRooms == null || availableRooms < 0) {
-            throw new ValidationException("可用房间数必须为非负数");
+            throw new ValidationException("Available rooms must be non-negative");
         }
     }
     
     /**
-     * 根据ID获取酒店
+     * Get hotel by ID
      */
     public Optional<Hotel> getHotelById(Integer id) {
         try {
             return hotelDAO.getHotelById(id);
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "获取酒店信息失败: " + e.getMessage(), e);
+                "Failed to get hotel information: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 获取所有酒店
+     * Get all hotels
      */
     public List<Hotel> getAllHotels() {
         try {
             return hotelDAO.getAllHotels();
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "获取酒店列表失败: " + e.getMessage(), e);
+                "Failed to get hotel list: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 根据位置获取酒店
+     * Get hotels by location
      */
     public List<Hotel> getHotelsByLocation(String location) {
         try {
@@ -124,12 +124,12 @@ public class HotelService {
             return hotelDAO.getHotelsByLocation(location.trim());
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "根据位置获取酒店失败: " + e.getMessage(), e);
+                "Failed to get hotels by location: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 更新酒店信息
+     * Update hotel information
      */
     public boolean updateHotel(Hotel hotel) {
         try {
@@ -138,33 +138,33 @@ public class HotelService {
             }
             boolean result = hotelDAO.updateHotel(hotel);
             if (result) {
-                clearCache(); // 更新成功后清空缓存
+                clearCache(); // Clear cache after successful update
             }
             return result;
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "更新酒店信息失败: " + e.getMessage(), e);
+                "Failed to update hotel information: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 删除酒店
+     * Delete hotel
      */
     public boolean deleteHotel(Integer hotelId) {
         try {
             boolean result = hotelDAO.deleteHotel(hotelId);
             if (result) {
-                clearCache(); // 删除成功后清空缓存
+                clearCache(); // Clear cache after successful deletion
             }
             return result;
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "删除酒店失败: " + e.getMessage(), e);
+                "Failed to delete hotel: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 搜索酒店
+     * Search hotels
      */
     public List<Hotel> searchHotels(String keyword) {
         try {
@@ -174,19 +174,19 @@ public class HotelService {
             return hotelDAO.searchHotels(keyword.trim());
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR,
-                "搜索酒店失败: " + e.getMessage(), e);
+                "Failed to search hotels: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 根据酒店ID获取房间
+     * Get rooms by hotel ID
      */
     public List<Room> getRoomsByHotelId(int hotelId) {
         try {
             return hotelDAO.getRoomsByHotelId(hotelId);
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "根据酒店ID获取房间失败: " + e.getMessage(), e);
+                "Failed to get rooms by hotel ID: " + e.getMessage(), e);
         }
     }
 }

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Booking.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.entity</a> &gt; <span class="el_source">Booking.java</span></div><h1>Booking.java</h1><pre class="source lang-java linenums">/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.hotelbooking.entity;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+public class Booking {
+    private Integer id;
+    private String bookingId;  // Add bookingId field
+    private Integer userId;
+    private Integer hotelId;
+    private Integer roomId;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
+    private BigDecimal totalPrice;
+    private String status;
+    private LocalDateTime createdAt;
+    
+    // Default constructor
+<span class="fc" id="L24">    public Booking() {</span>
+<span class="fc" id="L25">        this.createdAt = LocalDateTime.now();</span>
+<span class="fc" id="L26">    }</span>
+    
+    // Parameterized constructor
+    public Booking(Integer userId, Integer hotelId, Integer roomId, LocalDate checkInDate, 
+<span class="fc" id="L30">                  LocalDate checkOutDate, BigDecimal totalPrice, String status) {</span>
+<span class="fc" id="L31">        this.userId = userId;</span>
+<span class="fc" id="L32">        this.hotelId = hotelId;</span>
+<span class="fc" id="L33">        this.roomId = roomId;</span>
+<span class="fc" id="L34">        this.checkInDate = checkInDate;</span>
+<span class="fc" id="L35">        this.checkOutDate = checkOutDate;</span>
+<span class="fc" id="L36">        this.totalPrice = totalPrice;</span>
+<span class="fc" id="L37">        this.status = status;</span>
+<span class="fc" id="L38">        this.createdAt = LocalDateTime.now();</span>
+<span class="fc" id="L39">        this.bookingId = &quot;BOOK_&quot; + System.currentTimeMillis() + &quot;_&quot; + userId;  // Auto-generate bookingId</span>
+<span class="fc" id="L40">    }</span>
+    
+    // Getters and Setters
+    public Integer getId() {
+<span class="fc" id="L44">        return id;</span>
+    }
+    
+    public void setId(Integer id) {
+<span class="fc" id="L48">        this.id = id;</span>
+<span class="fc" id="L49">    }</span>
+    
+    public String getBookingId() {
+        // Auto-generate bookingId if null
+<span class="pc bpc" id="L53" title="3 of 4 branches missed.">        if (bookingId == null &amp;&amp; userId != null) {</span>
+<span class="nc" id="L54">            bookingId = &quot;BOOK_&quot; + System.currentTimeMillis() + &quot;_&quot; + userId;</span>
+        }
+<span class="fc" id="L56">        return bookingId;</span>
+    }
+    
+    public void setBookingId(String bookingId) {
+<span class="fc" id="L60">        this.bookingId = bookingId;</span>
+<span class="fc" id="L61">    }</span>
+    
+    public Integer getUserId() {
+<span class="fc" id="L64">        return userId;</span>
+    }
+    
+    public void setUserId(Integer userId) {
+<span class="fc" id="L68">        this.userId = userId;</span>
+<span class="fc" id="L69">    }</span>
+    
+    public Integer getHotelId() {
+<span class="fc" id="L72">        return hotelId;</span>
+    }
+    
+    public void setHotelId(Integer hotelId) {
+<span class="fc" id="L76">        this.hotelId = hotelId;</span>
+<span class="fc" id="L77">    }</span>
+    
+    public Integer getRoomId() {
+<span class="fc" id="L80">        return roomId;</span>
+    }
+    
+    public void setRoomId(Integer roomId) {
+<span class="fc" id="L84">        this.roomId = roomId;</span>
+<span class="fc" id="L85">    }</span>
+    
+    public LocalDate getCheckInDate() {
+<span class="fc" id="L88">        return checkInDate;</span>
+    }
+    
+    public void setCheckInDate(LocalDate checkInDate) {
+<span class="fc" id="L92">        this.checkInDate = checkInDate;</span>
+<span class="fc" id="L93">    }</span>
+    
+    public LocalDate getCheckOutDate() {
+<span class="fc" id="L96">        return checkOutDate;</span>
+    }
+    
+    public void setCheckOutDate(LocalDate checkOutDate) {
+<span class="fc" id="L100">        this.checkOutDate = checkOutDate;</span>
+<span class="fc" id="L101">    }</span>
+    
+    public BigDecimal getTotalPrice() {
+<span class="fc" id="L104">        return totalPrice;</span>
+    }
+    
+    public void setTotalPrice(BigDecimal totalPrice) {
+<span class="fc" id="L108">        this.totalPrice = totalPrice;</span>
+<span class="fc" id="L109">    }</span>
+    
+    public String getStatus() {
+<span class="fc" id="L112">        return status;</span>
+    }
+    
+    public void setStatus(String status) {
+<span class="fc" id="L116">        this.status = status;</span>
+<span class="fc" id="L117">    }</span>
+    
+    public LocalDateTime getCreatedAt() {
+<span class="fc" id="L120">        return createdAt;</span>
+    }
+    
+    public void setCreatedAt(LocalDateTime createdAt) {
+<span class="fc" id="L124">        this.createdAt = createdAt;</span>
+<span class="fc" id="L125">    }</span>
+    
+    @Override
+    public String toString() {
+<span class="nc" id="L129">        return &quot;Booking{&quot; +</span>
+                &quot;id=&quot; + id +
+                &quot;, bookingId='&quot; + bookingId + &quot;'&quot; +  // Add bookingId to toString
+                &quot;, userId=&quot; + userId +
+                &quot;, hotelId=&quot; + hotelId +
+                &quot;, roomId=&quot; + roomId +
+                &quot;, checkInDate=&quot; + checkInDate +
+                &quot;, checkOutDate=&quot; + checkOutDate +
+                &quot;, totalPrice=&quot; + totalPrice +
+                &quot;, status='&quot; + status + '\'' +
+                &quot;, createdAt=&quot; + createdAt +
+                '}';
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

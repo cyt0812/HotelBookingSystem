@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PaymentService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.service</a> &gt; <span class="el_source">PaymentService.java</span></div><h1>PaymentService.java</h1><pre class="source lang-java linenums">package com.hotelbooking.service;
+
+import com.hotelbooking.dao.PaymentDAO;
+import com.hotelbooking.entity.Payment;
+import com.hotelbooking.exception.BusinessException;
+import com.hotelbooking.exception.ErrorType;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Optional;
+
+public class PaymentService {
+    private PaymentDAO paymentDAO;
+    
+<span class="fc" id="L14">    public PaymentService(PaymentDAO paymentDAO) {</span>
+<span class="fc" id="L15">        this.paymentDAO = paymentDAO;</span>
+<span class="fc" id="L16">    }</span>
+    
+    // 便捷构造函数
+<span class="nc" id="L19">    public PaymentService() {</span>
+<span class="nc" id="L20">        this.paymentDAO = new PaymentDAO();</span>
+<span class="nc" id="L21">    }</span>
+    
+    /**
+     * 处理支付
+     */
+    public boolean processPayment(String bookingId, BigDecimal amount, String paymentMethod) {
+        try {
+            // 创建支付记录
+<span class="fc" id="L29">            Payment payment = new Payment(bookingId, amount, paymentMethod);</span>
+<span class="fc" id="L30">            boolean created = paymentDAO.createPayment(payment);</span>
+            
+<span class="fc bfc" id="L32" title="All 2 branches covered.">            if (!created) {</span>
+<span class="fc" id="L33">                throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, &quot;Failed to create payment record&quot;);</span>
+            }
+            
+            // 模拟支付处理（在实际项目中这里会调用第三方支付API）
+<span class="fc" id="L37">            boolean paymentSuccess = simulatePaymentProcessing(paymentMethod);</span>
+            
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">            if (paymentSuccess) {</span>
+                // 支付成功，更新支付状态
+<span class="fc" id="L41">                String transactionId = &quot;TXN_&quot; + System.currentTimeMillis();</span>
+<span class="fc" id="L42">                return paymentDAO.updatePaymentStatus(payment.getPaymentId(), &quot;COMPLETED&quot;, transactionId);</span>
+            } else {
+                // 支付失败
+<span class="nc" id="L45">                paymentDAO.updatePaymentStatus(payment.getPaymentId(), &quot;FAILED&quot;, null);</span>
+<span class="nc" id="L46">                throw new BusinessException(ErrorType.PAYMENT_FAILED, &quot;Payment processing failed. Please try again or use a different payment method&quot;);</span>
+            }
+            
+<span class="fc" id="L49">        } catch (BusinessException e) {</span>
+<span class="fc" id="L50">            throw e;</span>
+<span class="nc" id="L51">        } catch (Exception e) {</span>
+<span class="nc" id="L52">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L53">                &quot;Payment system error: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * 处理退款
+     */
+    public boolean processRefund(String bookingId) {
+        try {
+<span class="fc" id="L62">            Payment payment = paymentDAO.getPaymentByBookingId(bookingId);</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">            if (payment == null) {</span>
+<span class="fc" id="L64">                throw new BusinessException(ErrorType.PAYMENT_NOT_FOUND, &quot;No corresponding payment record found&quot;);</span>
+            }
+            
+<span class="fc bfc" id="L67" title="All 2 branches covered.">            if (!&quot;COMPLETED&quot;.equals(payment.getPaymentStatus())) {</span>
+<span class="fc" id="L68">                throw new BusinessException(ErrorType.REFUND_FAILED, &quot;Only completed payments can be refunded&quot;);</span>
+            }
+            
+            // 模拟退款处理
+<span class="fc" id="L72">            boolean refundSuccess = simulateRefundProcessing();</span>
+            
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">            if (refundSuccess) {</span>
+<span class="fc" id="L75">                return paymentDAO.updatePaymentStatus(payment.getPaymentId(), &quot;REFUNDED&quot;, </span>
+<span class="fc" id="L76">                    payment.getTransactionId() + &quot;_REFUND&quot;);</span>
+            } else {
+<span class="nc" id="L78">                throw new BusinessException(ErrorType.REFUND_FAILED, &quot;Refund processing failed&quot;);</span>
+            }
+            
+<span class="fc" id="L81">        } catch (BusinessException e) {</span>
+<span class="fc" id="L82">            throw e;</span>
+<span class="nc" id="L83">        } catch (Exception e) {</span>
+<span class="nc" id="L84">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L85">                &quot;Refund system error: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * 获取支付状态
+     */
+    public Optional&lt;Payment&gt; getPaymentStatus(String bookingId) {
+        try {
+<span class="fc" id="L94">            return Optional.ofNullable(paymentDAO.getPaymentByBookingId(bookingId));</span>
+<span class="nc" id="L95">        } catch (Exception e) {</span>
+<span class="nc" id="L96">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L97">                &quot;Failed to query payment status: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * 模拟支付处理（实际项目中替换为真实的支付网关调用）
+     */
+    private boolean simulatePaymentProcessing(String paymentMethod) {
+        // 模拟支付成功率：90%
+<span class="fc" id="L106">        System.out.println(&quot;Simulating &quot; + paymentMethod + &quot; payment processing...&quot;);</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">        return Math.random() &gt; 0.1;</span>
+    }
+    
+    /**
+     * 模拟退款处理
+     */
+    private boolean simulateRefundProcessing() {
+        // 模拟退款成功率：95%
+<span class="fc" id="L115">        System.out.println(&quot;Simulating refund processing...&quot;);</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">        return Math.random() &gt; 0.05;</span>
+    }
+    
+    /**
+     * 计算应退金额（根据取消政策）
+     */
+    public BigDecimal calculateRefundAmount(String bookingId, LocalDate checkInDate) {
+        try {
+<span class="fc" id="L124">            LocalDate today = LocalDate.now();</span>
+<span class="fc" id="L125">            long daysUntilCheckIn = java.time.temporal.ChronoUnit.DAYS.between(today, checkInDate);</span>
+            
+<span class="fc" id="L127">            Payment payment = paymentDAO.getPaymentByBookingId(bookingId);</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">            if (payment == null) {</span>
+<span class="fc" id="L129">                return BigDecimal.ZERO;</span>
+            }
+            
+<span class="fc" id="L132">            BigDecimal amount = payment.getAmount();</span>
+            
+            // 取消政策：
+            // - 提前7天以上取消：全额退款
+            // - 提前3-7天取消：退款50%
+            // - 3天内取消：不退款
+<span class="fc bfc" id="L138" title="All 2 branches covered.">            if (daysUntilCheckIn &gt; 7) {</span>
+<span class="fc" id="L139">                return amount;</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">            } else if (daysUntilCheckIn &gt; 3) {</span>
+<span class="fc" id="L141">               return amount.multiply(new BigDecimal(&quot;0.5&quot;)).setScale(2, java.math.RoundingMode.HALF_UP);</span>
+            } else {
+<span class="fc" id="L143">                return BigDecimal.ZERO;</span>
+            }
+<span class="nc" id="L145">        } catch (Exception e) {</span>
+<span class="nc" id="L146">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L147">                &quot;Failed to calculate refund amount: &quot; + e.getMessage(), e);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

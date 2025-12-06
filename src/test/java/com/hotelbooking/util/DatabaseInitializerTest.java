@@ -11,73 +11,73 @@ class DatabaseInitializerTest {
     
     @BeforeAll
     static void setUp() {
-        System.out.println("=== DatabaseInitializerTest 设置 ===");
+        System.out.println("=== DatabaseInitializerTest Setup ===");
         
-        // 关键：设置系统属性，强制使用内存数据库
+        // Key: Set system property to force using in-memory database
         System.setProperty("test.derby.url", "jdbc:derby:memory:init_test_db;create=true");
         
-        System.out.println("测试数据库URL: " + System.getProperty("test.derby.url"));
+        System.out.println("Test Database URL: " + System.getProperty("test.derby.url"));
         
         try {
-            // 确保Derby驱动已加载
+            // Ensure Derby driver is loaded
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            System.out.println("✅ Derby驱动加载成功");
+            System.out.println("✅ Derby driver loaded successfully");
         } catch (ClassNotFoundException e) {
-            System.err.println("❌ Derby驱动加载失败: " + e.getMessage());
+            System.err.println("❌ Derby driver loading failed: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
 
     @Test
     void initializeDatabase_ShouldCreateAllTables() {
-        System.out.println("\n--- 测试: initializeDatabase_ShouldCreateAllTables ---");
+        System.out.println("\n--- Test: initializeDatabase_ShouldCreateAllTables ---");
         
         try {
-            // 执行
+            // Execute
             DatabaseInitializer.initializeDatabase();
-            System.out.println("✅ 数据库初始化执行成功");
+            System.out.println("✅ Database initialization executed successfully");
             
-            // 验证 - 检查表是否创建成功
+            // Verify - Check if tables are created successfully
             try (Connection conn = DatabaseConnection.getConnection();
                  Statement stmt = conn.createStatement()) {
                 
-                // 检查 users 表
+                // Check users table
                 ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM users");
                 assertTrue(rs.next());
-                System.out.println("✅ users 表创建成功");
+                System.out.println("✅ users table created successfully");
                 
-                // 检查 hotels 表
+                // Check hotels table
                 rs = stmt.executeQuery("SELECT COUNT(*) FROM hotels");
                 assertTrue(rs.next());
-                System.out.println("✅ hotels 表创建成功");
+                System.out.println("✅ hotels table created successfully");
                 
-                // 检查 rooms 表
+                // Check rooms table
                 rs = stmt.executeQuery("SELECT COUNT(*) FROM rooms");
                 assertTrue(rs.next());
-                System.out.println("✅ rooms 表创建成功");
+                System.out.println("✅ rooms table created successfully");
                 
-                // 检查 bookings 表
+                // Check bookings table
                 rs = stmt.executeQuery("SELECT COUNT(*) FROM bookings");
                 assertTrue(rs.next());
-                System.out.println("✅ bookings 表创建成功");
+                System.out.println("✅ bookings table created successfully");
                 
-                // 检查 payments 表
+                // Check payments table
                 rs = stmt.executeQuery("SELECT COUNT(*) FROM payments");
                 assertTrue(rs.next());
-                System.out.println("✅ payments 表创建成功");
+                System.out.println("✅ payments table created successfully");
                 
             } catch (Exception e) {
-                System.err.println("❌ 表查询失败: " + e.getMessage());
-                // 尝试使用系统表查询
+                System.err.println("❌ Table query failed: " + e.getMessage());
+                // Try using system tables for query
                 verifyTablesViaSystemTables();
             }
             
         } catch (Exception e) {
-            System.err.println("❌ 数据库初始化失败: " + e.getMessage());
+            System.err.println("❌ Database initialization failed: " + e.getMessage());
             
             if (e.getMessage().contains("already exists")) {
-                System.out.println("⚠️ 表已存在，跳过创建");
-                // 不抛出失败，认为测试通过
+                System.out.println("⚠️ Tables already exist, skipping creation");
+                // Do not throw failure, consider test passed
             } else {
                 fail("Database initialization failed: " + e.getMessage());
             }
@@ -86,41 +86,41 @@ class DatabaseInitializerTest {
 
     @Test
     void clearTestData_ShouldClearAllData() {
-        System.out.println("\n--- 测试: clearTestData_ShouldClearAllData ---");
+        System.out.println("\n--- Test: clearTestData_ShouldClearAllData ---");
         
-        // 准备 - 先确保表存在
+        // Prepare - First ensure tables exist
         try {
             DatabaseInitializer.initializeDatabase();
         } catch (Exception e) {
-            // 如果表已存在，忽略
+            // Ignore if tables already exist
         }
         
-        // 准备 - 先插入一些测试数据
+        // Prepare - First insert some test data
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement()) {
             
             stmt.executeUpdate("INSERT INTO users (username, email, password, role, created_at) VALUES " +
                     "('testuser', 'test@test.com', 'pass', 'CUSTOMER', CURRENT_TIMESTAMP)");
-            System.out.println("✅ 测试数据插入成功");
+            System.out.println("✅ Test data inserted successfully");
             
         } catch (Exception e) {
-            System.err.println("⚠️ 插入测试数据失败: " + e.getMessage());
-            // 继续测试，可能数据已存在
+            System.err.println("⚠️ Failed to insert test data: " + e.getMessage());
+            // Continue test, data might already exist
         }
         
-        // 执行
+        // Execute
         DatabaseInitializer.clearTestData();
-        System.out.println("✅ 数据清理执行成功");
+        System.out.println("✅ Data clearance executed successfully");
         
-        // 验证 - 检查数据是否被清空
+        // Verify - Check if data is cleared
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement()) {
             
             ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM users");
             assertTrue(rs.next());
             int count = rs.getInt(1);
-            assertEquals(0, count, "users 表应该为空，但有 " + count + " 条记录");
-            System.out.println("✅ 数据清理验证成功");
+            assertEquals(0, count, "users table should be empty, but has " + count + " records");
+            System.out.println("✅ Data clearance verified successfully");
             
         } catch (Exception e) {
             fail("Failed to verify data clearance: " + e.getMessage());
@@ -129,65 +129,65 @@ class DatabaseInitializerTest {
 
     @Test
     void insertSampleData_ShouldInsertSampleData() {
-        System.out.println("\n--- 测试: insertSampleData_ShouldInsertSampleData ---");
+        System.out.println("\n--- Test: insertSampleData_ShouldInsertSampleData ---");
         
         try {
-            // 执行
-            DatabaseInitializer.clearTestData(); // 先清空
+            // Execute
+            DatabaseInitializer.clearTestData(); // First clear
             DatabaseInitializer.insertSampleData();
-            System.out.println("✅ 示例数据插入执行成功");
+            System.out.println("✅ Sample data insertion executed successfully");
             
-            // 验证 - 检查示例数据是否插入
+            // Verify - Check if sample data is inserted
             try (Connection conn = DatabaseConnection.getConnection();
                  Statement stmt = conn.createStatement()) {
                 
-                // 检查用户数据
+                // Check user data
                 ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM users");
                 assertTrue(rs.next());
                 int userCount = rs.getInt(1);
-                assertTrue(userCount >= 3, "至少3个示例用户，实际: " + userCount);
-                System.out.println("✅ 用户数据验证通过: " + userCount + " 个用户");
+                assertTrue(userCount >= 3, "At least 3 sample users, actual: " + userCount);
+                System.out.println("✅ User data verified: " + userCount + " users");
                 
-                // 检查酒店数据
+                // Check hotel data
                 rs = stmt.executeQuery("SELECT COUNT(*) FROM hotels");
                 assertTrue(rs.next());
                 int hotelCount = rs.getInt(1);
-                assertTrue(hotelCount >= 1, "至少1个示例酒店，实际: " + hotelCount);
-                System.out.println("✅ 酒店数据验证通过: " + hotelCount + " 个酒店");
+                assertTrue(hotelCount >= 1, "At least 1 sample hotel, actual: " + hotelCount);
+                System.out.println("✅ Hotel data verified: " + hotelCount + " hotels");
                 
-                // 检查房间数据
+                // Check room data
                 rs = stmt.executeQuery("SELECT COUNT(*) FROM rooms");
                 assertTrue(rs.next());
                 int roomCount = rs.getInt(1);
-                assertTrue(roomCount >= 1, "至少1个示例房间，实际: " + roomCount);
-                System.out.println("✅ 房间数据验证通过: " + roomCount + " 个房间");
+                assertTrue(roomCount >= 1, "At least 1 sample room, actual: " + roomCount);
+                System.out.println("✅ Room data verified: " + roomCount + " rooms");
                 
-                // 检查预订数据
+                // Check booking data
                 rs = stmt.executeQuery("SELECT COUNT(*) FROM bookings");
                 assertTrue(rs.next());
                 int bookingCount = rs.getInt(1);
-                System.out.println("✅ 预订数据验证通过: " + bookingCount + " 个预订");
+                System.out.println("✅ Booking data verified: " + bookingCount + " bookings");
                 
-                // 检查支付数据
+                // Check payment data
                 rs = stmt.executeQuery("SELECT COUNT(*) FROM payments");
                 assertTrue(rs.next());
                 int paymentCount = rs.getInt(1);
-                System.out.println("✅ 支付数据验证通过: " + paymentCount + " 个支付");
+                System.out.println("✅ Payment data verified: " + paymentCount + " payments");
                 
             } catch (Exception e) {
-                System.err.println("❌ 数据验证失败: " + e.getMessage());
-                // 尝试使用更通用的验证方法
+                System.err.println("❌ Data verification failed: " + e.getMessage());
+                // Try using more generic verification method
                 verifySampleDataGeneric();
             }
             
         } catch (Exception e) {
-            System.err.println("❌ 示例数据插入失败: " + e.getMessage());
+            System.err.println("❌ Sample data insertion failed: " + e.getMessage());
             fail("Sample data insertion failed: " + e.getMessage());
         }
     }
     
     private void verifyTablesViaSystemTables() {
-        System.out.println("尝试通过系统表验证...");
+        System.out.println("Trying system table verification...");
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement()) {
             
@@ -197,37 +197,37 @@ class DatabaseInitializerTest {
                     "SELECT COUNT(*) FROM SYS.SYSTABLES WHERE TABLENAME = '" + table + "'"
                 );
                 if (rs.next() && rs.getInt(1) > 0) {
-                    System.out.println("✅ 表 " + table + " 存在（系统表验证）");
+                    System.out.println("✅ Table " + table + " exists (system table verification)");
                 } else {
-                    System.out.println("❌ 表 " + table + " 不存在（系统表验证）");
+                    System.out.println("❌ Table " + table + " does not exist (system table verification)");
                 }
             }
         } catch (Exception e) {
-            System.err.println("系统表验证失败: " + e.getMessage());
+            System.err.println("System table verification failed: " + e.getMessage());
         }
     }
     
     private void verifySampleDataGeneric() {
-        System.out.println("尝试通用验证...");
+        System.out.println("Trying generic verification...");
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement()) {
             
-            // 检查是否有任何数据
+            // Check if there is any data
             String[] tables = {"users", "hotels", "rooms", "bookings", "payments"};
             for (String table : tables) {
                 try {
                     ResultSet rs = stmt.executeQuery("SELECT 1 FROM " + table + " FETCH FIRST 1 ROWS ONLY");
                     if (rs.next()) {
-                        System.out.println("✅ " + table + " 表有数据");
+                        System.out.println("✅ " + table + " table has data");
                     } else {
-                        System.out.println("⚠️ " + table + " 表无数据");
+                        System.out.println("⚠️ " + table + " table has no data");
                     }
                 } catch (Exception e) {
-                    System.err.println("❌ " + table + " 表查询失败: " + e.getMessage());
+                    System.err.println("❌ " + table + " table query failed: " + e.getMessage());
                 }
             }
         } catch (Exception e) {
-            System.err.println("通用验证失败: " + e.getMessage());
+            System.err.println("Generic verification failed: " + e.getMessage());
         }
     }
 }

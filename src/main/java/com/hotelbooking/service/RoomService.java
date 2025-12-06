@@ -17,33 +17,33 @@ public class RoomService {
     }
     
     /**
-     * 创建房间
+     * Create room
      */
     public Room createRoom(Integer hotelId, String roomNumber, String roomType, 
                       BigDecimal price, boolean available) {
     try {
         if (hotelId == null) {
-            throw new ValidationException("酒店ID不能为空");
+            throw new ValidationException("Hotel ID cannot be empty");
         }
         if (roomNumber == null || roomNumber.trim().isEmpty()) {
-            throw new ValidationException("房间号不能为空");
+            throw new ValidationException("Room number cannot be empty");
         }
         if (roomType == null || roomType.trim().isEmpty()) {
-            throw new ValidationException("房间类型不能为空");
+            throw new ValidationException("Room type cannot be empty");
         }
         if (price == null || price.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new ValidationException("价格必须为正数");
+            throw new ValidationException("Price must be positive");
         }
         
-        // 检查房间号是否已存在
+        // Check if room number already exists
         if (roomDAO.isRoomNumberExists(hotelId, roomNumber)) {
             throw new BusinessException(ErrorType.ROOM_ALREADY_EXISTS);
         }
         
         int defaultMaxOccupancy = 2;
-        String defaultDescription = roomType.trim() + " room"; // 添加默认描述
+        String defaultDescription = roomType.trim() + " room"; // Add default description
         
-        // 使用7个参数的构造函数
+        // Use 7-parameter constructor
         Room room = new Room(hotelId, roomNumber.trim(), roomType.trim(), 
                             price.doubleValue(), defaultMaxOccupancy, 
                             available, defaultDescription);
@@ -53,58 +53,58 @@ public class RoomService {
         throw e;
     } catch (Exception e) {
         throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-            "创建房间失败: " + e.getMessage(), e);
+            "Failed to create room: " + e.getMessage(), e);
     }
 }
     
     /**
-     * 根据ID获取房间
+     * Get room by ID
      */
     public Optional<Room> getRoomById(Integer id) {
         try {
             return roomDAO.getRoomById(id);
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "获取房间信息失败: " + e.getMessage(), e);
+                "Failed to get room information: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 获取酒店的所有房间
+     * Get all rooms of a hotel
      */
     public List<Room> getRoomsByHotelId(Integer hotelId) {
         try {
              if (hotelId == null || hotelId <= 0) {
-            throw new ValidationException("酒店ID不能为空");
+            throw new ValidationException("Hotel ID cannot be empty");
         }
             return roomDAO.getRoomsByHotelId(hotelId);
         } catch (ValidationException e) {
         throw e;
     }catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "获取酒店房间列表失败: " + e.getMessage(), e);
+                "Failed to get hotel rooms: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 获取酒店的可用房间
+     * Get available rooms of a hotel
      */
     public List<Room> getAvailableRoomsByHotelId(Integer hotelId) {
         try {
                if (hotelId == null || hotelId <= 0) {
-            throw new ValidationException("酒店ID不能为空");
+            throw new ValidationException("Hotel ID cannot be empty");
         }
             return roomDAO.getAvailableRoomsByHotelId(hotelId);
         } catch (ValidationException e) {
         throw e;
     } catch (Exception e) {
           throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-            "获取可用房间列表失败: " + e.getMessage(), e);
+            "Failed to get available rooms: " + e.getMessage(), e);
     }
     }
     
     /**
-     * 根据房型获取房间
+     * Get rooms by type
      */
     public List<Room> getRoomsByType(String roomType) {
         try {
@@ -114,23 +114,23 @@ public class RoomService {
             return roomDAO.getRoomsByType(roomType.trim());
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "根据房型获取房间失败: " + e.getMessage(), e);
+                "Failed to get rooms by type: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 根据价格范围获取房间
+     * Get rooms by price range
      */
     public List<Room> getRoomsByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
         try {
             if (minPrice == null || maxPrice == null) {
-                throw new ValidationException("价格范围不能为空");
+                throw new ValidationException("Price range cannot be empty");
             }
             if (minPrice.compareTo(BigDecimal.ZERO) < 0 || maxPrice.compareTo(BigDecimal.ZERO) < 0) {
-                throw new ValidationException("价格不能为负数");
+                throw new ValidationException("Price cannot be negative");
             }
             if (minPrice.compareTo(maxPrice) > 0) {
-                throw new ValidationException("最低价格不能大于最高价格");
+                throw new ValidationException("Minimum price cannot be greater than maximum price");
             }
             
             return roomDAO.getRoomsByPriceRange(minPrice, maxPrice);
@@ -138,17 +138,17 @@ public class RoomService {
             throw e;
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "根据价格范围获取房间失败: " + e.getMessage(), e);
+                "Failed to get rooms by price range: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 获取酒店内特定类型的可用房间
+     * Get available rooms of a specific type in a hotel
      */
     public List<Room> getAvailableRoomsByHotelAndType(Integer hotelId, String roomType) {
         try {
             if (hotelId == null) {
-                throw new ValidationException("酒店ID不能为空");
+                throw new ValidationException("Hotel ID cannot be empty");
             }
             if (roomType == null || roomType.trim().isEmpty()) {
                 return List.of();
@@ -159,20 +159,20 @@ public class RoomService {
             throw e;
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "获取特定类型可用房间失败: " + e.getMessage(), e);
+                "Failed to get available rooms by type: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 更新房间价格
+     * Update room price
      */
     public boolean updateRoomPrice(Integer roomId, BigDecimal newPrice) {
         try {
             if (roomId == null) {
-                throw new ValidationException("房间ID不能为空");
+                throw new ValidationException("Room ID cannot be empty");
             }
             if (newPrice == null || newPrice.compareTo(BigDecimal.ZERO) <= 0) {
-                throw new ValidationException("价格必须为正数");
+                throw new ValidationException("Price must be positive");
             }
             
             return roomDAO.updateRoomPrice(roomId, newPrice);
@@ -180,20 +180,20 @@ public class RoomService {
             throw e;
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "更新房间价格失败: " + e.getMessage(), e);
+                "Failed to update room price: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 检查房间号是否在酒店中已存在
+     * Check if room number already exists in hotel
      */
     public boolean isRoomNumberExists(Integer hotelId, String roomNumber) {
         try {
             if (hotelId == null) {
-                throw new ValidationException("酒店ID不能为空");
+                throw new ValidationException("Hotel ID cannot be empty");
             }
             if (roomNumber == null || roomNumber.trim().isEmpty()) {
-                throw new ValidationException("房间号不能为空");
+                throw new ValidationException("Room number cannot be empty");
             }
             
             return roomDAO.isRoomNumberExists(hotelId, roomNumber.trim());
@@ -201,58 +201,58 @@ public class RoomService {
             throw e;
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "检查房间号是否存在失败: " + e.getMessage(), e);
+                "Failed to check room number existence: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 获取所有可用房间
+     * Get all available rooms
      */
     public List<Room> getAllAvailableRooms() {
         try {
             return roomDAO.getAllAvailableRooms();
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "获取所有可用房间失败: " + e.getMessage(), e);
+                "Failed to get all available rooms: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 获取酒店的房间数量统计
+     * Get room count statistics for a hotel
      */
     public int getRoomCountByHotel(Integer hotelId) {
         try {
             if (hotelId == null) {
-                throw new ValidationException("酒店ID不能为空");
+                throw new ValidationException("Hotel ID cannot be empty");
             }
             return roomDAO.getRoomCountByHotel(hotelId);
         } catch (ValidationException e) {
             throw e;
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "获取房间数量统计失败: " + e.getMessage(), e);
+                "Failed to get room count statistics: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 获取酒店的可用房间数量
+     * Get available room count of a hotel
      */
     public int getAvailableRoomCountByHotel(Integer hotelId) {
         try {
             if (hotelId == null) {
-                throw new ValidationException("酒店ID不能为空");
+                throw new ValidationException("Hotel ID cannot be empty");
             }
             return roomDAO.getAvailableRoomCountByHotel(hotelId);
         } catch (ValidationException e) {
             throw e;
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "获取可用房间数量失败: " + e.getMessage(), e);
+                "Failed to get available room count: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 更新房间信息
+     * Update room information
      */
     public boolean updateRoom(Room room) {
         try {
@@ -262,12 +262,12 @@ public class RoomService {
             return roomDAO.updateRoom(room);
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "更新房间信息失败: " + e.getMessage(), e);
+                "Failed to update room information: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 更新房间可用状态
+     * Update room availability
      */
     public boolean updateRoomAvailability(Integer roomId, boolean available) {
         try {
@@ -280,29 +280,29 @@ public class RoomService {
             return false;
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "更新房间可用状态失败: " + e.getMessage(), e);
+                "Failed to update room availability: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 删除房间
+     * Delete room
      */
     public boolean deleteRoom(Integer roomId) {
         try {
             return roomDAO.deleteRoom(roomId);
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "删除房间失败: " + e.getMessage(), e);
+                "Failed to delete room: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 检查房间是否可用
+     * Check if room is available
      */
     public boolean isRoomAvailable(Integer roomId) {
         try {
              if (roomId == null || roomId <= 0) {
-            throw new ValidationException("房间ID不能为空或无效");
+            throw new ValidationException("Room ID cannot be empty or invalid");
         }
             Optional<Room> room = roomDAO.getRoomById(roomId);
               if (room.isEmpty()) {
@@ -311,7 +311,7 @@ public class RoomService {
             return room.isPresent() && room.get().isAvailable();
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "检查房间可用性失败: " + e.getMessage(), e);
+                "Failed to check room availability: " + e.getMessage(), e);
         }
     }
 }

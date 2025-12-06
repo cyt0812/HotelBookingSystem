@@ -4,15 +4,17 @@
  */
 package com.hotelbooking.util;
 
+import com.hotelbooking.entity.Hotel;
 import com.hotelbooking.entity.User;
 import java.time.LocalDate;
 
 public class SessionManager {
-      private static LocalDate checkInDate;
+    private static LocalDate checkInDate;
         private static LocalDate checkOutDate;
         private static int roomCount;
         private static int adultCount;
         private static int childCount;
+        
 
         // ====== 设置方法 ======
         public static void setCheckInDate(LocalDate date) {
@@ -58,48 +60,31 @@ public class SessionManager {
 
         // ====== 清空状态 ======
         public static void clear() {
+            currentHotel = null;
             checkInDate = null;
             checkOutDate = null;
             roomCount = 1;
             adultCount = 1;
             childCount = 0;
         }
-//    private static String loggedInUser;
-//
-//    public static void login(String username) {
-//        loggedInUser = username;
-//    }
-//
-//    public static String getLoggedInUser() {
-//        return loggedInUser;
-//    }
-//
-    
-    
-//    private static User currentUser;
-//
-//    public static void setCurrentUser(User user) {
-//        currentUser = user;
-//    }
-//
-//    public static User getCurrentUser() {
-//        return currentUser;
-//    }
-//    
-//    
-//    public static void login(User user) {
-//        currentUser = user;
-//    }
-//
-//    public static String getLoggedInUsername() {
-//        return currentUser.getUsername();
-//    }
-//    
-//    public static void logout() {
-//        currentUser = null;
-//    }
+
     // 静态变量保存当前登录的用户对象
     private static User currentUser = null;
+    
+    // 当前酒店
+    private static Hotel currentHotel = null;
+
+    // ====== 当前酒店设置和获取 ======
+    public static void setCurrentHotel(Hotel hotel) {
+        currentHotel = hotel;
+        System.out.println("当前酒店已设置: " + hotel.getName());
+    }
+
+    public static Hotel getCurrentHotel() {
+        return currentHotel;
+    }
+
+    
     
     /**
      * 登录用户 - 设置当前用户
@@ -116,6 +101,11 @@ public class SessionManager {
      */
     public static User getCurrentUser() {
         return currentUser;
+    }
+    
+    public static void setCurrentUser(User user) {
+        currentUser = user;
+        System.out.println("用户设置成功");
     }
     
     /**
@@ -142,6 +132,10 @@ public class SessionManager {
      */
     public static String getLoggedInUsername() {
         return currentUser != null ? currentUser.getUsername() : null;
+    }
+    
+    public static Integer getLoggedInId() {
+        return currentUser != null ? currentUser.getId() : null;
     }
 
 }

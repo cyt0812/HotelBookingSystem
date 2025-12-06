@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NavigationManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.util</a> &gt; <span class="el_source">NavigationManager.java</span></div><h1>NavigationManager.java</h1><pre class="source lang-java linenums">package com.hotelbooking.util;
+
+import java.util.Stack;
+
+/**
+ * 导航管理器 - 管理页面导航历史（单例模式）
+ * 用于实现返回上一页功能
+ */
+public class NavigationManager {
+    private static NavigationManager instance;
+    private Stack&lt;NavigationHistory&gt; history;
+    
+<span class="fc" id="L13">    private NavigationManager() {</span>
+<span class="fc" id="L14">        this.history = new Stack&lt;&gt;();</span>
+<span class="fc" id="L15">    }</span>
+    
+    /**
+     * 获取单例实例
+     */
+    public static synchronized NavigationManager getInstance() {
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        if (instance == null) {</span>
+<span class="fc" id="L22">            instance = new NavigationManager();</span>
+        }
+<span class="fc" id="L24">        return instance;</span>
+    }
+    
+    /**
+     * 导航历史记录类
+     */
+    public static class NavigationHistory {
+        public String fxmlPath;  // FXML 文件路径
+        public String title;     // 页面标题
+        public Object controller; // 页面控制器（用于传递数据）
+        
+<span class="fc" id="L35">        public NavigationHistory(String fxmlPath, String title) {</span>
+<span class="fc" id="L36">            this.fxmlPath = fxmlPath;</span>
+<span class="fc" id="L37">            this.title = title;</span>
+<span class="fc" id="L38">        }</span>
+        
+<span class="fc" id="L40">        public NavigationHistory(String fxmlPath, String title, Object controller) {</span>
+<span class="fc" id="L41">            this.fxmlPath = fxmlPath;</span>
+<span class="fc" id="L42">            this.title = title;</span>
+<span class="fc" id="L43">            this.controller = controller;</span>
+<span class="fc" id="L44">        }</span>
+    }
+    
+    /**
+     * 记录导航记录
+     */
+    public void push(String fxmlPath, String title) {
+<span class="fc" id="L51">        history.push(new NavigationHistory(fxmlPath, title));</span>
+<span class="fc" id="L52">        System.out.println(&quot;📍 导航记录: &quot; + title + &quot; (&quot; + fxmlPath + &quot;)&quot;);</span>
+<span class="fc" id="L53">        printHistory();</span>
+<span class="fc" id="L54">    }</span>
+    
+    /**
+     * 记录导航记录（带控制器）
+     */
+    public void push(String fxmlPath, String title, Object controller) {
+<span class="fc" id="L60">        history.push(new NavigationHistory(fxmlPath, title, controller));</span>
+<span class="fc" id="L61">        System.out.println(&quot;📍 导航记录: &quot; + title + &quot; (&quot; + fxmlPath + &quot;)&quot;);</span>
+<span class="fc" id="L62">        printHistory();</span>
+<span class="fc" id="L63">    }</span>
+    
+    /**
+     * 获取上一页信息（不弹出当前页）
+     */
+    public NavigationHistory getPrevious() {
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (history.size() &gt; 1) {</span>
+<span class="fc" id="L70">            NavigationHistory prev = history.get(history.size() - 2);</span>
+<span class="fc" id="L71">            System.out.println(&quot;⬅️ 返回到: &quot; + prev.title);</span>
+<span class="fc" id="L72">            return prev;</span>
+        }
+<span class="fc" id="L74">        return null;</span>
+    }
+    
+    /**
+     * 弹出当前页（在导航后调用）
+     */
+    public void popCurrent() {
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">        if (!history.isEmpty()) {</span>
+<span class="fc" id="L82">            NavigationHistory current = history.pop();</span>
+<span class="fc" id="L83">            System.out.println(&quot;🗑️ 关闭页面: &quot; + current.title);</span>
+        }
+<span class="fc" id="L85">    }</span>
+    
+    /**
+     * 检查是否有上一页
+     */
+    public boolean hasPrevious() {
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        return history.size() &gt; 1;</span>
+    }
+    
+    /**
+     * 清空历史记录
+     */
+    public void clear() {
+<span class="fc" id="L98">        history.clear();</span>
+<span class="fc" id="L99">        System.out.println(&quot;🧹 导航历史已清空&quot;);</span>
+<span class="fc" id="L100">    }</span>
+    
+    /**
+     * 返回首页（清空所有历史）
+     */
+    public void goHome(String homeFxmlPath, String homeTitle) {
+<span class="fc" id="L106">        clear();</span>
+<span class="fc" id="L107">        push(homeFxmlPath, homeTitle);</span>
+<span class="fc" id="L108">    }</span>
+    
+    /**
+     * 打印导航历史（调试用）
+     */
+    private void printHistory() {
+<span class="fc" id="L114">        System.out.println(&quot;📊 导航栈 (共 &quot; + history.size() + &quot; 页):&quot;);</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        for (int i = history.size() - 1; i &gt;= 0; i--) {</span>
+<span class="fc" id="L116">            NavigationHistory nav = history.get(i);</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">            String arrow = (i == history.size() - 1) ? &quot;➜ &quot; : &quot;  &quot;;</span>
+<span class="fc" id="L118">            System.out.println(arrow + nav.title);</span>
+        }
+<span class="fc" id="L120">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

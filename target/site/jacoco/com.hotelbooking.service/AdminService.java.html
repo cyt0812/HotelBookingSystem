@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdminService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.service</a> &gt; <span class="el_source">AdminService.java</span></div><h1>AdminService.java</h1><pre class="source lang-java linenums">package com.hotelbooking.service;
+
+import com.hotelbooking.dao.BookingDAO;
+import com.hotelbooking.dao.HotelDAO;
+import com.hotelbooking.dao.UserDAO;
+import com.hotelbooking.entity.Booking;
+import com.hotelbooking.entity.Hotel;
+import com.hotelbooking.entity.User;
+import com.hotelbooking.exception.BusinessException;
+import com.hotelbooking.exception.ErrorType;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public class AdminService {
+    private UserDAO userDAO;
+    private HotelDAO hotelDAO;
+    private BookingDAO bookingDAO;
+    
+<span class="fc" id="L21">    public AdminService(UserDAO userDAO, HotelDAO hotelDAO, BookingDAO bookingDAO) {</span>
+<span class="fc" id="L22">        this.userDAO = userDAO;</span>
+<span class="fc" id="L23">        this.hotelDAO = hotelDAO;</span>
+<span class="fc" id="L24">        this.bookingDAO = bookingDAO;</span>
+<span class="fc" id="L25">    }</span>
+    
+    /**
+     * Get all users
+     */
+    public List&lt;User&gt; getAllUsers() {
+        try {
+<span class="fc" id="L32">            return userDAO.getAllUsers();</span>
+<span class="nc" id="L33">        } catch (Exception e) {</span>
+<span class="nc" id="L34">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L35">                &quot;Failed to get user list: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Get all hotels
+     */
+    public List&lt;Hotel&gt; getAllHotels() {
+        try {
+<span class="fc" id="L44">            return hotelDAO.getAllHotels();</span>
+<span class="nc" id="L45">        } catch (Exception e) {</span>
+<span class="nc" id="L46">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L47">                &quot;Failed to get hotel list: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Get all bookings
+     */
+    public List&lt;Booking&gt; getAllBookings() {
+        try {
+<span class="fc" id="L56">            List&lt;Booking&gt; allBookings = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L57">            List&lt;Hotel&gt; allHotels = hotelDAO.getAllHotels();</span>
+            
+<span class="fc bfc" id="L59" title="All 2 branches covered.">            for (Hotel hotel : allHotels) {</span>
+<span class="fc" id="L60">                List&lt;Booking&gt; hotelBookings = bookingDAO.getBookingsByHotelId(hotel.getId());</span>
+<span class="fc" id="L61">                allBookings.addAll(hotelBookings);</span>
+<span class="fc" id="L62">            }</span>
+            
+<span class="fc" id="L64">            return allBookings;</span>
+<span class="nc" id="L65">        } catch (Exception e) {</span>
+<span class="nc" id="L66">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L67">                &quot;Failed to get booking list: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Get booking statistics
+     */
+    public String getBookingStatistics() {
+        try {
+<span class="fc" id="L76">            List&lt;Hotel&gt; hotels = hotelDAO.getAllHotels();</span>
+<span class="fc" id="L77">            int totalBookings = 0;</span>
+<span class="fc" id="L78">            int confirmedBookings = 0;</span>
+<span class="fc" id="L79">            int paidBookings = 0;</span>
+<span class="fc" id="L80">            int cancelledBookings = 0;</span>
+<span class="fc" id="L81">            BigDecimal totalRevenue = BigDecimal.ZERO;</span>
+            
+<span class="fc bfc" id="L83" title="All 2 branches covered.">            for (Hotel hotel : hotels) {</span>
+<span class="fc" id="L84">                List&lt;Booking&gt; hotelBookings = bookingDAO.getBookingsByHotelId(hotel.getId());</span>
+<span class="fc" id="L85">                totalBookings += hotelBookings.size();</span>
+                
+<span class="fc bfc" id="L87" title="All 2 branches covered.">                for (Booking booking : hotelBookings) {</span>
+<span class="pc bpc" id="L88" title="2 of 4 branches missed.">                    switch (booking.getStatus()) {</span>
+                        case &quot;CONFIRMED&quot;:
+<span class="fc" id="L90">                            confirmedBookings++;</span>
+<span class="fc" id="L91">                            break;</span>
+                        case &quot;PAID&quot;:
+<span class="fc" id="L93">                            paidBookings++;</span>
+<span class="fc" id="L94">                            totalRevenue = totalRevenue.add(booking.getTotalPrice());</span>
+<span class="fc" id="L95">                            break;</span>
+                        case &quot;CANCELLED&quot;:
+<span class="nc" id="L97">                            cancelledBookings++;</span>
+                            break;
+                    }
+<span class="fc" id="L100">                }</span>
+<span class="fc" id="L101">            }</span>
+            
+<span class="fc" id="L103">            return String.format(</span>
+                &quot;=== Booking Statistics ===\n&quot; +
+                &quot;Total Hotels: %d\n&quot; +
+                &quot;Total Bookings: %d\n&quot; +
+                &quot;Confirmed: %d\n&quot; +
+                &quot;Paid: %d\n&quot; +
+                &quot;Cancelled: %d\n&quot; +
+                &quot;Total Revenue: $%.2f\n&quot; +
+                &quot;==========================&quot;,
+<span class="fc" id="L112">                hotels.size(), totalBookings, confirmedBookings, paidBookings, cancelledBookings, totalRevenue</span>
+            );
+<span class="nc" id="L114">        } catch (Exception e) {</span>
+<span class="nc" id="L115">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L116">                &quot;Failed to get statistics: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Update user role
+     */
+    public boolean updateUserRole(Integer userId, String newRole) {
+        try {
+<span class="fc" id="L125">            Optional&lt;User&gt; userOpt = userDAO.getUserById(userId);</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">            if (userOpt.isPresent()) {</span>
+<span class="fc" id="L127">                User user = userOpt.get();</span>
+<span class="fc" id="L128">                user.setRole(newRole);</span>
+<span class="fc" id="L129">                return userDAO.updateUser(user);</span>
+            }
+<span class="fc" id="L131">            return false;</span>
+<span class="nc" id="L132">        } catch (Exception e) {</span>
+<span class="nc" id="L133">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L134">                &quot;Failed to update user role: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Delete user
+     */
+    public boolean deleteUser(Integer userId) {
+        try {
+<span class="fc" id="L143">            return userDAO.deleteUser(userId);</span>
+<span class="nc" id="L144">        } catch (Exception e) {</span>
+<span class="nc" id="L145">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L146">                &quot;Failed to delete user: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Delete hotel
+     */
+    public boolean deleteHotel(Integer hotelId) {
+        try {
+<span class="fc" id="L155">            return hotelDAO.deleteHotel(hotelId);</span>
+<span class="nc" id="L156">        } catch (Exception e) {</span>
+<span class="nc" id="L157">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L158">                &quot;Failed to delete hotel: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Cancel user booking (admin permission)
+     */
+    public boolean cancelUserBooking(Integer bookingId) {
+        try {
+<span class="fc" id="L167">            Optional&lt;Booking&gt; bookingOpt = bookingDAO.getBookingById(bookingId);</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">            if (bookingOpt.isPresent()) {</span>
+<span class="fc" id="L169">                return bookingDAO.updateBookingStatus(bookingId, &quot;CANCELLED&quot;);</span>
+            }
+<span class="nc" id="L171">            return false;</span>
+<span class="nc" id="L172">        } catch (Exception e) {</span>
+<span class="nc" id="L173">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L174">                &quot;Failed to cancel user booking: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Get system total revenue
+     */
+    public BigDecimal getTotalRevenue() {
+        try {
+<span class="fc" id="L183">            List&lt;Booking&gt; allBookings = getAllBookings();</span>
+<span class="fc" id="L184">            return allBookings.stream()</span>
+<span class="fc" id="L185">                    .filter(booking -&gt; &quot;PAID&quot;.equals(booking.getStatus()))</span>
+<span class="fc" id="L186">                    .map(Booking::getTotalPrice)</span>
+<span class="fc" id="L187">                    .reduce(BigDecimal.ZERO, BigDecimal::add);</span>
+<span class="nc" id="L188">        } catch (Exception e) {</span>
+<span class="nc" id="L189">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L190">                &quot;Failed to get total revenue: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Get most popular hotels
+     */
+    public String getMostPopularHotel() {
+        try {
+<span class="fc" id="L199">            List&lt;Hotel&gt; hotels = hotelDAO.getAllHotels();</span>
+<span class="fc" id="L200">            Hotel mostPopular = null;</span>
+<span class="fc" id="L201">            int maxBookings = 0;</span>
+            
+<span class="fc bfc" id="L203" title="All 2 branches covered.">            for (Hotel hotel : hotels) {</span>
+<span class="fc" id="L204">                List&lt;Booking&gt; hotelBookings = bookingDAO.getBookingsByHotelId(hotel.getId());</span>
+<span class="fc" id="L205">                int paidBookings = (int) hotelBookings.stream()</span>
+<span class="fc" id="L206">                        .filter(booking -&gt; &quot;PAID&quot;.equals(booking.getStatus()))</span>
+<span class="fc" id="L207">                        .count();</span>
+                
+<span class="fc bfc" id="L209" title="All 2 branches covered.">                if (paidBookings &gt; maxBookings) {</span>
+<span class="fc" id="L210">                    maxBookings = paidBookings;</span>
+<span class="fc" id="L211">                    mostPopular = hotel;</span>
+                }
+<span class="fc" id="L213">            }</span>
+            
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">            return mostPopular != null ? </span>
+<span class="fc" id="L216">                String.format(&quot;%s (%d bookings)&quot;, mostPopular.getName(), maxBookings) : </span>
+<span class="nc" id="L217">                &quot;No bookings yet&quot;;</span>
+<span class="nc" id="L218">        } catch (Exception e) {</span>
+<span class="nc" id="L219">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L220">                &quot;Failed to get popular hotels: &quot; + e.getMessage(), e);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

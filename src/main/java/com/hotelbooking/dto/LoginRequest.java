@@ -4,16 +4,16 @@ public class LoginRequest {
     private String username;
     private String password;
     
-    // 默认构造器
+    // Default constructor
     public LoginRequest() {}
     
-    // 全参数构造器
+    // All-args constructor
     public LoginRequest(String username, String password) {
         this.username = username;
         this.password = password;
     }
     
-    // Getter 和 Setter
+    // Getters and Setters
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
     

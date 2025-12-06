@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HotelController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.controller</a> &gt; <span class="el_source">HotelController.java</span></div><h1>HotelController.java</h1><pre class="source lang-java linenums">package com.hotelbooking.controller;
+
+import com.hotelbooking.dto.ApiResponse;
+import com.hotelbooking.entity.Hotel;
+import com.hotelbooking.entity.Room;
+import com.hotelbooking.exception.BusinessException;
+import com.hotelbooking.exception.ErrorType;
+import com.hotelbooking.service.HotelService;
+import com.hotelbooking.service.RoomService;
+import com.hotelbooking.exception.GlobalExceptionHandler;
+import java.math.BigDecimal;
+import java.util.List;
+
+public class HotelController {
+    private final HotelService hotelService;
+    private final RoomService roomService;
+    
+<span class="fc" id="L18">    public HotelController(HotelService hotelService, RoomService roomService) {</span>
+<span class="fc" id="L19">        this.hotelService = hotelService;</span>
+<span class="fc" id="L20">        this.roomService = roomService;</span>
+<span class="fc" id="L21">    }</span>
+    
+    /**
+     * 创建酒店
+     */
+    public ApiResponse&lt;Object&gt; createHotel(String name, String location, String description,String amenities, Integer availableRooms) {
+        try {
+<span class="fc" id="L28">            Hotel hotel = hotelService.createHotel(name, location, description, amenities, availableRooms);</span>
+<span class="fc" id="L29">            return ApiResponse.success(&quot;酒店创建成功&quot;, hotel);</span>
+<span class="nc" id="L30">        } catch (Exception e) {</span>
+<span class="nc" id="L31">            return GlobalExceptionHandler.handleException(e);</span>
+        }
+    }
+    
+    /**
+     * 根据ID获取酒店
+     */
+   public ApiResponse&lt;Object&gt; getHotelById(Integer hotelId) {
+    try {
+<span class="fc" id="L40">        Hotel hotel = hotelService.getHotelById(hotelId)</span>
+<span class="fc" id="L41">                .orElseThrow(() -&gt; new BusinessException(</span>
+                    ErrorType.HOTEL_NOT_FOUND,
+                    &quot;酒店不存在，ID: &quot; + hotelId
+                ));
+<span class="fc" id="L45">        return ApiResponse.success(&quot;获取酒店信息成功&quot;, hotel);</span>
+<span class="fc" id="L46">    } catch (Exception e) {</span>
+<span class="fc" id="L47">        return GlobalExceptionHandler.handleException(e);</span>
+    }
+}
+    /**
+     * 获取所有酒店
+     */
+    public ApiResponse&lt;Object&gt; getAllHotels() {
+        try {
+<span class="fc" id="L55">            List&lt;Hotel&gt; hotels = hotelService.getAllHotels();</span>
+<span class="fc" id="L56">            return ApiResponse.success(&quot;获取酒店列表成功&quot;, hotels);</span>
+<span class="nc" id="L57">        } catch (Exception e) {</span>
+<span class="nc" id="L58">            return GlobalExceptionHandler.handleException(e);</span>
+        }
+    }
+    
+    /**
+     * 根据位置获取酒店
+     */
+    public ApiResponse&lt;Object&gt; getHotelsByLocation(String location) {
+        try {
+<span class="fc" id="L67">            List&lt;Hotel&gt; hotels = hotelService.getHotelsByLocation(location);</span>
+<span class="fc" id="L68">            return ApiResponse.success(&quot;获取位置酒店列表成功&quot;, hotels);</span>
+<span class="nc" id="L69">        } catch (Exception e) {</span>
+<span class="nc" id="L70">            return GlobalExceptionHandler.handleException(e);</span>
+        }
+    }
+    
+    /**
+     * 更新酒店信息
+     */
+    public ApiResponse&lt;Object&gt; updateHotel(Hotel hotel) {
+        try {
+<span class="fc" id="L79">            boolean result = hotelService.updateHotel(hotel);</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">            String message = result ? &quot;酒店信息更新成功&quot; : &quot;酒店信息更新失败&quot;;</span>
+<span class="fc" id="L81">            return ApiResponse.success(message, result);</span>
+<span class="nc" id="L82">        } catch (Exception e) {</span>
+<span class="nc" id="L83">            return GlobalExceptionHandler.handleException(e);</span>
+        }
+    }
+    
+    /**
+     * 删除酒店
+     */
+    public ApiResponse&lt;Object&gt; deleteHotel(Integer hotelId) {
+        try {
+<span class="fc" id="L92">            boolean result = hotelService.deleteHotel(hotelId);</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">            String message = result ? &quot;酒店删除成功&quot; : &quot;酒店删除失败&quot;;</span>
+<span class="fc" id="L94">            return ApiResponse.success(message, result);</span>
+<span class="nc" id="L95">        } catch (Exception e) {</span>
+<span class="nc" id="L96">            return GlobalExceptionHandler.handleException(e);</span>
+        }
+    }
+    
+    /**
+     * 创建房间
+     */
+    public ApiResponse&lt;Object&gt; createRoom(Integer hotelId, String roomNumber, String roomType, 
+                                      BigDecimal price, boolean available) {
+        try {
+<span class="fc" id="L106">            Room room = roomService.createRoom(hotelId, roomNumber, roomType, price, available);</span>
+<span class="fc" id="L107">            return ApiResponse.success(&quot;房间创建成功&quot;, room);</span>
+<span class="nc" id="L108">        } catch (Exception e) {</span>
+<span class="nc" id="L109">            return GlobalExceptionHandler.handleException(e);</span>
+        }
+    }
+    
+    /**
+     * 根据ID获取房间
+     */
+    public ApiResponse&lt;Object&gt; getRoomById(Integer roomId) {
+        try {
+<span class="fc" id="L118">            Room room = roomService.getRoomById(roomId)</span>
+<span class="pc" id="L119">                    .orElseThrow(() -&gt; new RuntimeException(&quot;房间不存在，ID: &quot; + roomId));</span>
+<span class="fc" id="L120">            return ApiResponse.success(&quot;获取房间信息成功&quot;, room);</span>
+<span class="nc" id="L121">        } catch (Exception e) {</span>
+<span class="nc" id="L122">            return GlobalExceptionHandler.handleException(e);</span>
+        }
+    }
+    
+    /**
+     * 获取酒店的所有房间
+     */
+    public ApiResponse&lt;Object&gt; getRoomsByHotel(Integer hotelId) {
+        try {
+<span class="fc" id="L131">            List&lt;Room&gt; rooms = roomService.getRoomsByHotelId(hotelId);</span>
+<span class="fc" id="L132">            return ApiResponse.success(&quot;获取酒店房间列表成功&quot;, rooms);</span>
+<span class="nc" id="L133">        } catch (Exception e) {</span>
+<span class="nc" id="L134">            return GlobalExceptionHandler.handleException(e);</span>
+        }
+    }
+    
+    /**
+     * 获取酒店的可用房间
+     */
+    public ApiResponse&lt;Object&gt; getAvailableRoomsByHotel(Integer hotelId) {
+        try {
+<span class="fc" id="L143">            List&lt;Room&gt; rooms = roomService.getAvailableRoomsByHotelId(hotelId);</span>
+<span class="fc" id="L144">            return ApiResponse.success(&quot;获取可用房间列表成功&quot;, rooms);</span>
+<span class="nc" id="L145">        } catch (Exception e) {</span>
+<span class="nc" id="L146">            return GlobalExceptionHandler.handleException(e);</span>
+        }
+    }
+    
+    /**
+     * 根据房型获取房间
+     */
+    public ApiResponse&lt;Object&gt; getRoomsByType(String roomType) {
+        try {
+<span class="fc" id="L155">            List&lt;Room&gt; rooms = roomService.getRoomsByType(roomType);</span>
+<span class="fc" id="L156">            return ApiResponse.success(&quot;获取房型房间列表成功&quot;, rooms);</span>
+<span class="nc" id="L157">        } catch (Exception e) {</span>
+<span class="nc" id="L158">            return GlobalExceptionHandler.handleException(e);</span>
+        }
+    }
+    
+    /**
+     * 更新房间信息
+     */
+    public ApiResponse&lt;Object&gt; updateRoom(Room room) {
+        try {
+<span class="fc" id="L167">            boolean result = roomService.updateRoom(room);</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">            String message = result ? &quot;房间信息更新成功&quot; : &quot;房间信息更新失败&quot;;</span>
+<span class="fc" id="L169">            return ApiResponse.success(message, result);</span>
+<span class="nc" id="L170">        } catch (Exception e) {</span>
+<span class="nc" id="L171">            return GlobalExceptionHandler.handleException(e);</span>
+        }
+    }
+    
+    /**
+     * 更新房间可用状态
+     */
+    public ApiResponse&lt;Object&gt; updateRoomAvailability(Integer roomId, boolean available) {
+        try {
+<span class="fc" id="L180">            boolean result = roomService.updateRoomAvailability(roomId, available);</span>
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">            String message = result ? &quot;房间状态更新成功&quot; : &quot;房间状态更新失败&quot;;</span>
+<span class="fc" id="L182">            return ApiResponse.success(message, result);</span>
+<span class="nc" id="L183">        } catch (Exception e) {</span>
+<span class="nc" id="L184">            return GlobalExceptionHandler.handleException(e);</span>
+        }
+    }
+    
+    /**
+     * 删除房间
+     */
+    public ApiResponse&lt;Object&gt; deleteRoom(Integer roomId) {
+        try {
+<span class="fc" id="L193">            boolean result = roomService.deleteRoom(roomId);</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">            String message = result ? &quot;房间删除成功&quot; : &quot;房间删除失败&quot;;</span>
+<span class="fc" id="L195">            return ApiResponse.success(message, result);</span>
+<span class="nc" id="L196">        } catch (Exception e) {</span>
+<span class="nc" id="L197">            return GlobalExceptionHandler.handleException(e);</span>
+        }
+    }
+    
+    /**
+     * 搜索酒店（根据名称和位置）
+     */
+    public ApiResponse&lt;Object&gt; searchHotels(String name, String location) {
+        try {
+<span class="fc" id="L206">            List&lt;Hotel&gt; allHotels = hotelService.getAllHotels();</span>
+
+            // Normalize input
+<span class="pc bpc" id="L209" title="2 of 4 branches missed.">            String n = (name == null || name.trim().isEmpty()) ? null : name.trim().toLowerCase();</span>
+<span class="pc bpc" id="L210" title="2 of 4 branches missed.">            String loc = (location == null || location.trim().isEmpty()) ? null : location.trim().toLowerCase();</span>
+
+<span class="fc" id="L212">            List&lt;Hotel&gt; filteredHotels = allHotels.stream()</span>
+<span class="fc" id="L213">                .filter(hotel -&gt; {</span>
+<span class="fc" id="L214">                    String hotelName = hotel.getName().toLowerCase();</span>
+<span class="fc" id="L215">                    String hotelLoc = hotel.getLocation().toLowerCase();</span>
+
+<span class="pc bpc" id="L217" title="1 of 4 branches missed.">                    boolean matchName = (n == null) || hotelName.contains(n);</span>
+<span class="pc bpc" id="L218" title="1 of 4 branches missed.">                    boolean matchLoc = (loc == null) || hotelLoc.contains(loc);</span>
+
+<span class="pc bpc" id="L220" title="1 of 4 branches missed.">                    return matchName &amp;&amp; matchLoc;</span>
+                })
+<span class="fc" id="L222">                .toList();</span>
+
+<span class="fc" id="L224">            return ApiResponse.success(&quot;酒店搜索成功&quot;, filteredHotels);</span>
+
+<span class="nc" id="L226">        } catch (Exception e) {</span>
+<span class="nc" id="L227">            return GlobalExceptionHandler.handleException(e);</span>
+        }
+    }
+    
+    /**
+     * 搜索可用房间（根据酒店、房型、价格范围）
+     */
+    public ApiResponse&lt;Object&gt; searchAvailableRooms(Integer hotelId, String roomType, BigDecimal minPrice, BigDecimal maxPrice) {
+        try {
+<span class="fc" id="L236">            List&lt;Room&gt; availableRooms = roomService.getAvailableRoomsByHotelId(hotelId);</span>
+            
+<span class="fc" id="L238">            List&lt;Room&gt; filteredRooms = availableRooms.stream()</span>
+<span class="fc" id="L239">                    .filter(room -&gt; </span>
+<span class="pc bpc" id="L240" title="2 of 6 branches missed.">                        (roomType == null || room.getRoomType().equalsIgnoreCase(roomType)) &amp;&amp;</span>
+<span class="pc bpc" id="L241" title="2 of 4 branches missed.">                        (minPrice == null || room.getPrice().compareTo(minPrice) &gt;= 0) &amp;&amp;</span>
+<span class="pc bpc" id="L242" title="1 of 2 branches missed.">                        (maxPrice == null || room.getPrice().compareTo(maxPrice) &lt;= 0)</span>
+                    )
+<span class="fc" id="L244">                    .toList();</span>
+            
+<span class="fc" id="L246">            return ApiResponse.success(&quot;房间搜索成功&quot;, filteredRooms);</span>
+<span class="nc" id="L247">        } catch (Exception e) {</span>
+<span class="nc" id="L248">            return GlobalExceptionHandler.handleException(e);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.hotelbooking.dao.RoomDAOTest
 -------------------------------------------------------------------------------
-Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.513 s -- in com.hotelbooking.dao.RoomDAOTest
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.661 s -- in com.hotelbooking.dao.RoomDAOTest

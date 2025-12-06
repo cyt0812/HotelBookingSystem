@@ -3,6 +3,8 @@ package com.hotelbooking.controller;
 import com.hotelbooking.dao.HotelDAO;
 import com.hotelbooking.entity.Hotel;
 import com.hotelbooking.service.HotelService;
+import com.hotelbooking.util.NavigationManager;
+import com.hotelbooking.util.SessionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -23,10 +25,19 @@ public class SearchHotelsController {
     
     private HotelService hotelService;
     
+//    @FXML
+//    public void initialize() {
+//        System.out.println("✅ 酒店搜索页面初始化");
+//        hotelService = new HotelService(); // ✅❗一定用无参构造
+//    }
     @FXML
     public void initialize() {
         System.out.println("✅ 酒店搜索页面初始化");
         hotelService = new HotelService(); // ✅❗一定用无参构造
+
+        // 默认显示全部酒店
+        List<Hotel> allHotels = hotelService.getAllHotels();
+        displayHotels(allHotels);
     }
     
     /**
@@ -199,10 +210,20 @@ public class SearchHotelsController {
         try {
             System.out.println("🏨 查看酒店房间: " + hotel.getName());
             
+            SessionManager.setCurrentHotel(hotel);  // 设置当前酒店信息
+
+            
+            // 在任何导航前调用
+            NavigationManager.getInstance().push(
+                "/com/hotelbooking/view/hotel_rooms.fxml",
+                "Hotel Rooms"
+            );
+            
             FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/com/hotelbooking/view/hotel_rooms.fxml")
             );
             Parent root = loader.load();
+            
             
             // 传递酒店信息给房间页面
             HotelRoomsController controller = loader.getController();

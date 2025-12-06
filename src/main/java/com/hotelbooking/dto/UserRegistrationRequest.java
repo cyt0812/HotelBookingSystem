@@ -6,10 +6,10 @@ public class UserRegistrationRequest {
     private String password;
     private String role;
     
-    // 默认构造器
+    // Default constructor
     public UserRegistrationRequest() {}
     
-    // 全参数构造器
+    // All-args constructor
     public UserRegistrationRequest(String username, String email, String password, String role) {
         this.username = username;
         this.email = email;
@@ -17,7 +17,7 @@ public class UserRegistrationRequest {
         this.role = role;
     }
     
-    // Getter 和 Setter
+    // Getters and Setters
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
     

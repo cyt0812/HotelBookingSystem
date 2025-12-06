@@ -10,13 +10,13 @@ class BookingTest {
 
     @Test
     void bookingCreation_WithAllFields_ShouldSetPropertiesCorrectly() {
-        // 准备 & 执行
+        // Arrange & Act
         LocalDate checkIn = LocalDate.now().plusDays(1);
         LocalDate checkOut = LocalDate.now().plusDays(3);
         Booking booking = new Booking(1, 1, 1, checkIn, checkOut, 
                                     new BigDecimal("199.98"), "CONFIRMED");
         
-        // 验证
+        // Assert
         assertEquals(1, booking.getUserId());
         assertEquals(1, booking.getHotelId());
         assertEquals(1, booking.getRoomId());
@@ -30,13 +30,13 @@ class BookingTest {
 
     @Test
     void bookingSetters_ShouldUpdateFieldsCorrectly() {
-        // 准备
+        // Arrange
         Booking booking = new Booking();
         LocalDate checkIn = LocalDate.now().plusDays(1);
         LocalDate checkOut = LocalDate.now().plusDays(3);
         LocalDateTime createdAt = LocalDateTime.now().minusHours(1);
         
-        // 执行
+        // Act
         booking.setId(1);
         booking.setUserId(2);
         booking.setHotelId(3);
@@ -47,7 +47,7 @@ class BookingTest {
         booking.setStatus("CANCELLED");
         booking.setCreatedAt(createdAt);
         
-        // 验证
+        // Assert
         assertEquals(1, booking.getId());
         assertEquals(2, booking.getUserId());
         assertEquals(3, booking.getHotelId());
@@ -61,7 +61,7 @@ class BookingTest {
 
     @Test
     void bookingStatuses_ShouldHaveValidValues() {
-        // 测试预订状态常量
+        // Test booking status constants
         Booking booking1 = new Booking(1, 1, 1, LocalDate.now(), LocalDate.now().plusDays(1), 
                                      new BigDecimal("100"), "PENDING");
         Booking booking2 = new Booking(1, 1, 1, LocalDate.now(), LocalDate.now().plusDays(1), 
@@ -79,12 +79,12 @@ class BookingTest {
 
     @Test
     void bookingDuration_ShouldCalculateCorrectNumberOfNights() {
-        // 准备
+        // Arrange
         LocalDate checkIn = LocalDate.of(2024, 1, 1);
         LocalDate checkOut = LocalDate.of(2024, 1, 5);
         Booking booking = new Booking(1, 1, 1, checkIn, checkOut, new BigDecimal("400"), "CONFIRMED");
         
-        // 验证 - 4晚住宿
+        // Assert - 4 nights stay
         assertEquals(4, checkIn.until(checkOut).getDays());
     }
 }

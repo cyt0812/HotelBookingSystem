@@ -21,8 +21,6 @@
                        style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a; -fx-cursor: hand;"/>
             </HBox>
             
-            <Button text="Help" style="-fx-background-color: transparent; -fx-text-fill: #333; -fx-font-size: 14px;"/>
-            <Button text="My Trips" style="-fx-background-color: transparent; -fx-text-fill: #333; -fx-font-size: 14px;"/>
         </HBox>
     </top>
     

@@ -10,7 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import java.util.Optional;
 
 public class RegisterController {
     
@@ -21,131 +20,74 @@ public class RegisterController {
     @FXML private CheckBox termsCheckbox;
     @FXML private Label errorLabel;
     
-    // 假设你有一个 UserDAO 类，实例化并传递给 UserService
-    UserDAO userDAO = new UserDAO();  // 创建 UserDAO 实例
+    // Assume you have a UserDAO class, instantiate and pass it to UserService
+    UserDAO userDAO = new UserDAO();  // Create UserDAO instance
     private UserService userService = new UserService(userDAO);
     
     @FXML
     public void initialize() {
-        System.out.println("✅ 注册页面初始化");
+        System.out.println("✅ Register page initialized");
         if (errorLabel != null) {
             errorLabel.setText("");
         }
     }
     
     /**
-     * 处理注册
+     * Handle registration
      */
     @FXML
     private void handleRegister() {
-        System.out.println("🔘 注册按钮被点击");
+        System.out.println("🔘 Register button clicked");
 
-        // 获取输入
+        // Get user input
         String username = usernameField.getText().trim();
         String email = emailField.getText().trim();
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
 
-        // 基础验证（你已有）
+        // Basic validation (you already have this)
         if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            showError("所有字段都必须填写");
+            showError("All fields must be filled");
             return;
         }
         if (!email.contains("@")) {
-            showError("请输入有效的邮箱地址");
+            showError("Please enter a valid email address");
             return;
         }
         if (password.length() < 6) {
-            showError("密码长度至少6位");
+            showError("Password must be at least 6 characters");
             return;
         }
         if (!password.equals(confirmPassword)) {
-            showError("两次输入的密码不一致");
+            showError("Passwords do not match");
             return;
         }
         if (!termsCheckbox.isSelected()) {
-            showError("请同意服务条款");
+            showError("Please agree to the terms and conditions");
             return;
         }
 
         try {
-            // ⭐ 调用不使用 Optional 的服务
+            // ⭐ Call service to register user (no longer using Optional)
             User registeredUser = userService.registerUser(username, email, password, "CUSTOMER");
 
-            // 自动登录
+            // Auto-login
             SessionManager.login(registeredUser);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("注册成功");
+            alert.setTitle("Registration Successful");
             alert.setHeaderText(null);
-            alert.setContentText("欢迎加入！即将跳转到主页面");
+            alert.setContentText("Welcome! You will be redirected to the main page.");
             alert.showAndWait();
 
             backToHome();
         } catch (Exception e) {
-            showError("注册失败: " + e.getMessage());
+            showError("Registration failed: " + e.getMessage());
         }
     }
-//    @FXML
-//    private void handleRegister() {
-//        System.out.println("🔘 注册按钮被点击");
-//        
-//        // 获取输入
-//        String username = usernameField.getText().trim();
-//        String email = emailField.getText().trim();
-//        String password = passwordField.getText();
-//        String confirmPassword = confirmPasswordField.getText();
-//        
-//        // 验证输入
-//        if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
-//            showError("所有字段都必须填写");
-//            return;
-//        }
-//        
-//        if (!email.contains("@")) {
-//            showError("请输入有效的邮箱地址");
-//            return;
-//        }
-//        
-//        if (password.length() < 6) {
-//            showError("密码长度至少6位");
-//            return;
-//        }
-//        
-//        if (!password.equals(confirmPassword)) {
-//            showError("两次输入的密码不一致");
-//            return;
-//        }
-//        
-//        if (!termsCheckbox.isSelected()) {
-//            showError("请同意服务条款");
-//            return;
-//        }
-//        
-//        // 创建用户
-//        User newUser = new User(username, email, password);
-//
-//        // 调用 UserService 注册
-//        Optional<User> registeredUser = userService.registerUser(username, email, password, "CUSTOMER");
-//
-//        if (registeredUser.isPresent()) {
-//            // 注册成功，自动登录
-//            SessionManager.login(registeredUser.get());
-//
-//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//            alert.setTitle("注册成功");
-//            alert.setHeaderText(null);
-//            alert.setContentText("欢迎加入！即将跳转到主页面");
-//            alert.showAndWait();
-//
-//            backToHome();
-//        } else {
-//            showError("注册失败，用户名可能已存在");
-//        }
-//    }
-    
+
     /**
-     * 跳转到登录页面
+     * Go to the login page
      */
     @FXML
     private void goToLogin() {
@@ -163,7 +105,7 @@ public class RegisterController {
     }
     
     /**
-     * 返回主页
+     * Go back to the home page
      */
     @FXML
     private void backToHome() {
@@ -181,9 +123,9 @@ public class RegisterController {
     }
     
     /**
-     * 显示错误信息
+     * Show error messages
      */
-    private void showError(String message) {
+    void showError(String message) {
         if (errorLabel != null) {
             errorLabel.setText(message);
         }

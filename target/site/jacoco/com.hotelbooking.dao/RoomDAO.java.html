@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RoomDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.dao</a> &gt; <span class="el_source">RoomDAO.java</span></div><h1>RoomDAO.java</h1><pre class="source lang-java linenums">package com.hotelbooking.dao;
+
+import com.hotelbooking.entity.Room;
+import com.hotelbooking.util.DatabaseConnection;
+import java.sql.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+<span class="fc" id="L11">public class RoomDAO {</span>
+    
+    public Room createRoom(Room room) {
+    // 添加 description 列，总共 7 个列
+<span class="fc" id="L15">    String sql = &quot;INSERT INTO rooms (hotel_id, room_number, room_type, price, max_occupancy, description, available) VALUES (?, ?, ?, ?, ?, ?, ?)&quot;;</span>
+    
+<span class="fc" id="L17">    try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L18">         PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {</span>
+        
+<span class="fc" id="L20">        stmt.setInt(1, room.getHotelId());</span>
+<span class="fc" id="L21">        stmt.setString(2, room.getRoomNumber());</span>
+<span class="fc" id="L22">        stmt.setString(3, room.getRoomType());</span>
+<span class="fc" id="L23">        stmt.setBigDecimal(4, new BigDecimal(String.valueOf(room.getPricePerNight())));</span>
+<span class="fc" id="L24">        stmt.setInt(5, room.getMaxOccupancy());</span>
+<span class="fc" id="L25">        stmt.setString(6, room.getDescription());     // 索引 6</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        stmt.setShort(7, room.isAvailable() ? (short)1 : (short)0);  // 索引 7</span>
+        
+<span class="fc" id="L28">        int affectedRows = stmt.executeUpdate();</span>
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">        if (affectedRows &gt; 0) {</span>
+<span class="fc" id="L30">            try (ResultSet rs = stmt.getGeneratedKeys()) {</span>
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">                if (rs.next()) {</span>
+<span class="fc" id="L32">                    room.setId(rs.getInt(1));  // 使用 setId() 方法</span>
+                }
+            }
+        }
+<span class="fc" id="L36">        return room;</span>
+<span class="nc" id="L37">    } catch (SQLException e) {</span>
+<span class="nc" id="L38">        throw new RuntimeException(&quot;Error creating room&quot;, e);</span>
+    }
+}
+
+    public Optional&lt;Room&gt; getRoomById(Integer id) {
+<span class="fc" id="L43">        String sql = &quot;SELECT * FROM rooms WHERE id = ?&quot;;</span>
+        
+<span class="fc" id="L45">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L46">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L48">            stmt.setInt(1, id);</span>
+<span class="fc" id="L49">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="fc bfc" id="L51" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L52">                return Optional.of(mapResultSetToRoom(rs));</span>
+            }
+<span class="fc" id="L54">            return Optional.empty();</span>
+            
+<span class="pc bpc" id="L56" title="2 of 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L57">            throw new RuntimeException(&quot;Error getting room by id: &quot; + id, e);</span>
+        }
+    }
+
+    public List&lt;Room&gt; getRoomsByHotelId(Integer hotelId) {
+<span class="fc" id="L62">        String sql = &quot;SELECT * FROM rooms WHERE hotel_id = ? ORDER BY room_number ASC&quot;;</span>
+<span class="fc" id="L63">        List&lt;Room&gt; rooms = new ArrayList&lt;&gt;();</span>
+        
+<span class="fc" id="L65">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L66">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L68">            stmt.setInt(1, hotelId);</span>
+<span class="fc" id="L69">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="fc bfc" id="L71" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L72">                rooms.add(mapResultSetToRoom(rs));</span>
+            }
+<span class="fc" id="L74">            return rooms;</span>
+            
+<span class="nc" id="L76">        } catch (SQLException e) {</span>
+<span class="nc" id="L77">            throw new RuntimeException(&quot;Error getting rooms by hotel id: &quot; + hotelId, e);</span>
+        }
+    }
+
+    public List&lt;Room&gt; getAvailableRoomsByHotelId(Integer hotelId) {
+<span class="fc" id="L82">       String sql = &quot;SELECT * FROM rooms WHERE hotel_id = ? AND available = 1 ORDER BY room_number ASC&quot;;</span>
+<span class="fc" id="L83">        List&lt;Room&gt; rooms = new ArrayList&lt;&gt;();</span>
+        
+<span class="fc" id="L85">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L86">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L88">            stmt.setInt(1, hotelId);</span>
+<span class="fc" id="L89">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="fc bfc" id="L91" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L92">                rooms.add(mapResultSetToRoom(rs));</span>
+            }
+<span class="fc" id="L94">            return rooms;</span>
+            
+<span class="nc" id="L96">        } catch (SQLException e) {</span>
+<span class="nc" id="L97">            throw new RuntimeException(&quot;Error getting available rooms by hotel id: &quot; + hotelId, e);</span>
+        }
+    }
+
+    public List&lt;Room&gt; getRoomsByType(String roomType) {
+<span class="fc" id="L102">        String sql = &quot;SELECT * FROM rooms WHERE room_type = ? ORDER BY price ASC&quot;;</span>
+<span class="fc" id="L103">        List&lt;Room&gt; rooms = new ArrayList&lt;&gt;();</span>
+        
+<span class="fc" id="L105">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L106">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L108">            stmt.setString(1, roomType);</span>
+<span class="fc" id="L109">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="fc bfc" id="L111" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L112">                rooms.add(mapResultSetToRoom(rs));</span>
+            }
+<span class="fc" id="L114">            return rooms;</span>
+            
+<span class="nc" id="L116">        } catch (SQLException e) {</span>
+<span class="nc" id="L117">            throw new RuntimeException(&quot;Error getting rooms by type: &quot; + roomType, e);</span>
+        }
+    }
+
+    /**
+     * Query rooms by price range
+     */
+    public List&lt;Room&gt; getRoomsByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
+<span class="fc" id="L125">       String sql = &quot;SELECT * FROM rooms WHERE price BETWEEN ? AND ? AND available = 1 ORDER BY price ASC&quot;;</span>
+<span class="fc" id="L126">        List&lt;Room&gt; rooms = new ArrayList&lt;&gt;();</span>
+        
+<span class="fc" id="L128">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L129">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L131">            stmt.setBigDecimal(1, minPrice);</span>
+<span class="fc" id="L132">            stmt.setBigDecimal(2, maxPrice);</span>
+<span class="fc" id="L133">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="fc bfc" id="L135" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L136">                rooms.add(mapResultSetToRoom(rs));</span>
+            }
+<span class="fc" id="L138">            return rooms;</span>
+            
+<span class="nc" id="L140">        } catch (SQLException e) {</span>
+<span class="nc" id="L141">            throw new RuntimeException(&quot;Error getting rooms by price range: &quot; + minPrice + &quot; - &quot; + maxPrice, e);</span>
+        }
+    }
+
+    /**
+     * Get available rooms by hotel and type
+     */
+    public List&lt;Room&gt; getAvailableRoomsByHotelAndType(Integer hotelId, String roomType) {
+<span class="nc" id="L149">       String sql = &quot;SELECT * FROM rooms WHERE hotel_id = ? AND room_type = ? AND available = 1 ORDER BY price ASC&quot;;</span>
+<span class="nc" id="L150">        List&lt;Room&gt; rooms = new ArrayList&lt;&gt;();</span>
+        
+<span class="nc" id="L152">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L153">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="nc" id="L155">            stmt.setInt(1, hotelId);</span>
+<span class="nc" id="L156">            stmt.setString(2, roomType);</span>
+<span class="nc" id="L157">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="nc bnc" id="L159" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L160">                rooms.add(mapResultSetToRoom(rs));</span>
+            }
+<span class="nc" id="L162">            return rooms;</span>
+            
+<span class="nc" id="L164">        } catch (SQLException e) {</span>
+<span class="nc" id="L165">            throw new RuntimeException(&quot;Error getting available rooms by hotel and type. Hotel: &quot; + hotelId + &quot;, Type: &quot; + roomType, e);</span>
+        }
+    }
+
+    /**
+     * Update room availability
+     */
+    public boolean updateRoomAvailability(Integer roomId, boolean available) {
+<span class="fc" id="L173">        String sql = &quot;UPDATE rooms SET available = ? WHERE id = ?&quot;;</span>
+        
+<span class="fc" id="L175">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L176">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L178">            stmt.setBoolean(1, available);</span>
+<span class="fc" id="L179">            stmt.setInt(2, roomId);</span>
+<span class="fc" id="L180">            int affectedRows = stmt.executeUpdate();</span>
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">            return affectedRows &gt; 0;</span>
+            
+<span class="nc" id="L183">        } catch (SQLException e) {</span>
+<span class="nc" id="L184">            throw new RuntimeException(&quot;Error updating room availability: &quot; + roomId, e);</span>
+        }
+    }
+
+    /**
+     * Update room price
+     */
+    public boolean updateRoomPrice(Integer roomId, BigDecimal newPrice) {
+<span class="nc" id="L192">        String sql = &quot;UPDATE rooms SET price = ? WHERE id = ?&quot;;</span>
+        
+<span class="nc" id="L194">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L195">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="nc" id="L197">            stmt.setBigDecimal(1, newPrice);</span>
+<span class="nc" id="L198">            stmt.setInt(2, roomId);</span>
+<span class="nc" id="L199">            int affectedRows = stmt.executeUpdate();</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">            return affectedRows &gt; 0;</span>
+            
+<span class="nc" id="L202">        } catch (SQLException e) {</span>
+<span class="nc" id="L203">            throw new RuntimeException(&quot;Error updating room price: &quot; + roomId, e);</span>
+        }
+    }
+
+    /**
+     * Check if room number exists in hotel
+     */
+    public boolean isRoomNumberExists(Integer hotelId, String roomNumber) {
+<span class="fc" id="L211">        String sql = &quot;SELECT COUNT(*) FROM rooms WHERE hotel_id = ? AND room_number = ?&quot;;</span>
+        
+<span class="fc" id="L213">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L214">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L216">            stmt.setInt(1, hotelId);</span>
+<span class="fc" id="L217">            stmt.setString(2, roomNumber);</span>
+<span class="fc" id="L218">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc bfc" id="L221" title="All 2 branches covered.">                return rs.getInt(1) &gt; 0;</span>
+            }
+<span class="nc" id="L223">            return false;</span>
+            
+<span class="pc bpc" id="L225" title="2 of 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L226">            throw new RuntimeException(&quot;Error checking room number existence. Hotel: &quot; + hotelId + &quot;, Room: &quot; + roomNumber, e);</span>
+        }
+    }
+
+    /**
+     * Get all available rooms
+     */
+    public List&lt;Room&gt; getAllAvailableRooms() {
+<span class="fc" id="L234">       String sql = &quot;SELECT * FROM rooms WHERE available = 1 ORDER BY hotel_id, room_number ASC&quot;;</span>
+<span class="fc" id="L235">        List&lt;Room&gt; rooms = new ArrayList&lt;&gt;();</span>
+        
+<span class="fc" id="L237">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L238">             PreparedStatement stmt = conn.prepareStatement(sql);</span>
+<span class="fc" id="L239">             ResultSet rs = stmt.executeQuery()) {</span>
+            
+<span class="fc bfc" id="L241" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L242">                rooms.add(mapResultSetToRoom(rs));</span>
+            }
+<span class="fc" id="L244">            return rooms;</span>
+            
+<span class="nc" id="L246">        } catch (SQLException e) {</span>
+<span class="nc" id="L247">            throw new RuntimeException(&quot;Error getting all available rooms&quot;, e);</span>
+        }
+    }
+
+    /**
+     * Get room count by hotel
+     */
+    public int getRoomCountByHotel(Integer hotelId) {
+<span class="nc" id="L255">        String sql = &quot;SELECT COUNT(*) FROM rooms WHERE hotel_id = ?&quot;;</span>
+        
+<span class="nc" id="L257">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L258">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="nc" id="L260">            stmt.setInt(1, hotelId);</span>
+<span class="nc" id="L261">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="nc bnc" id="L263" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L264">                return rs.getInt(1);</span>
+            }
+<span class="nc" id="L266">            return 0;</span>
+            
+<span class="nc bnc" id="L268" title="All 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L269">            throw new RuntimeException(&quot;Error getting room count for hotel: &quot; + hotelId, e);</span>
+        }
+    }
+
+    /**
+     * Get available room count by hotel
+     */
+    public int getAvailableRoomCountByHotel(Integer hotelId) {
+<span class="nc" id="L277">       String sql = &quot;SELECT COUNT(*) FROM rooms WHERE hotel_id = ? AND available = 1&quot;;</span>
+        
+<span class="nc" id="L279">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="nc" id="L280">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="nc" id="L282">            stmt.setInt(1, hotelId);</span>
+<span class="nc" id="L283">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="nc bnc" id="L285" title="All 2 branches missed.">            if (rs.next()) {</span>
+<span class="nc" id="L286">                return rs.getInt(1);</span>
+            }
+<span class="nc" id="L288">            return 0;</span>
+            
+<span class="nc bnc" id="L290" title="All 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L291">            throw new RuntimeException(&quot;Error getting available room count for hotel: &quot; + hotelId, e);</span>
+        }
+    }
+
+    public boolean updateRoom(Room room) {
+<span class="fc" id="L296">        String sql = &quot;UPDATE rooms SET hotel_id = ?, room_number = ?, room_type = ?, price = ?, available = ?, description = ? WHERE id = ?&quot;;</span>
+        
+<span class="fc" id="L298">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L299">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L301">            stmt.setInt(1, room.getHotelId());</span>
+<span class="fc" id="L302">            stmt.setString(2, room.getRoomNumber());</span>
+<span class="fc" id="L303">            stmt.setString(3, room.getRoomType());</span>
+<span class="fc" id="L304">            stmt.setBigDecimal(4, room.getPrice());</span>
+<span class="fc" id="L305">            stmt.setBoolean(5, room.isAvailable());</span>
+<span class="fc" id="L306">            stmt.setString(6, room.getDescription());</span>
+<span class="fc" id="L307">            stmt.setInt(7, room.getId());</span>
+            
+<span class="fc" id="L309">            int affectedRows = stmt.executeUpdate();</span>
+<span class="pc bpc" id="L310" title="1 of 2 branches missed.">            return affectedRows &gt; 0;</span>
+            
+<span class="nc" id="L312">        } catch (SQLException e) {</span>
+<span class="nc" id="L313">            throw new RuntimeException(&quot;Error updating room: &quot; + room.getId(), e);</span>
+        }
+    }
+
+    public boolean deleteRoom(Integer id) {
+<span class="fc" id="L318">        String sql = &quot;DELETE FROM rooms WHERE id = ?&quot;;</span>
+        
+<span class="fc" id="L320">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L321">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L323">            stmt.setInt(1, id);</span>
+<span class="fc" id="L324">            int affectedRows = stmt.executeUpdate();</span>
+<span class="pc bpc" id="L325" title="1 of 2 branches missed.">            return affectedRows &gt; 0;</span>
+            
+<span class="nc" id="L327">        } catch (SQLException e) {</span>
+<span class="nc" id="L328">            throw new RuntimeException(&quot;Error deleting room: &quot; + id, e);</span>
+        }
+    }
+
+    private Room mapResultSetToRoom(ResultSet rs) throws SQLException {
+    // 获取所有值
+<span class="fc" id="L334">    int id = rs.getInt(&quot;id&quot;);</span>
+<span class="fc" id="L335">    int hotelId = rs.getInt(&quot;hotel_id&quot;);</span>
+<span class="fc" id="L336">    String roomNumber = rs.getString(&quot;room_number&quot;);</span>
+<span class="fc" id="L337">    String roomType = rs.getString(&quot;room_type&quot;);</span>
+<span class="fc" id="L338">    BigDecimal price = rs.getBigDecimal(&quot;price&quot;);</span>
+<span class="fc" id="L339">    int maxOccupancy = rs.getInt(&quot;max_occupancy&quot;);</span>
+<span class="fc" id="L340">    String description = rs.getString(&quot;description&quot;);</span>
+<span class="fc" id="L341">    short availableValue = rs.getShort(&quot;available&quot;);</span>
+    
+    // 创建 Room 对象（使用任意一个构造函数）
+<span class="fc" id="L344">    Room room = new Room(hotelId, roomNumber, roomType, </span>
+<span class="fc bfc" id="L345" title="All 2 branches covered.">                        price.doubleValue(), maxOccupancy, </span>
+                        availableValue == 1, 
+<span class="pc bpc" id="L347" title="1 of 2 branches missed.">                        description != null ? description : &quot;&quot;);</span>
+    
+    // 设置 ID
+<span class="fc" id="L350">    room.setId(id);</span>
+    
+<span class="fc" id="L352">    return room;</span>
+}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

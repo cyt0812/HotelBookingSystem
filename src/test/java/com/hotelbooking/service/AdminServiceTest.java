@@ -42,41 +42,41 @@ class AdminServiceTest {
 
     @Test
     void getAllUsers_ShouldReturnAllUsers() {
-        // 准备
+        // Arrange
         User user1 = new User("user1", "user1@test.com", "pass", "CUSTOMER");
         User user2 = new User("admin", "admin@test.com", "pass", "ADMIN");
         List<User> expectedUsers = Arrays.asList(user1, user2);
         
         when(userDAO.getAllUsers()).thenReturn(expectedUsers);
         
-        // 执行
+        // Act
         List<User> result = adminService.getAllUsers();
         
-        // 验证
+        // Assert
         assertEquals(2, result.size());
         verify(userDAO, times(1)).getAllUsers();
     }
 
     @Test
     void getAllHotels_ShouldReturnAllHotels() {
-        // 准备
+        // Arrange
         Hotel hotel1 = new Hotel("Hotel A", "City A", "Desc A","pool", 5);
         Hotel hotel2 = new Hotel("Hotel B", "City B", "Desc B","pool", 10);
         List<Hotel> expectedHotels = Arrays.asList(hotel1, hotel2);
         
         when(hotelDAO.getAllHotels()).thenReturn(expectedHotels);
         
-        // 执行
+        // Act
         List<Hotel> result = adminService.getAllHotels();
         
-        // 验证
+        // Assert
         assertEquals(2, result.size());
         verify(hotelDAO, times(1)).getAllHotels();
     }
 
     @Test
     void getAllBookings_ShouldReturnAllBookings() {
-        // 准备
+        // Arrange
         Hotel hotel1 = new Hotel("Hotel A", "City A", "Desc A","pool", 5);
         hotel1.setId(1);
         Hotel hotel2 = new Hotel("Hotel B", "City B", "Desc B","pool", 10);
@@ -92,10 +92,10 @@ class AdminServiceTest {
         when(bookingDAO.getBookingsByHotelId(1)).thenReturn(hotel1Bookings);
         when(bookingDAO.getBookingsByHotelId(2)).thenReturn(hotel2Bookings);
         
-        // 执行
+        // Act
         List<Booking> result = adminService.getAllBookings();
         
-        // 验证
+        // Assert
         assertNotNull(result);
         assertEquals(1, result.size());
         verify(hotelDAO, times(1)).getAllHotels();
@@ -105,7 +105,7 @@ class AdminServiceTest {
 
     @Test
     void getBookingStatistics_ShouldReturnStatistics() {
-        // 准备
+        // Arrange
         Hotel hotel1 = new Hotel("Hotel A", "City A", "Desc A","pool", 5);
         hotel1.setId(1);
         Hotel hotel2 = new Hotel("Hotel B", "City B", "Desc B","pool", 10);
@@ -123,10 +123,10 @@ class AdminServiceTest {
         when(bookingDAO.getBookingsByHotelId(1)).thenReturn(hotel1Bookings);
         when(bookingDAO.getBookingsByHotelId(2)).thenReturn(hotel2Bookings);
         
-        // 执行
+        // Act
         String statistics = adminService.getBookingStatistics();
         
-        // 验证
+        // Assert
         assertNotNull(statistics);
         assertTrue(statistics.contains("Total Hotels: 2"));
         assertTrue(statistics.contains("Total Bookings: 2"));
@@ -136,17 +136,17 @@ class AdminServiceTest {
 
     @Test
     void updateUserRole_WithValidUser_ShouldUpdateRole() {
-        // 准备
+        // Arrange
         User user = new User("testuser", "test@test.com", "pass", "CUSTOMER");
         user.setId(1);
         
         when(userDAO.getUserById(1)).thenReturn(Optional.of(user));
         when(userDAO.updateUser(any(User.class))).thenReturn(true);
         
-        // 执行
+        // Act
         boolean result = adminService.updateUserRole(1, "ADMIN");
         
-        // 验证
+        // Assert
         assertTrue(result);
         assertEquals("ADMIN", user.getRole());
         verify(userDAO, times(1)).updateUser(user);
@@ -154,33 +154,33 @@ class AdminServiceTest {
 
     @Test
     void updateUserRole_WithNonExistingUser_ShouldReturnFalse() {
-        // 准备
+        // Arrange
         when(userDAO.getUserById(999)).thenReturn(Optional.empty());
         
-        // 执行
+        // Act
         boolean result = adminService.updateUserRole(999, "ADMIN");
         
-        // 验证
+        // Assert
         assertFalse(result);
         verify(userDAO, never()).updateUser(any(User.class));
     }
 
     @Test
     void deleteHotel_WithExistingHotel_ShouldReturnTrue() {
-        // 准备
+        // Arrange
         when(hotelDAO.deleteHotel(1)).thenReturn(true);
         
-        // 执行
+        // Act
         boolean result = adminService.deleteHotel(1);
         
-        // 验证
+        // Assert
         assertTrue(result);
         verify(hotelDAO, times(1)).deleteHotel(1);
     }
 
     @Test
     void cancelUserBooking_WithValidBooking_ShouldCancelBooking() {
-        // 准备
+        // Arrange
         Booking booking = new Booking(1, 1, 1, LocalDate.now().plusDays(1), LocalDate.now().plusDays(3), 
                                     new BigDecimal("200"), "CONFIRMED");
         booking.setId(1);
@@ -188,17 +188,17 @@ class AdminServiceTest {
         when(bookingDAO.getBookingById(1)).thenReturn(Optional.of(booking));
         when(bookingDAO.updateBookingStatus(1, "CANCELLED")).thenReturn(true);
         
-        // 执行
+        // Act
         boolean result = adminService.cancelUserBooking(1);
         
-        // 验证
+        // Assert
         assertTrue(result);
         verify(bookingDAO, times(1)).updateBookingStatus(1, "CANCELLED");
     }
 
     @Test
     void getTotalRevenue_ShouldReturnCorrectAmount() {
-        // 准备
+        // Arrange
         Hotel hotel1 = new Hotel("Hotel A", "City A", "Desc A","pool", 5);
         hotel1.setId(1);
         List<Hotel> hotels = Arrays.asList(hotel1);
@@ -212,10 +212,10 @@ class AdminServiceTest {
         when(hotelDAO.getAllHotels()).thenReturn(hotels);
         when(bookingDAO.getBookingsByHotelId(1)).thenReturn(hotelBookings);
         
-        // 执行
+        // Act
         BigDecimal revenue = adminService.getTotalRevenue();
         
-        // 验证
+        // Assert
         assertEquals(new BigDecimal("100"), revenue);
         verify(hotelDAO, times(1)).getAllHotels();
         verify(bookingDAO, times(1)).getBookingsByHotelId(1);
@@ -223,7 +223,7 @@ class AdminServiceTest {
 
     @Test
     void getMostPopularHotel_ShouldReturnHotelInfo() {
-        // 准备
+        // Arrange
         Hotel hotel1 = new Hotel("Hotel A", "City A", "Desc A","pool", 5);
         hotel1.setId(1);
         Hotel hotel2 = new Hotel("Hotel B", "City B", "Desc B","pool", 10);
@@ -241,10 +241,10 @@ class AdminServiceTest {
         when(bookingDAO.getBookingsByHotelId(1)).thenReturn(hotel1Bookings);
         when(bookingDAO.getBookingsByHotelId(2)).thenReturn(hotel2Bookings);
         
-        // 执行
+        // Act
         String result = adminService.getMostPopularHotel();
         
-        // 验证
+        // Assert
         assertNotNull(result);
         assertTrue(result.contains("Hotel A"));
         assertTrue(result.contains("2 bookings"));
@@ -253,13 +253,13 @@ class AdminServiceTest {
 
     @Test
     void deleteUser_WithExistingUser_ShouldReturnTrue() {
-        // 准备
+        // Arrange
         when(userDAO.deleteUser(1)).thenReturn(true);
         
-        // 执行
+        // Act
         boolean result = adminService.deleteUser(1);
         
-        // 验证
+        // Assert
         assertTrue(result);
         verify(userDAO, times(1)).deleteUser(1);
     }

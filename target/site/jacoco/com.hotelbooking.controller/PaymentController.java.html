@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PaymentController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.controller</a> &gt; <span class="el_source">PaymentController.java</span></div><h1>PaymentController.java</h1><pre class="source lang-java linenums">package com.hotelbooking.controller;
+
+import com.hotelbooking.entity.Booking;
+import com.hotelbooking.entity.Hotel;
+import com.hotelbooking.entity.Room;
+import com.hotelbooking.service.BookingService;
+import com.hotelbooking.service.PaymentService;
+import com.hotelbooking.dao.BookingDAO;
+import com.hotelbooking.dao.PaymentDAO;
+import com.hotelbooking.dao.RoomDAO;
+import com.hotelbooking.exception.BusinessException;
+import com.hotelbooking.util.NavigationManager;
+import com.hotelbooking.util.SessionManager;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Optional;
+
+<span class="nc" id="L27">public class PaymentController {</span>
+
+    // 支付表单字段
+    @FXML private TextField cardNumberField;
+    @FXML private TextField cardNameField;
+    @FXML private TextField expiryField;
+    @FXML private TextField cvvField;
+    @FXML private ComboBox&lt;String&gt; countryCombo;
+    @FXML private TextField postalCodeField;
+    @FXML private Label errorLabel;
+
+    // 订单摘要字段
+    @FXML private Label lblHotelName;
+    @FXML private Label lblRoomType;
+    @FXML private Label lblCheckIn;
+    @FXML private Label lblCheckOut;
+    @FXML private Label lblNights;
+    @FXML private Label lblGuests;
+    @FXML private Label lblRoomPrice;
+    @FXML private Label lblServiceFee;
+    @FXML private Label lblTax;
+    @FXML private Label lblTotal;
+    @FXML private Button btnPayment;
+
+    // 预订信息
+    private Hotel currentHotel;
+    private Room currentRoom;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
+    private int numberOfNights;
+    private BigDecimal roomPrice;
+    private BigDecimal serviceFee;
+    private BigDecimal tax;
+    private BigDecimal totalPrice;
+
+    // Service 层
+    private PaymentService paymentService;
+    private BookingService bookingService;
+
+    @FXML
+    public void initialize() {
+<span class="nc" id="L68">        System.out.println(&quot;✅ 支付页面初始化&quot;);</span>
+
+        // 初始化 Service
+<span class="nc" id="L71">        paymentService = new PaymentService(new PaymentDAO());</span>
+<span class="nc" id="L72">        bookingService = new BookingService(new BookingDAO(), new RoomDAO());</span>
+
+        // 初始化国家列表
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        if (countryCombo != null) {</span>
+<span class="nc" id="L76">            countryCombo.setItems(FXCollections.observableArrayList(</span>
+                    &quot;Singapore&quot;, &quot;United States&quot;, &quot;United Kingdom&quot;,
+                    &quot;China&quot;, &quot;Japan&quot;, &quot;Australia&quot;, &quot;Canada&quot;,
+                    &quot;Germany&quot;, &quot;France&quot;
+            ));
+        }
+
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (errorLabel != null) {</span>
+<span class="nc" id="L84">            errorLabel.setText(&quot;&quot;);</span>
+<span class="nc" id="L85">            errorLabel.setStyle(&quot;-fx-text-fill: red;&quot;);</span>
+        }
+<span class="nc" id="L87">    }</span>
+
+    /**
+     * 设置预订信息（从房型页面传递过来）
+     */
+    public void setBookingInfo(Hotel hotel, Room room) {
+<span class="nc" id="L93">        this.currentHotel = hotel;</span>
+<span class="nc" id="L94">        this.currentRoom = room;</span>
+<span class="nc" id="L95">        this.checkInDate = SessionManager.getCheckInDate();</span>
+<span class="nc" id="L96">        this.checkOutDate = SessionManager.getCheckOutDate();</span>
+
+<span class="nc" id="L98">        System.out.println(&quot;📋 设置预订信息:&quot;);</span>
+<span class="nc" id="L99">        System.out.println(&quot;   酒店: &quot; + hotel.getName());</span>
+<span class="nc" id="L100">        System.out.println(&quot;   房型: &quot; + room.getRoomType());</span>
+<span class="nc" id="L101">        System.out.println(&quot;   价格: $&quot; + room.getPricePerNight());</span>
+
+<span class="nc" id="L103">        calculatePrices();</span>
+<span class="nc" id="L104">        updateOrderSummary();</span>
+<span class="nc" id="L105">    }</span>
+
+    /**
+     * 计算价格
+     */
+    private void calculatePrices() {
+<span class="nc" id="L111">        numberOfNights = (int) ChronoUnit.DAYS.between(checkInDate, checkOutDate);</span>
+        
+<span class="nc" id="L113">        roomPrice=BigDecimal.valueOf(currentRoom.getPricePerNight());</span>
+        // 使用 BigDecimal 确保精度
+<span class="nc" id="L115">        totalPrice = BigDecimal.valueOf(currentRoom.getPricePerNight()*(numberOfNights));        </span>
+        
+<span class="nc" id="L117">        System.out.println(&quot;💰 价格计算:&quot;);</span>
+<span class="nc" id="L118">        System.out.println(&quot;   房价: $&quot; + roomPrice);</span>
+<span class="nc" id="L119">        System.out.println(&quot;   总计: $&quot; + totalPrice);</span>
+<span class="nc" id="L120">    }</span>
+
+    /**
+     * 更新订单摘要显示
+     */
+    private void updateOrderSummary() {
+<span class="nc bnc" id="L126" title="All 4 branches missed.">        if (currentHotel == null || currentRoom == null) {</span>
+<span class="nc" id="L127">            System.out.println(&quot;⚠️ 预订信息未设置&quot;);</span>
+<span class="nc" id="L128">            return;</span>
+        }
+
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        if (lblHotelName != null) lblHotelName.setText(currentHotel.getName());</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (lblRoomType != null) lblRoomType.setText(currentRoom.getRoomType());</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        if (lblCheckIn != null) lblCheckIn.setText(checkInDate.toString());</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">        if (lblCheckOut != null) lblCheckOut.setText(checkOutDate.toString());</span>
+<span class="nc bnc" id="L135" title="All 4 branches missed.">        if (lblNights != null) lblNights.setText(numberOfNights + &quot; night&quot; + (numberOfNights &gt; 1 ? &quot;s&quot; : &quot;&quot;));</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if (lblGuests != null) lblGuests.setText(currentRoom.getMaxOccupancy() + &quot; guests max&quot;);</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">        if (lblRoomPrice != null) lblRoomPrice.setText(&quot;$&quot; + roomPrice.toPlainString());</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">        if (lblServiceFee != null) lblServiceFee.setText(&quot;$&quot; + serviceFee.toPlainString());</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">        if (lblTax != null) lblTax.setText(&quot;$&quot; + tax.toPlainString());</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        if (lblTotal != null) lblTotal.setText(&quot;$&quot; + totalPrice.toPlainString());</span>
+<span class="nc" id="L141">    }</span>
+
+    /**
+     * 处理支付
+     */
+    @FXML
+    private void handlePayment() {
+<span class="nc" id="L148">        System.out.println(&quot;💳 处理支付&quot;);</span>
+
+        // 1. 验证用户是否登录
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        if (!SessionManager.isLoggedIn()) {</span>
+<span class="nc" id="L152">            showError(&quot;请先登录&quot;);</span>
+<span class="nc" id="L153">            return;</span>
+        }
+
+        // 2. 验证支付信息
+<span class="nc bnc" id="L157" title="All 2 branches missed.">        if (!validatePaymentInfo()) {</span>
+<span class="nc" id="L158">            return;</span>
+        }
+
+        // 3. 验证预订信息
+<span class="nc bnc" id="L162" title="All 4 branches missed.">        if (currentHotel == null || currentRoom == null) {</span>
+<span class="nc" id="L163">            showError(&quot;预订信息不完整，请返回重新选择&quot;);</span>
+<span class="nc" id="L164">            return;</span>
+        }
+
+        // 4. 禁用支付按钮，防止重复点击
+<span class="nc bnc" id="L168" title="All 2 branches missed.">        if (btnPayment != null) {</span>
+<span class="nc" id="L169">            btnPayment.setDisable(true);</span>
+        }
+
+        // 5. 在后台线程中处理支付
+<span class="nc" id="L173">        new Thread(() -&gt; {</span>
+            try {
+<span class="nc" id="L175">                Integer userId = SessionManager.getLoggedInId();</span>
+<span class="nc" id="L176">                Integer hotelId = currentHotel.getId();</span>
+<span class="nc" id="L177">                Integer roomId = currentRoom.getId();</span>
+
+<span class="nc" id="L179">                System.out.println(&quot;📝 准备创建预订...&quot;);</span>
+<span class="nc" id="L180">                System.out.println(&quot;   用户ID: &quot; + userId);</span>
+<span class="nc" id="L181">                System.out.println(&quot;   酒店ID: &quot; + hotelId);</span>
+<span class="nc" id="L182">                System.out.println(&quot;   房间ID: &quot; + roomId);</span>
+
+                // 6. 创建预订
+<span class="nc" id="L185">                Optional&lt;Booking&gt; bookingOpt = bookingService.createBooking(</span>
+                    userId, 
+                    hotelId, 
+                    roomId, 
+                    checkInDate, 
+                    checkOutDate
+                );
+
+<span class="nc bnc" id="L193" title="All 2 branches missed.">                if (bookingOpt.isEmpty()) {</span>
+<span class="nc" id="L194">                    Platform.runLater(() -&gt; {</span>
+<span class="nc" id="L195">                        showError(&quot;创建预订失败，房间可能不可用&quot;);</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">                        if (btnPayment != null) btnPayment.setDisable(false);</span>
+<span class="nc" id="L197">                    });</span>
+<span class="nc" id="L198">                    return;</span>
+                }
+
+<span class="nc" id="L201">                Booking booking = bookingOpt.get();</span>
+<span class="nc" id="L202">                System.out.println(&quot;✅ 预订已创建，预订ID: &quot; + booking.getId());</span>
+
+                // 7. 处理支付 - 使用 booking_id（VARCHAR）而不是 id（INTEGER）
+<span class="nc" id="L205">                System.out.println(&quot;💳 处理支付...&quot;);</span>
+                // ⚠️ 重要：使用 booking.getBookingId() 而不是 booking.getId()
+<span class="nc" id="L207">                String bookingIdForPayment = booking.getBookingId();</span>
+<span class="nc bnc" id="L208" title="All 4 branches missed.">                if (bookingIdForPayment == null || bookingIdForPayment.isEmpty()) {</span>
+                    // 如果 booking_id 为空，使用生成的 ID
+<span class="nc" id="L210">                    bookingIdForPayment = &quot;BK_&quot; + booking.getId() + &quot;_&quot; + System.currentTimeMillis();</span>
+                }
+<span class="nc" id="L212">                System.out.println(&quot;   预订ID (支付用): &quot; + bookingIdForPayment);</span>
+                
+<span class="nc" id="L214">                boolean paymentSuccess = paymentService.processPayment(</span>
+                    bookingIdForPayment,
+                    totalPrice,
+                    &quot;CREDIT_CARD&quot;
+                );
+
+<span class="nc bnc" id="L220" title="All 2 branches missed.">                if (paymentSuccess) {</span>
+<span class="nc" id="L221">                    System.out.println(&quot;✅ 支付成功！&quot;);</span>
+<span class="nc" id="L222">                    Platform.runLater(() -&gt; {</span>
+<span class="nc" id="L223">                        showPaymentSuccess();</span>
+<span class="nc" id="L224">                        navigateToBookings();</span>
+<span class="nc" id="L225">                    });</span>
+                } else {
+<span class="nc" id="L227">                    System.out.println(&quot;❌ 支付失败&quot;);</span>
+                    // 取消预订
+<span class="nc" id="L229">                    bookingService.cancelBooking(booking.getId());</span>
+<span class="nc" id="L230">                    Platform.runLater(() -&gt; {</span>
+<span class="nc" id="L231">                        showError(&quot;支付失败，预订已取消，请重试&quot;);</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">                        if (btnPayment != null) btnPayment.setDisable(false);</span>
+<span class="nc" id="L233">                    });</span>
+                }
+
+<span class="nc" id="L236">            } catch (BusinessException e) {</span>
+<span class="nc" id="L237">                System.err.println(&quot;❌ 业务异常: &quot; + e.getMessage());</span>
+<span class="nc" id="L238">                e.printStackTrace();</span>
+<span class="nc" id="L239">                Platform.runLater(() -&gt; {</span>
+<span class="nc" id="L240">                    showError(&quot;支付失败: &quot; + e.getMessage());</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">                    if (btnPayment != null) btnPayment.setDisable(false);</span>
+<span class="nc" id="L242">                });</span>
+<span class="nc" id="L243">            } catch (Exception e) {</span>
+<span class="nc" id="L244">                System.err.println(&quot;❌ 系统异常: &quot; + e.getMessage());</span>
+<span class="nc" id="L245">                e.printStackTrace();</span>
+<span class="nc" id="L246">                Platform.runLater(() -&gt; {</span>
+<span class="nc" id="L247">                    showError(&quot;系统错误: &quot; + e.getMessage());</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">                    if (btnPayment != null) btnPayment.setDisable(false);</span>
+<span class="nc" id="L249">                });</span>
+<span class="nc" id="L250">            }</span>
+<span class="nc" id="L251">        }).start();</span>
+<span class="nc" id="L252">    }</span>
+
+    /**
+     * 验证支付信息
+     */
+    private boolean validatePaymentInfo() {
+<span class="nc" id="L258">        String cardNumber = cardNumberField.getText().trim();</span>
+<span class="nc" id="L259">        String cardName = cardNameField.getText().trim();</span>
+<span class="nc" id="L260">        String expiry = expiryField.getText().trim();</span>
+<span class="nc" id="L261">        String cvv = cvvField.getText().trim();</span>
+<span class="nc" id="L262">        String postalCode = postalCodeField.getText().trim();</span>
+
+<span class="nc bnc" id="L264" title="All 6 branches missed.">        if (cardNumber.isEmpty() || cardName.isEmpty() || expiry.isEmpty() ||</span>
+<span class="nc bnc" id="L265" title="All 4 branches missed.">            cvv.isEmpty() || postalCode.isEmpty()) {</span>
+<span class="nc" id="L266">            showError(&quot;请填写所有必填字段&quot;);</span>
+<span class="nc" id="L267">            return false;</span>
+        }
+
+<span class="nc bnc" id="L270" title="All 2 branches missed.">        if (!cardNumber.replaceAll(&quot;\\s+&quot;, &quot;&quot;).matches(&quot;\\d{16}&quot;)) {</span>
+<span class="nc" id="L271">            showError(&quot;请输入有效的16位卡号&quot;);</span>
+<span class="nc" id="L272">            return false;</span>
+        }
+
+<span class="nc bnc" id="L275" title="All 2 branches missed.">        if (!cvv.matches(&quot;\\d{3,4}&quot;)) {</span>
+<span class="nc" id="L276">            showError(&quot;请输入有效的CVV码&quot;);</span>
+<span class="nc" id="L277">            return false;</span>
+        }
+
+<span class="nc bnc" id="L280" title="All 2 branches missed.">        if (!expiry.matches(&quot;\\d{2}/\\d{2}&quot;)) {</span>
+<span class="nc" id="L281">            showError(&quot;请输入有效的到期日期 (MM/YY)&quot;);</span>
+<span class="nc" id="L282">            return false;</span>
+        }
+
+<span class="nc bnc" id="L285" title="All 4 branches missed.">        if (countryCombo.getValue() == null || countryCombo.getValue().isEmpty()) {</span>
+<span class="nc" id="L286">            showError(&quot;请选择国家/地区&quot;);</span>
+<span class="nc" id="L287">            return false;</span>
+        }
+
+<span class="nc" id="L290">        return true;</span>
+    }
+
+    /**
+     * 显示支付成功提示
+     */
+    private void showPaymentSuccess() {
+<span class="nc" id="L297">        Alert alert = new Alert(Alert.AlertType.INFORMATION);</span>
+<span class="nc" id="L298">        alert.setTitle(&quot;Payment Successful&quot;);</span>
+<span class="nc" id="L299">        alert.setHeaderText(&quot;✅ Your booking is confirmed!&quot;);</span>
+<span class="nc" id="L300">        alert.setContentText(</span>
+<span class="nc" id="L301">                &quot;Hotel: &quot; + currentHotel.getName() + &quot;\n&quot; +</span>
+<span class="nc" id="L302">                &quot;Room: &quot; + currentRoom.getRoomType() + &quot;\n&quot; +</span>
+                &quot;Check-in: &quot; + checkInDate + &quot;\n&quot; +
+                &quot;Check-out: &quot; + checkOutDate + &quot;\n&quot; +
+<span class="nc" id="L305">                &quot;Total Paid: $&quot; + totalPrice.toPlainString()</span>
+        );
+<span class="nc" id="L307">        alert.showAndWait();</span>
+<span class="nc" id="L308">    }</span>
+
+    /**
+     * 导航到我的预订页面
+     */
+    private void navigateToBookings() {
+        try {
+            // 在任何导航前调用
+<span class="nc" id="L316">            NavigationManager.getInstance().push(</span>
+                &quot;/com/hotelbooking/view/payment.fxml&quot;,
+                &quot;Payment&quot;
+            );
+<span class="nc" id="L320">            FXMLLoader loader = new FXMLLoader(</span>
+<span class="nc" id="L321">                    getClass().getResource(&quot;/com/hotelbooking/view/my_bookings.fxml&quot;)</span>
+            );
+<span class="nc" id="L323">            Parent root = loader.load();</span>
+<span class="nc" id="L324">            Stage stage = (Stage) cardNumberField.getScene().getWindow();</span>
+<span class="nc" id="L325">            stage.setScene(new Scene(root));</span>
+<span class="nc" id="L326">            stage.setTitle(&quot;My Bookings&quot;);</span>
+<span class="nc" id="L327">        } catch (Exception e) {</span>
+<span class="nc" id="L328">            System.err.println(&quot;❌ 导航失败: &quot; + e.getMessage());</span>
+<span class="nc" id="L329">            e.printStackTrace();</span>
+<span class="nc" id="L330">            showError(&quot;页面加载失败: &quot; + e.getMessage());</span>
+<span class="nc" id="L331">        }</span>
+<span class="nc" id="L332">    }</span>
+
+    /**
+     * 返回上一页
+     */
+//    @FXML
+//    private void backToPrevious() {
+//        try {
+//            FXMLLoader loader = new FXMLLoader(
+//                    getClass().getResource(&quot;/com/hotelbooking/view/hotel_rooms.fxml&quot;)
+//            );
+//            Parent root = loader.load();
+//
+//            if (currentHotel != null) {
+//                HotelRoomsController controller = loader.getController();
+//                controller.setHotel(currentHotel);
+//            }
+//
+//            Stage stage = (Stage) cardNumberField.getScene().getWindow();
+//            stage.setScene(new Scene(root));
+//            stage.setTitle(&quot;Hotel Rooms&quot;);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            showError(&quot;返回失败: &quot; + e.getMessage());
+//        }
+//    }
+
+    /**
+     * 返回主页
+     */
+    @FXML
+    private void backToHome() {
+        try {
+<span class="nc" id="L366">            FXMLLoader loader = new FXMLLoader(</span>
+<span class="nc" id="L367">                    getClass().getResource(&quot;/com/hotelbooking/view/main_dashboard.fxml&quot;)</span>
+            );
+<span class="nc" id="L369">            Parent root = loader.load();</span>
+<span class="nc" id="L370">            Stage stage = (Stage) cardNumberField.getScene().getWindow();</span>
+<span class="nc" id="L371">            stage.setScene(new Scene(root));</span>
+<span class="nc" id="L372">            stage.setTitle(&quot;Hotel Booking System&quot;);</span>
+<span class="nc" id="L373">        } catch (Exception e) {</span>
+<span class="nc" id="L374">            e.printStackTrace();</span>
+<span class="nc" id="L375">            showError(&quot;返回失败: &quot; + e.getMessage());</span>
+<span class="nc" id="L376">        }</span>
+<span class="nc" id="L377">    }</span>
+
+    /**
+     * 显示错误信息
+     */
+    private void showError(String message) {
+<span class="nc" id="L383">        System.err.println(&quot;❌ 错误: &quot; + message);</span>
+<span class="nc bnc" id="L384" title="All 2 branches missed.">        if (errorLabel != null) {</span>
+<span class="nc" id="L385">            Platform.runLater(() -&gt; errorLabel.setText(message));</span>
+        }
+<span class="nc" id="L387">    }</span>
+}
+//package com.hotelbooking.controller;
+//
+//import com.hotelbooking.entity.Hotel;
+//import com.hotelbooking.entity.Room;
+//import com.hotelbooking.entity.Payment;
+//import com.hotelbooking.service.PaymentService;
+//import com.hotelbooking.dao.PaymentDAO;
+//import com.hotelbooking.exception.BusinessException;
+//import com.hotelbooking.util.SessionManager;
+//import java.math.BigDecimal;
+//import javafx.collections.FXCollections;
+//import javafx.fxml.FXML;
+//import javafx.fxml.FXMLLoader;
+//import javafx.scene.Parent;
+//import javafx.scene.Scene;
+//import javafx.scene.control.*;
+//import javafx.stage.Stage;
+//import java.time.LocalDate;
+//import java.time.temporal.ChronoUnit;
+//
+//public class PaymentController {
+//
+//    // 支付表单字段
+//    @FXML private TextField cardNumberField;
+//    @FXML private TextField cardNameField;
+//    @FXML private TextField expiryField;
+//    @FXML private TextField cvvField;
+//    @FXML private ComboBox&lt;String&gt; countryCombo;
+//    @FXML private TextField postalCodeField;
+//    @FXML private Label errorLabel;
+//
+//    // 订单摘要字段
+//    @FXML private Label lblHotelName;
+//    @FXML private Label lblRoomType;
+//    @FXML private Label lblCheckIn;
+//    @FXML private Label lblCheckOut;
+//    @FXML private Label lblNights;
+//    @FXML private Label lblGuests;
+//    @FXML private Label lblRoomPrice;
+//    @FXML private Label lblServiceFee;
+//    @FXML private Label lblTax;
+//    @FXML private Label lblTotal;
+//
+//    // 预订信息
+//    private Hotel currentHotel;
+//    private Room currentRoom;
+//    private LocalDate checkInDate;
+//    private LocalDate checkOutDate;
+//    private int numberOfNights;
+//    private double roomPrice;
+//    private double serviceFee;
+//    private double tax;
+//    private double totalPrice;
+//
+//    // Service 层
+//    private PaymentService paymentService;
+//
+//    @FXML
+//    public void initialize() {
+//        System.out.println(&quot;✅ 支付页面初始化&quot;);
+//
+//        // 初始化 PaymentService
+//        paymentService = new PaymentService(new PaymentDAO());
+//
+//        // 初始化国家列表
+//        if (countryCombo != null) {
+//            countryCombo.setItems(FXCollections.observableArrayList(
+//                    &quot;Singapore&quot;, &quot;United States&quot;, &quot;United Kingdom&quot;,
+//                    &quot;China&quot;, &quot;Japan&quot;, &quot;Australia&quot;, &quot;Canada&quot;,
+//                    &quot;Germany&quot;, &quot;France&quot;
+//            ));
+//        }
+//
+//        if (errorLabel != null) errorLabel.setText(&quot;&quot;);
+//    }
+//
+//    /**
+//     * 设置预订信息（从房型页面传递过来）
+//     */
+//    public void setBookingInfo(Hotel hotel, Room room) {
+//        this.currentHotel = hotel;
+//        this.currentRoom = room;
+//        
+//        this.checkInDate = SessionManager.getCheckInDate();
+//        this.checkOutDate = SessionManager.getCheckOutDate();
+//
+//        System.out.println(&quot;📋 设置预订信息:&quot;);
+//        System.out.println(&quot;   酒店: &quot; + hotel.getName());
+//        System.out.println(&quot;   房型: &quot; + room.getRoomType());
+//        System.out.println(&quot;   价格: $&quot; + room.getPricePerNight());
+//
+//        // 计算入住天数
+//        this.numberOfNights = (int) ChronoUnit.DAYS.between(checkInDate, checkOutDate);
+//
+//        calculatePrices();
+//        updateOrderSummary();
+//    }
+//
+//    /**
+//     * 计算价格
+//     */
+//    private void calculatePrices() {
+//        numberOfNights = (int) ChronoUnit.DAYS.between(checkInDate, checkOutDate);
+//        roomPrice = currentRoom.getPricePerNight() * numberOfNights;
+//        serviceFee = 25.00;
+//        tax = (roomPrice + serviceFee) * 0.10;
+//        totalPrice = roomPrice + serviceFee + tax;
+//
+//        System.out.println(&quot;💰 价格计算:&quot;);
+//        System.out.println(&quot;   房价: $&quot; + String.format(&quot;%.2f&quot;, roomPrice));
+//        System.out.println(&quot;   服务费: $&quot; + String.format(&quot;%.2f&quot;, serviceFee));
+//        System.out.println(&quot;   税费: $&quot; + String.format(&quot;%.2f&quot;, tax));
+//        System.out.println(&quot;   总计: $&quot; + String.format(&quot;%.2f&quot;, totalPrice));
+//    }
+//
+//    /**
+//     * 更新订单摘要显示
+//     */
+//    private void updateOrderSummary() {
+//        if (currentHotel == null || currentRoom == null) {
+//            System.out.println(&quot;⚠️ 预订信息未设置&quot;);
+//            return;
+//        }
+//
+//        if (lblHotelName != null) lblHotelName.setText(currentHotel.getName());
+//        if (lblRoomType != null) lblRoomType.setText(currentRoom.getRoomType());
+//        if (lblCheckIn != null) lblCheckIn.setText(checkInDate.toString());
+//        if (lblCheckOut != null) lblCheckOut.setText(checkOutDate.toString());
+//        if (lblNights != null) lblNights.setText(numberOfNights + &quot; night&quot; + (numberOfNights &gt; 1 ? &quot;s&quot; : &quot;&quot;));
+//        if (lblGuests != null) lblGuests.setText(currentRoom.getMaxOccupancy() + &quot; guests max&quot;);
+//        if (lblRoomPrice != null) lblRoomPrice.setText(&quot;$&quot; + String.format(&quot;%.2f&quot;, roomPrice));
+//        if (lblServiceFee != null) lblServiceFee.setText(&quot;$&quot; + String.format(&quot;%.2f&quot;, serviceFee));
+//        if (lblTax != null) lblTax.setText(&quot;$&quot; + String.format(&quot;%.2f&quot;, tax));
+//        if (lblTotal != null) lblTotal.setText(&quot;$&quot; + String.format(&quot;%.2f&quot;, totalPrice));
+//    }
+//
+//    /**
+//     * 处理支付
+//     */
+//    @FXML
+//    private void handlePayment() {
+//        System.out.println(&quot;💳 处理支付&quot;);
+//
+//        if (!validatePaymentInfo()) return;
+//        
+//        if (!SessionManager.isLoggedIn()) {
+//            showError(&quot;请先登录&quot;);
+//            return;
+//        }
+//        String userId = SessionManager.getLoggedInUsername();
+//
+//        // 创建支付实体
+//        Payment payment = new Payment();
+//        payment.setPaymentId(&quot;PAY_&quot; + System.currentTimeMillis() % 100000);
+//        payment.setBookingId(&quot;BK_&quot; + System.currentTimeMillis() % 100000); // TODO: 替换为真实 booking_id
+//        payment.setAmount(BigDecimal.valueOf(totalPrice));
+////payment.setAmount(totalPrice);
+//        payment.setPaymentMethod(&quot;CREDIT_CARD&quot;);
+//        payment.setPaymentStatus(&quot;COMPLETED&quot;);
+//        payment.setTransactionId(&quot;TXN_&quot; + System.currentTimeMillis() % 100000);
+//
+//        // 保存支付信息到数据库
+//        try {
+//            // 调用 PaymentService 处理支付
+//            boolean paymentSuccess = paymentService.processPayment(payment.getBookingId(),
+//                    payment.getAmount(), payment.getPaymentMethod());
+//            System.out.println(&quot;✅ 支付已记录到数据库&quot;);
+//
+//            if (paymentSuccess) {
+//                System.out.println(&quot;✅ 支付已成功&quot;);
+//
+//                // 显示成功提示
+//                showPaymentSuccess();
+//            } else {
+//                showError(&quot;支付失败，请重试&quot;);
+//            }
+//        } catch (BusinessException e) {
+//            // 处理支付失败的异常
+//            showError(&quot;支付失败: &quot; + e.getMessage());
+//            System.err.println(&quot;支付失败: &quot; + e.getMessage());
+//        } catch (Exception e) {
+//            // 捕获其他异常
+//            showError(&quot;系统错误，请稍后再试&quot;);
+//            e.printStackTrace();
+//        }
+//
+//    }
+//
+//    private boolean validatePaymentInfo() {
+//        String cardNumber = cardNumberField.getText().trim();
+//        String cardName = cardNameField.getText().trim();
+//        String expiry = expiryField.getText().trim();
+//        String cvv = cvvField.getText().trim();
+//        String postalCode = postalCodeField.getText().trim();
+//
+//        if (cardNumber.isEmpty() || cardName.isEmpty() || expiry.isEmpty() ||
+//            cvv.isEmpty() || postalCode.isEmpty()) {
+//            showError(&quot;请填写所有必填字段&quot;);
+//            return false;
+//        }
+//
+//        if (!cardNumber.replaceAll(&quot;\\s+&quot;, &quot;&quot;).matches(&quot;\\d{16}&quot;)) {
+//            showError(&quot;请输入有效的16位卡号&quot;);
+//            return false;
+//        }
+//
+//        if (!cvv.matches(&quot;\\d{3,4}&quot;)) {
+//            showError(&quot;请输入有效的CVV码&quot;);
+//            return false;
+//        }
+//
+//        if (!expiry.matches(&quot;\\d{2}/\\d{2}&quot;)) {
+//            showError(&quot;请输入有效的到期日期 (MM/YY)&quot;);
+//            return false;
+//        }
+//
+//        if (countryCombo.getValue() == null) {
+//            showError(&quot;请选择国家/地区&quot;);
+//            return false;
+//        }
+//
+//        return true;
+//    }
+//
+//    private void showPaymentSuccess() {
+//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//        alert.setTitle(&quot;Payment Successful&quot;);
+//        alert.setHeaderText(&quot;✅ Your booking is confirmed!&quot;);
+//        alert.setContentText(
+//                &quot;Hotel: &quot; + currentHotel.getName() + &quot;\n&quot; +
+//                &quot;Room: &quot; + currentRoom.getRoomType() + &quot;\n&quot; +
+//                &quot;Total Paid: $&quot; + String.format(&quot;%.2f&quot;, totalPrice)
+//        );
+//        alert.showAndWait();
+//
+//        System.out.println(&quot;✅ 预订成功！&quot;);
+//        navigateToBookings();
+//    }
+//
+//    private void navigateToBookings() {
+//        try {
+//            FXMLLoader loader = new FXMLLoader(
+//                    getClass().getResource(&quot;/com/hotelbooking/view/my_bookings.fxml&quot;)
+//            );
+//            Parent root = loader.load();
+//            Stage stage = (Stage) cardNumberField.getScene().getWindow();
+//            stage.setScene(new Scene(root));
+//            stage.setTitle(&quot;My Bookings&quot;);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    @FXML
+//    private void backToPrevious() {
+//        try {
+//            FXMLLoader loader = new FXMLLoader(
+//                    getClass().getResource(&quot;/com/hotelbooking/view/hotel_rooms.fxml&quot;)
+//            );
+//            Parent root = loader.load();
+//
+//            if (currentHotel != null) {
+//                HotelRoomsController controller = loader.getController();
+//                controller.setHotel(currentHotel);
+//            }
+//
+//            Stage stage = (Stage) cardNumberField.getScene().getWindow();
+//            stage.setScene(new Scene(root));
+//            stage.setTitle(&quot;Hotel Rooms&quot;);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    @FXML
+//    private void backToHome() {
+//        try {
+//            FXMLLoader loader = new FXMLLoader(
+//                    getClass().getResource(&quot;/com/hotelbooking/view/main_dashboard.fxml&quot;)
+//            );
+//            Parent root = loader.load();
+//            Stage stage = (Stage) cardNumberField.getScene().getWindow();
+//            stage.setScene(new Scene(root));
+//            stage.setTitle(&quot;Hotel Booking System&quot;);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    private void showError(String message) {
+//        if (errorLabel != null) errorLabel.setText(message);
+//    }
+//}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

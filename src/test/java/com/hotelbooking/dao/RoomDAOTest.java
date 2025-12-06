@@ -25,15 +25,15 @@ class RoomDAOTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        // 清理并重新初始化数据库（Derby 需要）
+        // Clean and reinitialize database (required for Derby)
         DatabaseInitializer.resetDatabase();
         
-        // 获取数据库连接
+        // Get database connection
         connection = DatabaseConnection.getConnection();
         roomDAO = new RoomDAO();
         hotelDAO = new HotelDAO();
         
-        // 创建一个测试酒店（注意：需要先创建酒店，因为房间有外键约束）
+        // Create a test hotel (Note: need to create hotel first due to foreign key constraint)
      Hotel hotel = new Hotel("Test Hotel", "Test City", "Test Description", "Pool,Gym", 10);
         Hotel createdHotel = hotelDAO.createHotel(hotel);
         
@@ -46,17 +46,17 @@ class RoomDAOTest {
     
     @AfterEach
     void tearDown() throws Exception {
-        // 清理测试数据
+        // Clean test data
         if (connection != null && !connection.isClosed()) {
             try (Statement stmt = connection.createStatement()) {
-                // Derby 需要先禁用外键约束
+                // Derby requires disabling foreign key constraints first
                 try {
                     stmt.execute("SET CONSTRAINTS ALL DEFERRED");
                 } catch (Exception e) {
-                    // 忽略错误，某些 Derby 版本不需要
+                    // Ignore error, some Derby versions don't need this
                 }
                 
-                // 删除测试数据
+                // Delete test data
                 try {
                     stmt.execute("DELETE FROM rooms WHERE hotel_id = " + testHotelId);
                 } catch (Exception e) {}
@@ -73,13 +73,13 @@ class RoomDAOTest {
 
     @Test
     void createRoom_WithValidRoom_ShouldReturnRoomWithId() {
-        // 准备 - 使用 7 个参数的构造函数
+        // Arrange - Use constructor with 7 parameters
         Room room = new Room(testHotelId, "101", "STANDARD", 99.99, 2, true, "A comfortable standard room");
         
-        // 执行
+        // Act
         Room result = roomDAO.createRoom(room);
         
-        // 验证
+        // Assert
         assertNotNull(result);
         assertNotNull(result.getId());
         assertEquals(testHotelId, result.getHotelId());
@@ -93,15 +93,15 @@ class RoomDAOTest {
     
     @Test
     void getRoomById_WithExistingId_ShouldReturnRoom() {
-        // 先创建一个房间
+        // First create a room
         Room room = new Room(testHotelId, "102", "DELUXE", 149.99, 4, true, "Double room with two beds");
         Room created = roomDAO.createRoom(room);
         assertNotNull(created);
         
-        // 查询这个房间
+        // Query this room
         Optional<Room> foundOpt = roomDAO.getRoomById(created.getId());
         
-        // 验证
+        // Assert
         assertTrue(foundOpt.isPresent());
         Room found = foundOpt.get();
         assertEquals(created.getId(), found.getId());
@@ -115,33 +115,33 @@ class RoomDAOTest {
     
     @Test
     void getRoomById_WithNonExistingId_ShouldReturnEmpty() {
-        // 查询不存在的房间
+        // Query non-existing room
         Optional<Room> result = roomDAO.getRoomById(9999);
         
-        // 验证
+        // Assert
         assertFalse(result.isPresent());
     }
     
     @Test
     void updateRoom_ShouldUpdateRoomDetails() {
-        // 创建房间
+        // Create room
         Room room = new Room(testHotelId, "103", "SUITE", 299.99, 3, true, "Luxury suite");
         Room created = roomDAO.createRoom(room);
         assertNotNull(created);
         
-        // 修改信息
+        // Modify information
         created.setRoomNumber("103A");
         created.setPricePerNight(399.99);
         created.setDescription("Updated luxury suite with view");
         created.setAvailable(false);
         
-        // 更新
+        // Update
         boolean updated = roomDAO.updateRoom(created);
         
-        // 验证更新成功
+        // Assert update was successful
         assertTrue(updated);
         
-        // 验证更新后的数据
+        // Assert updated data
         Optional<Room> foundOpt = roomDAO.getRoomById(created.getId());
         assertTrue(foundOpt.isPresent());
         Room found = foundOpt.get();
@@ -150,24 +150,24 @@ class RoomDAOTest {
         assertEquals(399.99, found.getPricePerNight(), 0.001);
         assertEquals("Updated luxury suite with view", found.getDescription());
         assertFalse(found.isAvailable());
-        // 其他字段应保持不变
+        // Other fields should remain unchanged
         assertEquals("SUITE", found.getRoomType());
         assertEquals(testHotelId, found.getHotelId());
     }
     
     @Test
     void getRoomsByHotelId_ShouldReturnAllRoomsForHotel() {
-        // 为同一个酒店创建多个房间
+        // Create multiple rooms for the same hotel
         Room room1 = new Room(testHotelId, "201", "STANDARD", 99.99, 2, true, "Room 201");
         Room room2 = new Room(testHotelId, "202", "DELUXE", 149.99, 4, true, "Room 202");
         
         roomDAO.createRoom(room1);
         roomDAO.createRoom(room2);
         
-        // 执行查询
+        // Execute query
         List<Room> rooms = roomDAO.getRoomsByHotelId(testHotelId);
         
-        // 验证
+        // Assert
         assertNotNull(rooms);
         assertEquals(2, rooms.size());
         assertTrue(rooms.stream().allMatch(r -> r.getHotelId().equals(testHotelId)));
@@ -177,17 +177,17 @@ class RoomDAOTest {
     
     @Test
     void getAvailableRoomsByHotelId_ShouldReturnOnlyAvailableRooms() {
-        // 创建房间 - 一个可用，一个不可用
+        // Create rooms - one available, one unavailable
         Room availableRoom = new Room(testHotelId, "301", "STANDARD", 99.99, 2, true, "Available room");
         Room unavailableRoom = new Room(testHotelId, "302", "DELUXE", 149.99, 4, false, "Unavailable room");
         
         roomDAO.createRoom(availableRoom);
         roomDAO.createRoom(unavailableRoom);
         
-        // 执行查询
+        // Execute query
         List<Room> rooms = roomDAO.getAvailableRoomsByHotelId(testHotelId);
         
-        // 验证
+        // Assert
         assertNotNull(rooms);
         assertEquals(1, rooms.size());
         assertEquals("301", rooms.get(0).getRoomNumber());
@@ -196,7 +196,7 @@ class RoomDAOTest {
     
     @Test
     void getRoomsByType_ShouldReturnRoomsOfSpecifiedType() {
-        // 创建不同房型的房间
+        // Create rooms of different types
         Room room1 = new Room(testHotelId, "401", "STANDARD", 99.99, 2, true, "Standard room 1");
         Room room2 = new Room(testHotelId, "402", "STANDARD", 109.99, 2, true, "Standard room 2");
         Room doubleRoom = new Room(testHotelId, "403", "DELUXE", 199.99, 4, true, "Deluxe room");
@@ -205,21 +205,21 @@ class RoomDAOTest {
         roomDAO.createRoom(room2);
         roomDAO.createRoom(doubleRoom);
         
-        // 执行查询
+        // Execute query
         List<Room> standardRooms = roomDAO.getRoomsByType("STANDARD");
         
-        // 验证
+        // Assert
         assertNotNull(standardRooms);
         assertEquals(2, standardRooms.size());
         assertTrue(standardRooms.stream().allMatch(r -> "STANDARD".equals(r.getRoomType())));
-        // 应该按价格升序排列
+        // Should be sorted by price ascending
         assertEquals(99.99, standardRooms.get(0).getPricePerNight(), 0.001);
         assertEquals(109.99, standardRooms.get(1).getPricePerNight(), 0.001);
     }
     
     @Test
     void getRoomsByPriceRange_ShouldReturnRoomsInPriceRange() {
-        // 创建不同价格的房间
+        // Create rooms with different prices
         Room cheapRoom = new Room(testHotelId, "501", "STANDARD", 50.00, 2, true, "Cheap room");
         Room midRoom = new Room(testHotelId, "502", "DELUXE", 100.00, 4, true, "Mid room");
         Room expensiveRoom = new Room(testHotelId, "503", "SUITE", 200.00, 3, true, "Expensive room");
@@ -228,32 +228,32 @@ class RoomDAOTest {
         roomDAO.createRoom(midRoom);
         roomDAO.createRoom(expensiveRoom);
         
-        // 执行查询 (75-150 价格范围)
+        // Execute query (price range 75-150)
         List<Room> rooms = roomDAO.getRoomsByPriceRange(new BigDecimal("75"), new BigDecimal("150"));
         
-        // 验证
+        // Assert
         assertNotNull(rooms);
-        assertEquals(1, rooms.size());  // 只有 midRoom 在范围内
+        assertEquals(1, rooms.size());  // Only midRoom is in range
         assertEquals("502", rooms.get(0).getRoomNumber());
         assertEquals(100.00, rooms.get(0).getPricePerNight(), 0.001);
     }
     
     @Test
     void updateRoomAvailability_ShouldUpdateAvailability() {
-        // 创建房间
+        // Create room
         Room room = new Room(testHotelId, "601", "STANDARD", 99.99, 2, true, "Test room");
         Room created = roomDAO.createRoom(room);
         
-        // 更新为不可用 (Derby 使用 1/0 表示布尔值)
+        // Update to unavailable (Derby uses 1/0 for boolean values)
         boolean updated = roomDAO.updateRoomAvailability(created.getId(), false);
         assertTrue(updated);
         
-        // 验证
+        // Assert
         Optional<Room> foundOpt = roomDAO.getRoomById(created.getId());
         assertTrue(foundOpt.isPresent());
         assertFalse(foundOpt.get().isAvailable());
         
-        // 再更新为可用
+        // Update to available again
         updated = roomDAO.updateRoomAvailability(created.getId(), true);
         assertTrue(updated);
         
@@ -264,41 +264,41 @@ class RoomDAOTest {
     
     @Test
     void deleteRoom_ShouldRemoveRoom() {
-        // 创建房间
+        // Create room
         Room room = new Room(testHotelId, "701", "STANDARD", 99.99, 2, true, "Room to delete");
         Room created = roomDAO.createRoom(room);
         
-        // 删除房间
+        // Delete room
         boolean deleted = roomDAO.deleteRoom(created.getId());
         assertTrue(deleted);
         
-        // 验证房间已删除
+        // Assert room is deleted
         Optional<Room> foundOpt = roomDAO.getRoomById(created.getId());
         assertFalse(foundOpt.isPresent());
     }
     
     @Test
     void isRoomNumberExists_ShouldCheckRoomNumber() {
-        // 创建房间
+        // Create room
         Room room = new Room(testHotelId, "801", "STANDARD", 99.99, 2, true, "Test room");
         roomDAO.createRoom(room);
         
-        // 验证存在的房间号
+        // Assert existing room number exists
         boolean exists = roomDAO.isRoomNumberExists(testHotelId, "801");
         assertTrue(exists);
         
-        // 验证不存在的房间号
+        // Assert non-existing room number doesn't exist
         exists = roomDAO.isRoomNumberExists(testHotelId, "999");
         assertFalse(exists);
     }
     
     @Test
     void getAllAvailableRooms_ShouldReturnAllAvailableRooms() {
-        // 创建另一个酒店
+        // Create another hotel
         Hotel hotel2 = new Hotel("Another Hotel", "Another City", "Description", "WiFi", 5);
         Hotel createdHotel2 = hotelDAO.createHotel(hotel2);
         
-        // 创建可用和不可用房间
+        // Create available and unavailable rooms
         Room available1 = new Room(testHotelId, "901", "STANDARD", 99.99, 2, true, "Available 1");
         Room available2 = new Room(createdHotel2.getId(), "902", "DELUXE", 149.99, 4, true, "Available 2");
         Room unavailable = new Room(testHotelId, "903", "SUITE", 299.99, 3, false, "Unavailable");
@@ -307,10 +307,10 @@ class RoomDAOTest {
         roomDAO.createRoom(available2);
         roomDAO.createRoom(unavailable);
         
-        // 执行查询
+        // Execute query
         List<Room> allAvailable = roomDAO.getAllAvailableRooms();
         
-        // 验证
+        // Assert
         assertNotNull(allAvailable);
         assertEquals(2, allAvailable.size());
         assertTrue(allAvailable.stream().allMatch(Room::isAvailable));

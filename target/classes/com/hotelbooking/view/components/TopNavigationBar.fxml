@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 
 <HBox xmlns="http://javafx.com/javafx/21" 
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hotelbooking.controller.TopNavigationController"
-      alignment="CENTER_RIGHT" 
+      alignment="CENTER_LEFT" 
       spacing="20"
-      style="-fx-background-color: #ffffff; -fx-padding: 0 0;">
-    <!--padding：0（上下留白0），30（左右留白30）-->
+      style="-fx-background-color: white; -fx-padding: 15 30; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;">
     
-    <!-- 左侧 Logo（可选） -->
+    <!-- Left Section -->
+    <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" spacing="15">
+        <!-- Back Button -->
+        <Button fx:id="btnBack"
+                text="← Back" 
+                onAction="#goBack"
+                style="back-button"/>
+        
+        <!-- Hotel Booking Label -->
+        <Label text="🏨 Hotel Booking System" 
+               style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a; -fx-cursor: hand"
+               onMouseClicked="#backToHome"/>
+    </HBox>
+    
+    <!-- Right Section (Navigation buttons) -->
     <Region HBox.hgrow="ALWAYS"/>
     
-    <!-- Help 按钮 -->
     <Button fx:id="btnHelp" 
             text="Help"
-            styleClass="nav-button"
             onAction="#handleHelp"
             style="-fx-background-color: transparent; 
                    -fx-text-fill: #333333; 
@@ -30,14 +39,12 @@
                    -fx-border-radius: 5;
                    -fx-background-radius: 5;">
         <tooltip>
-            <Tooltip text="get help"/>
+            <Tooltip text="Get help"/>
         </tooltip>
     </Button>
     
-    <!-- Trips 按钮 -->
     <Button fx:id="btnTrips" 
             text="My Trips"
-            styleClass="nav-button"
             onAction="#handleTrips"
             style="-fx-background-color: transparent; 
                    -fx-text-fill: #333333; 
@@ -51,10 +58,8 @@
         </tooltip>
     </Button>
     
-    <!-- Login 按钮（特殊样式） -->
     <Button fx:id="btnLogin" 
             text="👤 Sign In"
-            styleClass="login-button"
             onAction="#handleLogin"
             style="-fx-background-color: #1a1a1a; 
                    -fx-text-fill: white; 

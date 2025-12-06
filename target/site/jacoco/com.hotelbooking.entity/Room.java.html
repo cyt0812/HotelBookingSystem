@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Room.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.entity</a> &gt; <span class="el_source">Room.java</span></div><h1>Room.java</h1><pre class="source lang-java linenums">package com.hotelbooking.entity;
+
+import java.math.BigDecimal;
+
+public class Room {
+    private Integer roomId;
+    private Integer hotelId;
+    private String roomNumber;
+    private String roomType;
+    private double pricePerNight;
+    private int maxOccupancy;
+    private boolean isAvailable;
+    private String description; // Add description field
+    
+  
+    
+    public Room(int hotelId, String roomNumber, String roomType, 
+            double pricePerNight, int maxOccupancy, boolean isAvailable,
+<span class="fc" id="L19">            String description) {</span>
+<span class="fc" id="L20">    this.hotelId = hotelId;</span>
+<span class="fc" id="L21">    this.roomNumber = roomNumber;</span>
+<span class="fc" id="L22">    this.roomType = roomType;</span>
+<span class="fc" id="L23">    this.pricePerNight = pricePerNight;</span>
+<span class="fc" id="L24">    this.maxOccupancy = maxOccupancy;</span>
+<span class="fc" id="L25">    this.isAvailable = isAvailable;</span>
+<span class="fc" id="L26">    this.description = description;</span>
+<span class="fc" id="L27">    }</span>
+    
+    // ========== Original Methods ==========
+    
+    public boolean isAvailable() {
+<span class="fc" id="L32">        return isAvailable;</span>
+    }
+    
+    public int getRoomId() {
+<span class="fc" id="L36">        return roomId;</span>
+    }
+    
+    public void setRoomId(int roomId) {
+<span class="nc" id="L40">        this.roomId = roomId;</span>
+<span class="nc" id="L41">    }</span>
+    
+    public Integer getHotelId() {
+<span class="fc" id="L44">        return hotelId;</span>
+    }
+    
+    public void setHotelId(int hotelId) {
+<span class="fc" id="L48">        this.hotelId = hotelId;</span>
+<span class="fc" id="L49">    }</span>
+    
+    public String getRoomNumber() {
+<span class="fc" id="L52">        return roomNumber;</span>
+    }
+    
+    public void setRoomNumber(String roomNumber) {
+<span class="fc" id="L56">        this.roomNumber = roomNumber;</span>
+<span class="fc" id="L57">    }</span>
+    
+    public String getRoomType() {
+<span class="fc" id="L60">        return roomType;</span>
+    }
+    
+    public void setRoomType(String roomType) {
+<span class="fc" id="L64">        this.roomType = roomType;</span>
+<span class="fc" id="L65">    }</span>
+    
+    public double getPricePerNight() {
+<span class="fc" id="L68">        return pricePerNight;</span>
+    }
+    
+    public void setPricePerNight(double pricePerNight) {
+<span class="fc" id="L72">        this.pricePerNight = pricePerNight;</span>
+<span class="fc" id="L73">    }</span>
+    
+    public int getMaxOccupancy() {
+<span class="fc" id="L76">        return maxOccupancy;</span>
+    }
+    
+    public void setMaxOccupancy(int maxOccupancy) {
+<span class="nc" id="L80">        this.maxOccupancy = maxOccupancy;</span>
+<span class="nc" id="L81">    }</span>
+    
+    public boolean isIsAvailable() {
+<span class="nc" id="L84">        return isAvailable;</span>
+    }
+    
+    public void setIsAvailable(boolean isAvailable) {
+<span class="fc" id="L88">        this.isAvailable = isAvailable;</span>
+<span class="fc" id="L89">    }</span>
+    
+    // ========== Compatibility Methods for RoomDAO ==========
+    
+    // 1. Add getter and setter for description field
+    public String getDescription() {
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        if (description == null) {</span>
+            // 如果 description 为空，返回 roomType 作为描述
+<span class="nc bnc" id="L97" title="All 2 branches missed.">            return roomType != null ? roomType : &quot;&quot;;</span>
+        }
+<span class="fc" id="L99">        return description;</span>
+    }
+    
+    public void setDescription(String description) {
+<span class="fc" id="L103">        this.description = description;</span>
+<span class="fc" id="L104">    }</span>
+    
+    // 2. Add getId() method (required by RoomDAO)
+    public Integer getId() {
+<span class="fc" id="L108">        return roomId;</span>
+    }
+    
+    // 3. Add setId() method (required by RoomDAO)
+    public void setId(Integer id) {
+<span class="fc" id="L113">        this.roomId = id;</span>
+<span class="fc" id="L114">    }</span>
+    
+    // 4. Add getPrice() method returning BigDecimal (required by RoomDAO)
+    public BigDecimal getPrice() {
+<span class="fc" id="L118">        return BigDecimal.valueOf(pricePerNight);</span>
+    }
+    
+    // 5. Add setPrice() method accepting BigDecimal (required by RoomDAO)
+    public void setPrice(BigDecimal price) {
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">        if (price != null) {</span>
+<span class="fc" id="L124">            this.pricePerNight = price.doubleValue();</span>
+        }
+<span class="fc" id="L126">    }</span>
+    
+    // 6. Add setAvailable() method as alias for setIsAvailable() (required by RoomDAO)
+    public void setAvailable(boolean available) {
+<span class="fc" id="L130">        this.isAvailable = available;</span>
+<span class="fc" id="L131">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

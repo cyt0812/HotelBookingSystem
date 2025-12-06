@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApiResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.dto</a> &gt; <span class="el_source">ApiResponse.java</span></div><h1>ApiResponse.java</h1><pre class="source lang-java linenums">package com.hotelbooking.dto;
+
+// 移除 @JsonInclude 注解，或者使用条件编译
+public class ApiResponse&lt;T&gt; {
+    private boolean success;
+    private String message;
+    private T data;
+    private String errorCode;
+    private Long timestamp;
+    
+    // 构造器 - 只序列化非null字段
+<span class="fc" id="L12">    public ApiResponse(boolean success, String message, T data, String errorCode) {</span>
+<span class="fc" id="L13">        this.success = success;</span>
+<span class="fc" id="L14">        this.message = message;</span>
+<span class="fc" id="L15">        this.data = data;</span>
+<span class="fc" id="L16">        this.errorCode = errorCode;</span>
+<span class="fc" id="L17">        this.timestamp = System.currentTimeMillis();</span>
+        
+        // 手动处理null值：如果errorCode为null，在getter中返回null
+<span class="fc" id="L20">    }</span>
+    
+    // 成功响应静态方法
+    public static &lt;T&gt; ApiResponse&lt;T&gt; success(T data) {
+<span class="fc" id="L24">        return new ApiResponse&lt;&gt;(true, &quot;Operation successful&quot;, data, null);</span>
+    }
+    
+    public static &lt;T&gt; ApiResponse&lt;T&gt; success(String message, T data) {
+<span class="fc" id="L28">        return new ApiResponse&lt;&gt;(true, message, data, null);</span>
+    }
+    
+    // 错误响应静态方法
+    public static &lt;T&gt; ApiResponse&lt;T&gt; error(String message) {
+<span class="fc" id="L33">        return new ApiResponse&lt;&gt;(false, message, null, null);</span>
+    }
+    
+    public static &lt;T&gt; ApiResponse&lt;T&gt; error(String message, String errorCode) {
+<span class="fc" id="L37">        return new ApiResponse&lt;&gt;(false, message, null, errorCode);</span>
+    }
+    
+    // Getter方法 - 手动控制null值返回
+<span class="fc" id="L41">    public boolean isSuccess() { return success; }</span>
+<span class="fc" id="L42">    public String getMessage() { return message; }</span>
+<span class="fc" id="L43">    public T getData() { return data; }</span>
+<span class="fc" id="L44">    public String getErrorCode() { return errorCode; } // 如果为null，Jackson会自动忽略</span>
+<span class="fc" id="L45">    public Long getTimestamp() { return timestamp; }</span>
+    
+    // 添加一个方法来检查errorCode是否应该序列化
+    public boolean hasErrorCode() {
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        return errorCode != null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

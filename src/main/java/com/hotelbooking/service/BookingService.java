@@ -22,18 +22,18 @@ public class BookingService {
     
     
     /**
-     * 创建预订
+     * Create booking
      */
     public Optional<Booking> createBooking(Integer userId, Integer hotelId, Integer roomId, 
                                          LocalDate checkInDate, LocalDate checkOutDate) {
-        // 验证日期
+        // Validate dates
         if (checkInDate == null || checkOutDate == null || 
             checkInDate.isBefore(LocalDate.now()) || 
             !checkOutDate.isAfter(checkInDate)) {
             return Optional.empty();
         }
         
-        // 检查房间是否存在且可用
+        // Check if room exists and is available
         Optional<Room> roomOpt = roomDAO.getRoomById(roomId);
         if (roomOpt.isEmpty() || !roomOpt.get().isAvailable()) {
             return Optional.empty();
@@ -41,18 +41,18 @@ public class BookingService {
         
         Room room = roomOpt.get();
         
-        // 计算总价
+        // Calculate total price
         long numberOfNights = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
         BigDecimal roomPrice = BigDecimal.valueOf(room.getPricePerNight());
         BigDecimal totalPrice = roomPrice.multiply(BigDecimal.valueOf(numberOfNights));
         
-        // 创建预订
+        // Create booking
         Booking booking = new Booking(userId, hotelId, roomId, checkInDate, checkOutDate, 
                                     totalPrice, "CONFIRMED");
         
         Booking createdBooking = bookingDAO.createBooking(booking);
         
-        // 更新房间状态为不可用
+        // Update room status to unavailable
         room.setIsAvailable(false);
         roomDAO.updateRoom(room);
         
@@ -60,46 +60,46 @@ public class BookingService {
     }
     
     /**
-     * 根据ID获取预订
+     * Get booking by ID
      */
     public Optional<Booking> getBookingById(Integer id) {
         return bookingDAO.getBookingById(id);
     }
     
     /**
-     * 获取用户的所有预订
+     * Get all bookings by user ID
      */
     public List<Booking> getBookingsByUserId(Integer userId) {
         return bookingDAO.getBookingsByUserId(userId);
     }
     
     /**
-     * 获取酒店的所有预订
+     * Get all bookings by hotel ID
      */
     public List<Booking> getBookingsByHotelId(Integer hotelId) {
         return bookingDAO.getBookingsByHotelId(hotelId);
     }
     
     /**
-     * 根据状态获取预订
+     * Get bookings by status
      */
     public List<Booking> getBookingsByStatus(String status) {
         return bookingDAO.getBookingsByStatus(status);
     }
     
     /**
-     * 取消预订
+     * Cancel booking
      */
     public boolean cancelBooking(Integer bookingId) {
         Optional<Booking> bookingOpt = bookingDAO.getBookingById(bookingId);
         if (bookingOpt.isPresent()) {
             Booking booking = bookingOpt.get();
             
-            // 更新预订状态
+            // Update booking status
             boolean updated = bookingDAO.updateBookingStatus(bookingId, "CANCELLED");
             
             if (updated) {
-                // 恢复房间可用性
+                // Restore room availability
                 Optional<Room> roomOpt = roomDAO.getRoomById(booking.getRoomId());
                 if (roomOpt.isPresent()) {
                     Room room = roomOpt.get();
@@ -113,32 +113,32 @@ public class BookingService {
     }
     
     /**
-     * 更新预订状态
+     * Update booking status
      */
     public boolean updateBookingStatus(Integer bookingId, String status) {
         return bookingDAO.updateBookingStatus(bookingId, status);
     }
     
     /**
-     * 删除预订
+     * Delete booking
      */
     public boolean deleteBooking(Integer bookingId) {
         return bookingDAO.deleteBooking(bookingId);
     }
     
     /**
-     * 完成预订（退房）
+     * Complete booking (checkout)
      */
     public boolean completeBooking(Integer bookingId) {
         Optional<Booking> bookingOpt = bookingDAO.getBookingById(bookingId);
         if (bookingOpt.isPresent()) {
             Booking booking = bookingOpt.get();
             
-            // 更新预订状态
+            // Update booking status
             boolean updated = bookingDAO.updateBookingStatus(bookingId, "COMPLETED");
             
             if (updated) {
-                // 恢复房间可用性
+                // Restore room availability
                 Optional<Room> roomOpt = roomDAO.getRoomById(booking.getRoomId());
                 if (roomOpt.isPresent()) {
                     Room room = roomOpt.get();

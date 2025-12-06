@@ -16,13 +16,13 @@ class UserDAOTest {
 
     @BeforeEach
     void setUp() {
-        // 为每个测试生成唯一的数据库名称
+        // Generate unique database name for each test
         String uniqueDbName = "memory:testdb_" + System.currentTimeMillis() + "_" + (int)(Math.random() * 10000);
         System.setProperty("test.derby.url", "jdbc:derby:" + uniqueDbName + ";create=true");
         
-        System.out.println("设置测试数据库: " + System.getProperty("test.derby.url"));
+        System.out.println("Setting up test database: " + System.getProperty("test.derby.url"));
         
-        // 初始化数据库
+        // Initialize database
         DatabaseInitializer.clearTestData();
         DatabaseInitializer.initializeDatabase();
         userDAO = new UserDAO();
@@ -30,13 +30,13 @@ class UserDAOTest {
 
     @Test
     void createUser_WithValidUser_ShouldReturnUserWithId() {
-        // 准备 - 使用唯一的数据
+        // Arrange - Use unique data
         User user = new User("unique_user", "unique@test.com", "password", "CUSTOMER");
         
-        // 执行
+        // Act
         User result = userDAO.createUser(user);
         
-        // 验证
+        // Assert
         assertNotNull(result);
         assertNotNull(result.getId());
         assertEquals("unique_user", result.getUsername());
@@ -45,13 +45,13 @@ class UserDAOTest {
 
     @Test
     void getUserById_WithExistingId_ShouldReturnUser() {
-        // 先创建用户
+        // First create a user
         User user = userDAO.createUser(new User("existing_user", "existing@test.com", "pass", "USER"));
         
-        // 执行
+        // Act
         Optional<User> result = userDAO.getUserById(user.getId());
         
-        // 验证
+        // Assert
         assertTrue(result.isPresent());
         assertEquals(user.getId(), result.get().getId());
         assertEquals("existing_user", result.get().getUsername());
@@ -59,51 +59,51 @@ class UserDAOTest {
 
     @Test
     void getUserById_WithNonExistingId_ShouldReturnEmpty() {
-        // 执行
+        // Act
         Optional<User> result = userDAO.getUserById(999);
         
-        // 验证
+        // Assert
         assertTrue(result.isEmpty());
     }
 
     @Test
     void getUserByUsername_WithExistingUsername_ShouldReturnUser() {
-        // 准备
+        // Arrange
         userDAO.createUser(new User("unique_username", "unique@test.com", "pass", "USER"));
         
-        // 执行
+        // Act
         Optional<User> result = userDAO.getUserByUsername("unique_username");
         
-        // 验证
+        // Assert
         assertTrue(result.isPresent());
         assertEquals("unique_username", result.get().getUsername());
     }
 
     @Test
     void getAllUsers_ShouldReturnAllUsers() {
-        // 准备 - 创建几个测试用户
+        // Arrange - Create several test users
         userDAO.createUser(new User("user1_list", "user1@test.com", "pass", "USER"));
         userDAO.createUser(new User("user2_list", "user2@test.com", "pass", "ADMIN"));
         
-        // 执行
+        // Act
         List<User> users = userDAO.getAllUsers();
         
-        // 验证
+        // Assert
         assertNotNull(users);
         assertTrue(users.size() >= 2);
     }
 
     @Test
     void updateUser_ShouldUpdateUserData() {
-        // 准备
+        // Arrange
         User user = userDAO.createUser(new User("oldname", "old@test.com", "pass", "USER"));
         
-        // 执行 - 更新用户信息
+        // Act - Update user information
         user.setUsername("newname");
         user.setEmail("new@test.com");
         boolean updated = userDAO.updateUser(user);
         
-        // 验证
+        // Assert
         assertTrue(updated);
         Optional<User> retrievedUser = userDAO.getUserById(user.getId());
         assertTrue(retrievedUser.isPresent());
@@ -113,13 +113,13 @@ class UserDAOTest {
 
     @Test
     void deleteUser_ShouldRemoveUser() {
-        // 准备
+        // Arrange
         User user = userDAO.createUser(new User("todelete", "delete@test.com", "pass", "USER"));
         
-        // 执行
+        // Act
         boolean deleted = userDAO.deleteUser(user.getId());
         
-        // 验证
+        // Assert
         assertTrue(deleted);
         Optional<User> retrievedUser = userDAO.getUserById(user.getId());
         assertTrue(retrievedUser.isEmpty());

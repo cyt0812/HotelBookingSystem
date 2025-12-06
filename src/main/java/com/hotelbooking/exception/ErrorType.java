@@ -5,51 +5,51 @@ package com.hotelbooking.exception;
  * 统一管理所有错误代码和消息
  */
 public enum ErrorType {
-    // ========== 用户相关错误 ==========
-    USER_NOT_FOUND("USER_001", "用户不存在"),
-    INVALID_CREDENTIALS("USER_002", "用户名或密码错误"),
-    USERNAME_EXISTS("USER_003", "用户名已存在"),
-    EMAIL_EXISTS("USER_004", "邮箱已存在"),
-    USER_ALREADY_LOGGED_IN("USER_005", "用户已登录"),
-    INSUFFICIENT_PERMISSION("USER_006", "权限不足"),
+    // User-related errors
+    USER_NOT_FOUND("USER_001", "User not found"),
+    INVALID_CREDENTIALS("USER_002", "Invalid username or password"),
+    USERNAME_EXISTS("USER_003", "Username already exists"),
+    EMAIL_EXISTS("USER_004", "Email already exists"),
+    USER_ALREADY_LOGGED_IN("USER_005", "User already logged in"),
+    INSUFFICIENT_PERMISSION("USER_006", "Insufficient permission"),
     
-    // ========== 酒店相关错误 ==========
-    HOTEL_NOT_FOUND("HOTEL_001", "酒店不存在"),
-    HOTEL_ALREADY_EXISTS("HOTEL_002", "酒店已存在"),
-    INVALID_HOTEL_DATA("HOTEL_003", "酒店数据无效"),
+    // Hotel-related errors
+    HOTEL_NOT_FOUND("HOTEL_001", "Hotel not found"),
+    HOTEL_ALREADY_EXISTS("HOTEL_002", "Hotel already exists"),
+    INVALID_HOTEL_DATA("HOTEL_003", "Invalid hotel data"),
     
-    // ========== 房间相关错误 ==========
-    ROOM_NOT_FOUND("ROOM_001", "房间不存在"),
-    ROOM_NOT_AVAILABLE("ROOM_002", "房间不可用"),
-    ROOM_ALREADY_EXISTS("ROOM_003", "房间号已存在"),
-    INVALID_ROOM_DATA("ROOM_004", "房间数据无效"),
+    // Room-related errors
+    ROOM_NOT_FOUND("ROOM_001", "Room not found"),
+    ROOM_NOT_AVAILABLE("ROOM_002", "Room unavailable"),
+    ROOM_ALREADY_EXISTS("ROOM_003", "Room number already exists"),
+    INVALID_ROOM_DATA("ROOM_004", "Invalid room data"),
     
-    // ========== 预订相关错误 ==========
-    BOOKING_NOT_FOUND("BOOKING_001", "预订不存在"),
-    INVALID_BOOKING_DATES("BOOKING_002", "无效的入住日期"),
-    BOOKING_CONFLICT("BOOKING_003", "预订时间冲突"),
-    INVALID_BOOKING_STATUS("BOOKING_004", "无效的预订状态"),
-    BOOKING_CANNOT_CANCEL("BOOKING_005", "当前状态的预订无法取消"),
-    BOOKING_ALREADY_COMPLETED("BOOKING_006", "预订已完成"),
+    // Booking-related errors
+    BOOKING_NOT_FOUND("BOOKING_001", "Booking not found"),
+    INVALID_BOOKING_DATES("BOOKING_002", "Invalid booking dates"),
+    BOOKING_CONFLICT("BOOKING_003", "Booking conflict"),
+    INVALID_BOOKING_STATUS("BOOKING_004", "Invalid booking status"),
+    BOOKING_CANNOT_CANCEL("BOOKING_005", "Booking cannot be cancelled in current status"),
+    BOOKING_ALREADY_COMPLETED("BOOKING_006", "Booking already completed"),
     
-    // ========== 支付相关错误 ==========
-    PAYMENT_FAILED("PAYMENT_001", "支付失败"),
-    PAYMENT_NOT_FOUND("PAYMENT_002", "支付记录不存在"),
-    REFUND_FAILED("PAYMENT_003", "退款失败"),
-    INVALID_PAYMENT_METHOD("PAYMENT_004", "无效的支付方式"),
-    PAYMENT_ALREADY_PROCESSED("PAYMENT_005", "支付已处理"),
+    // Payment-related errors
+    PAYMENT_FAILED("PAYMENT_001", "Payment failed"),
+    PAYMENT_NOT_FOUND("PAYMENT_002", "Payment record not found"),
+    REFUND_FAILED("PAYMENT_003", "Refund failed"),
+    INVALID_PAYMENT_METHOD("PAYMENT_004", "Invalid payment method"),
+    PAYMENT_ALREADY_PROCESSED("PAYMENT_005", "Payment already processed"),
     
-    // ========== 验证相关错误 ==========
-    VALIDATION_ERROR("VALIDATION_001", "数据验证失败"),
-    INVALID_PARAMETER("VALIDATION_002", "参数无效"),
-    MISSING_REQUIRED_FIELD("VALIDATION_003", "缺少必填字段"),
+    // Validation errors
+    VALIDATION_ERROR("VALIDATION_001", "Data validation failed"),
+    INVALID_PARAMETER("VALIDATION_002", "Invalid parameter"),
+    MISSING_REQUIRED_FIELD("VALIDATION_003", "Missing required field"),
     
-    // ========== 系统相关错误 ==========
-    DATABASE_ERROR("SYSTEM_001", "数据库错误"),
-    DATABASE_CONNECTION_ERROR("SYSTEM_002", "数据库连接失败"),
-    INTERNAL_SERVER_ERROR("SYSTEM_003", "系统内部错误"),
-    EXTERNAL_SERVICE_ERROR("SYSTEM_004", "外部服务错误"),
-    FILE_PROCESSING_ERROR("SYSTEM_005", "文件处理错误");
+    // System errors
+    DATABASE_ERROR("SYSTEM_001", "Database error"),
+      DATABASE_CONNECTION_ERROR("SYSTEM_002", "Database connection failed"),
+    INTERNAL_SERVER_ERROR("SYSTEM_003", "Internal server error"),
+    EXTERNAL_SERVICE_ERROR("SYSTEM_004", "External service error"),
+    FILE_PROCESSING_ERROR("SYSTEM_005", "File processing error");
     
     private final String code;
     private final String message;

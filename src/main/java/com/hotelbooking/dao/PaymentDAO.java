@@ -1,4 +1,4 @@
-// PaymentDAO.java - 支付数据访问层
+// PaymentDAO.java - Payment Data Access Layer
 package com.hotelbooking.dao;
 
 import com.hotelbooking.entity.Payment;
@@ -10,10 +10,10 @@ import java.util.List;
 public class PaymentDAO {
     
     public PaymentDAO() {
-        // 空构造函数，不使用类级别connection
+        // Empty constructor, not using class-level connection
     }
     
-    // 创建支付记录
+    // Create payment record
     public boolean createPayment(Payment payment) {
         String sql = "INSERT INTO payments (payment_id, booking_id, amount, payment_method, payment_status, payment_date, transaction_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
         
@@ -34,7 +34,7 @@ public class PaymentDAO {
         }
     }
     
-    // 根据支付ID查询支付记录
+    // Get payment record by payment ID
     public Payment getPaymentById(String paymentId) {
         String sql = "SELECT * FROM payments WHERE payment_id = ?";
         
@@ -53,7 +53,7 @@ public class PaymentDAO {
         }
     }
     
-    // 根据预订ID查询支付记录
+    // Get payment record by booking ID
     public Payment getPaymentByBookingId(String bookingId) {
         String sql = "SELECT * FROM payments WHERE booking_id = ?";
         
@@ -72,7 +72,7 @@ public class PaymentDAO {
         }
     }
     
-    // 更新支付状态
+    // Update payment status
     public boolean updatePaymentStatus(String paymentId, String status, String transactionId) {
         String sql = "UPDATE payments SET payment_status = ?, transaction_id = ? WHERE payment_id = ?";
         
@@ -89,7 +89,7 @@ public class PaymentDAO {
         }
     }
     
-    // 获取所有支付记录
+    // Get all payment records
     public List<Payment> getAllPayments() {
         String sql = "SELECT * FROM payments ORDER BY payment_date DESC";
         List<Payment> payments = new ArrayList<>();
@@ -107,7 +107,7 @@ public class PaymentDAO {
         }
     }
     
-    // 根据状态获取支付记录
+    // Get payment records by status
     public List<Payment> getPaymentsByStatus(String status) {
         String sql = "SELECT * FROM payments WHERE payment_status = ? ORDER BY payment_date DESC";
         List<Payment> payments = new ArrayList<>();
@@ -127,7 +127,7 @@ public class PaymentDAO {
         }
     }
     
-    // 映射ResultSet到Payment对象
+    // Map ResultSet to Payment object
     private Payment mapResultSetToPayment(ResultSet rs) throws SQLException {
         Payment payment = new Payment();
         payment.setPaymentId(rs.getString("payment_id"));

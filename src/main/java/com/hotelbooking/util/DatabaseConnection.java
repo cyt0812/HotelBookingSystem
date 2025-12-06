@@ -7,7 +7,8 @@ import java.sql.SQLException;
 public class DatabaseConnection {
     // 数据库连接参数
     //private static final String URL = "jdbc:derby:hotel_booking_db;create=true";
-    private static String URL = "jdbc:derby:memory:hotel_booking_test;create=true";
+    private static String URL = "jdbc:derby:./database/hotel_booking_db;create=true";
+    //private static String URL = "jdbc:derby:memory:hotel_booking_test;create=true";
     private static final String USER = "app";
     private static final String PASSWORD = "app";
     
@@ -77,21 +78,14 @@ public class DatabaseConnection {
         }
     }
 
+
+    
     /**
-     * 获取数据库信息
+     * 获取数据库URL
+     * @return String 数据库连接URL
      */
-    public static void printDatabaseInfo() {
-        try (Connection conn = getConnection()) {
-            System.out.println("=== Database Information ===");
-            System.out.println("Database: " + conn.getMetaData().getDatabaseProductName());
-            System.out.println("Version: " + conn.getMetaData().getDatabaseProductVersion());
-            System.out.println("URL: " + conn.getMetaData().getURL());
-            System.out.println("Driver: " + conn.getMetaData().getDriverName());
-            System.out.println("Auto Commit: " + conn.getAutoCommit());
-            System.out.println("============================");
-        } catch (SQLException e) {
-            System.err.println("Error getting database info: " + e.getMessage());
-        }
+    public static String getDatabaseUrl() {
+        return URL;
     }
     
     /**
@@ -113,10 +107,5 @@ public class DatabaseConnection {
         }
     }
     
-    /**
-     * 获取当前使用的数据库URL（用于调试）
-     */
-    public static String getDatabaseUrl() {
-        return URL;
-    }
+
 }

@@ -1,0 +1,54 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+HotelBookingSystem,com.hotelbooking.controller,UserController,174,0,12,0,40,0,18,0,12,0
+HotelBookingSystem,com.hotelbooking.controller,TopNavigationController,489,0,24,0,151,0,38,0,26,0
+HotelBookingSystem,com.hotelbooking.controller,EditProfileController,350,0,42,0,106,0,34,0,13,0
+HotelBookingSystem,com.hotelbooking.controller,HotelRoomsController,657,0,30,0,139,0,28,0,13,0
+HotelBookingSystem,com.hotelbooking.controller,AdminController,7,0,0,0,3,0,2,0,2,0
+HotelBookingSystem,com.hotelbooking.controller,UserProfileController,315,0,14,0,91,0,18,0,11,0
+HotelBookingSystem,com.hotelbooking.controller,MyBookingsController.new Runnable() {...},83,0,8,0,20,0,6,0,2,0
+HotelBookingSystem,com.hotelbooking.controller,ChangePasswordController,480,0,55,0,145,0,47,0,18,0
+HotelBookingSystem,com.hotelbooking.controller,HotelController,74,308,16,26,30,61,17,25,1,20
+HotelBookingSystem,com.hotelbooking.controller,MyBookingsController.1.new Runnable() {...},11,0,0,0,3,0,2,0,2,0
+HotelBookingSystem,com.hotelbooking.controller,MyBookingsController.1.new Runnable() {...},18,0,0,0,3,0,2,0,2,0
+HotelBookingSystem,com.hotelbooking.controller,MyBookingsController.1.new Runnable() {...},16,0,0,0,3,0,2,0,2,0
+HotelBookingSystem,com.hotelbooking.controller,SearchHotelsController,433,0,10,0,97,0,16,0,11,0
+HotelBookingSystem,com.hotelbooking.controller,LoginController,162,0,14,0,50,0,14,0,7,0
+HotelBookingSystem,com.hotelbooking.controller,RegisterController,175,26,16,2,54,8,12,3,3,3
+HotelBookingSystem,com.hotelbooking.controller,MainDashboardController,1117,0,70,0,264,0,73,0,38,0
+HotelBookingSystem,com.hotelbooking.controller,BookingController,83,222,6,10,30,45,9,19,3,17
+HotelBookingSystem,com.hotelbooking.controller,PaymentController,714,0,78,0,164,0,57,0,18,0
+HotelBookingSystem,com.hotelbooking.controller,MyBookingsController,807,0,23,0,184,0,44,0,31,0
+HotelBookingSystem,com.hotelbooking.validation,UserInputValidator,3,67,0,18,1,17,1,13,1,4
+HotelBookingSystem,com.hotelbooking.validation,BookingValidator,3,98,0,18,1,25,1,13,1,4
+HotelBookingSystem,com.hotelbooking.service,AdminService,104,278,4,16,33,64,4,20,0,13
+HotelBookingSystem,com.hotelbooking.service,PaymentService,70,156,4,16,18,40,5,13,1,7
+HotelBookingSystem,com.hotelbooking.service,HotelService,110,162,9,25,32,43,10,20,3,10
+HotelBookingSystem,com.hotelbooking.service,BookingService,10,194,7,17,2,48,9,13,2,8
+HotelBookingSystem,com.hotelbooking.service,UserService,110,171,23,25,27,41,19,16,3,8
+HotelBookingSystem,com.hotelbooking.service,RoomService,216,313,25,51,63,76,23,32,1,16
+HotelBookingSystem,com.hotelbooking.entity,Booking,35,111,3,1,2,45,3,22,1,22
+HotelBookingSystem,com.hotelbooking.entity,Payment,0,81,0,0,0,24,0,17,0,17
+HotelBookingSystem,com.hotelbooking.entity,Room,20,100,4,2,6,39,6,20,3,20
+HotelBookingSystem,com.hotelbooking.entity,User,51,75,6,2,17,24,6,16,2,16
+HotelBookingSystem,com.hotelbooking.entity,Hotel,21,56,0,0,9,24,6,12,6,12
+HotelBookingSystem,com.hotelbooking.dao,BookingDAO,72,353,6,14,16,84,6,13,0,9
+HotelBookingSystem,com.hotelbooking.dao,UserDAO,487,269,59,13,111,65,44,10,10,8
+HotelBookingSystem,com.hotelbooking.dao,HotelDAO,355,256,26,12,90,64,23,11,7,8
+HotelBookingSystem,com.hotelbooking.dao,PaymentDAO,52,255,7,13,11,63,7,11,0,8
+HotelBookingSystem,com.hotelbooking.dao,RoomDAO,272,486,27,29,62,118,23,22,4,13
+HotelBookingSystem,com.hotelbooking.exception,ErrorType,25,276,4,0,4,39,3,4,1,4
+HotelBookingSystem,com.hotelbooking.exception,ValidationException,5,4,0,0,2,2,1,1,1,1
+HotelBookingSystem,com.hotelbooking.exception,UserNotFoundException,13,0,0,0,6,0,3,0,3,0
+HotelBookingSystem,com.hotelbooking.exception,GlobalExceptionHandler,71,85,3,1,19,20,7,4,5,4
+HotelBookingSystem,com.hotelbooking.exception,BusinessException,0,41,0,0,0,14,0,5,0,5
+HotelBookingSystem,com.hotelbooking.util,NavigationManager.NavigationHistory,0,21,0,0,0,9,0,2,0,2
+HotelBookingSystem,com.hotelbooking.util,DatabaseConnection,83,46,12,4,28,15,11,4,3,4
+HotelBookingSystem,com.hotelbooking.util,DatabaseInitializer,39,512,4,6,12,119,4,6,1,4
+HotelBookingSystem,com.hotelbooking.util,SceneManager,52,0,0,0,17,0,4,0,4,0
+HotelBookingSystem,com.hotelbooking.util,NavigationManager,0,153,1,11,0,36,1,15,0,10
+HotelBookingSystem,com.hotelbooking.util,SessionManager,3,99,0,8,1,42,1,25,1,21
+HotelBookingSystem,com.hotelbooking.dto,ApiResponse,0,73,0,2,0,17,0,12,0,11
+HotelBookingSystem,com.hotelbooking.dto,UserRegistrationRequest,0,46,0,0,0,15,0,10,0,10
+HotelBookingSystem,com.hotelbooking.dto,LoginRequest,0,26,0,0,0,9,0,6,0,6
+HotelBookingSystem,com.hotelbooking,Main,53,0,0,0,19,0,4,0,4,0
+HotelBookingSystem,com.hotelbooking,TestMain,9,16,0,0,3,8,1,1,1,1

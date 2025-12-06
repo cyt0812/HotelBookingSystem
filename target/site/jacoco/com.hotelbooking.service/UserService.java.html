@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.service</a> &gt; <span class="el_source">UserService.java</span></div><h1>UserService.java</h1><pre class="source lang-java linenums">package com.hotelbooking.service;
+
+import com.hotelbooking.dao.UserDAO;
+import com.hotelbooking.entity.User;
+import com.hotelbooking.exception.BusinessException;
+import com.hotelbooking.exception.ErrorType;
+import com.hotelbooking.exception.ValidationException;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+public class UserService {
+
+    private final UserDAO userDAO;
+
+<span class="fc" id="L17">    public UserService(UserDAO userDAO) {</span>
+<span class="fc" id="L18">        this.userDAO = userDAO;</span>
+<span class="fc" id="L19">    }</span>
+
+    /**
+     * Register a new user
+     */
+    public User registerUser(String username, String email, String password, String role) {
+        try {
+            // Basic validation
+<span class="pc bpc" id="L27" title="1 of 4 branches missed.">            if (username == null || username.trim().isEmpty()) {</span>
+<span class="fc" id="L28">                throw new ValidationException(&quot;Username cannot be empty&quot;);</span>
+            }
+<span class="pc bpc" id="L30" title="2 of 4 branches missed.">            if (email == null || !email.contains(&quot;@&quot;)) {</span>
+<span class="nc" id="L31">                throw new ValidationException(&quot;Invalid email format&quot;);</span>
+            }
+<span class="pc bpc" id="L33" title="2 of 4 branches missed.">            if (password == null || password.trim().isEmpty()) {</span>
+<span class="nc" id="L34">                throw new ValidationException(&quot;Password cannot be empty&quot;);</span>
+            }
+<span class="pc bpc" id="L36" title="2 of 4 branches missed.">            if (role == null || role.trim().isEmpty()) {</span>
+<span class="nc" id="L37">                role = &quot;CUSTOMER&quot;;</span>
+            }
+
+            // Uniqueness validation
+<span class="fc bfc" id="L41" title="All 2 branches covered.">            if (userDAO.isUsernameExists(username)) {</span>
+<span class="fc" id="L42">                throw new BusinessException(ErrorType.USERNAME_EXISTS);</span>
+            }
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">            if (userDAO.isEmailExists(email)) {</span>
+<span class="nc" id="L45">                throw new BusinessException(ErrorType.EMAIL_EXISTS);</span>
+            }
+
+            // Create user entity
+<span class="fc" id="L49">            User user = new User(username.trim(), email.trim(), password, role);</span>
+<span class="fc" id="L50">            user.setCreatedAt(LocalDateTime.now()); // ⭐ Must be set, otherwise database insertion fails</span>
+
+            // Write to database
+<span class="fc" id="L53">            System.out.println(&quot;Preparing to call createUser: &quot; + username);</span>
+<span class="fc" id="L54">            User savedUser = userDAO.createUser(user);</span>
+<span class="fc" id="L55">            System.out.println(&quot;createUser call completed: &quot; + savedUser.getId());</span>
+<span class="fc" id="L56">            return savedUser;</span>
+
+<span class="fc" id="L58">        } catch (BusinessException | ValidationException e) {</span>
+<span class="fc" id="L59">            throw e;</span>
+<span class="nc" id="L60">        } catch (Exception e) {</span>
+<span class="nc" id="L61">            e.printStackTrace();</span>
+<span class="nc" id="L62">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, &quot;Failed to register user: &quot; + e.getMessage(), e);</span>
+        }
+    }
+
+    /**
+     * User login (compatible with new and old versions)
+     */
+   public User loginUser(String username, String password) {
+    try {
+        // Fix 1: First validate null values, must throw ValidationException
+<span class="fc bfc" id="L72" title="All 4 branches covered.">        if (username == null || username.trim().isEmpty()) {</span>
+<span class="fc" id="L73">            throw new ValidationException(&quot;Username cannot be empty&quot;);</span>
+        }
+<span class="fc bfc" id="L75" title="All 4 branches covered.">        if (password == null || password.trim().isEmpty()) {</span>
+<span class="fc" id="L76">            throw new ValidationException(&quot;Password cannot be empty&quot;);</span>
+        }
+        
+        // Fix 2: Simplify login logic, choose one based on actual situation
+        // Prefer to use the new authenticateUser method
+        try {
+<span class="fc" id="L82">            Optional&lt;User&gt; authenticatedUser = userDAO.authenticateUser(username.trim(), password.trim());</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">            if (authenticatedUser.isPresent()) {</span>
+<span class="fc" id="L84">                return authenticatedUser.get();</span>
+            }
+            // User does not exist or password is incorrect
+<span class="fc" id="L87">            throw new BusinessException(ErrorType.INVALID_CREDENTIALS);</span>
+<span class="nc" id="L88">        } catch (NoSuchMethodError | UnsupportedOperationException e) {</span>
+            // If userDAO doesn't have authenticateUser method, use old logic
+<span class="nc" id="L90">            System.out.println(&quot;Using old login logic...&quot;);</span>
+<span class="nc" id="L91">            return loginUserLegacy(username.trim(), password.trim());</span>
+        }
+
+<span class="fc" id="L94">    } catch (ValidationException e) {</span>
+        // Fix 3: Ensure ValidationException is properly thrown
+<span class="fc" id="L96">        throw e;</span>
+<span class="fc" id="L97">    } catch (BusinessException e) {</span>
+<span class="fc" id="L98">        throw e;</span>
+<span class="fc" id="L99">    } catch (Exception e) {</span>
+<span class="fc" id="L100">        throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="fc" id="L101">            &quot;Failed to login: &quot; + e.getMessage(), e);</span>
+    }
+}
+   /**
+     * Login parameter validation
+     */
+    private void validateLoginParameters(String username, String password) {
+<span class="nc bnc" id="L108" title="All 4 branches missed.">        if (username == null || username.trim().isEmpty()) {</span>
+<span class="nc" id="L109">            throw new ValidationException(&quot;Username cannot be empty&quot;);</span>
+        }
+<span class="nc bnc" id="L111" title="All 4 branches missed.">        if (password == null || password.trim().isEmpty()) {</span>
+<span class="nc" id="L112">            throw new ValidationException(&quot;Password cannot be empty&quot;);</span>
+        }
+<span class="nc" id="L114">    }</span>
+    /**
+     * User login (old version logic)
+     */
+   public User loginUserLegacy(String username, String password) {
+        try {
+<span class="nc bnc" id="L120" title="All 4 branches missed.">            if (username == null || password == null) {</span>
+<span class="nc" id="L121">                throw new ValidationException(&quot;Username and password cannot be empty&quot;);</span>
+            }
+            
+            // Old version logic
+<span class="nc" id="L125">            User user = userDAO.getUserByUsername(username)</span>
+<span class="nc" id="L126">                    .orElseThrow(() -&gt; new BusinessException(ErrorType.USER_NOT_FOUND));</span>
+            
+<span class="nc bnc" id="L128" title="All 2 branches missed.">            if (!user.getPassword().equals(password)) {</span>
+<span class="nc" id="L129">                throw new BusinessException(ErrorType.INVALID_CREDENTIALS);</span>
+            }
+            
+<span class="nc" id="L132">            return user;</span>
+<span class="nc" id="L133">        } catch (BusinessException | ValidationException e) {</span>
+<span class="nc" id="L134">            throw e;</span>
+<span class="nc" id="L135">        } catch (Exception e) {</span>
+<span class="nc" id="L136">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L137">                &quot;Failed to login: &quot; + e.getMessage(), e);</span>
+        }
+    }
+
+    /**
+     * Get all users
+     */
+    public List&lt;User&gt; getAllUsers() {
+<span class="fc" id="L145">        return userDAO.getAllUsers();</span>
+    }
+
+    /**
+     * Get user by ID
+     */
+    public Optional&lt;User&gt; getUserById(Integer id) {
+<span class="fc" id="L152">        return userDAO.getUserById(id);</span>
+    }
+
+    /**
+     * Get user by username
+     */
+    public Optional&lt;User&gt; getUserByUsername(String username) {
+<span class="fc" id="L159">        return userDAO.getUserByUsername(username);</span>
+    }
+
+    /**
+     * Delete user
+     */
+    public boolean deleteUser(Integer userId) {
+<span class="fc" id="L166">        return userDAO.deleteUser(userId);</span>
+    }
+
+    /**
+     * Update user
+     */
+    public boolean updateUser(User user) {
+<span class="pc bpc" id="L173" title="1 of 4 branches missed.">        if (user == null || user.getId() == null) {</span>
+<span class="fc" id="L174">            return false;</span>
+        }
+<span class="fc" id="L176">        return userDAO.updateUser(user);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

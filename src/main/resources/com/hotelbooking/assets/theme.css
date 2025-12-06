@@ -112,6 +112,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-font-weight: bold;
 }
 
+/* Back按钮的独特样式 */
+.back-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #8B4513; /* 棕色文本 */
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-font-weight: bold; /* 粗体 */
+}
+
 .nav-button {
     -fx-background-color: transparent;
     -fx-text-fill: white;

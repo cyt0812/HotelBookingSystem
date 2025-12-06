@@ -37,8 +37,10 @@ public class BookingDAO {
                     }
                 }
             }
+            System.out.println("✅ Creating booking record: " + booking.getBookingId());
             return booking;
         } catch (SQLException e) {
+            System.out.println("❌ Failed to create booking: " + e.getMessage());
             throw new RuntimeException("Error creating booking", e);
         }
     }
@@ -50,6 +52,7 @@ public class BookingDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, id);
+            System.out.println("✅ Querying booking by ID: " + id);
             ResultSet rs = stmt.executeQuery();
             
             if (rs.next()) {
@@ -72,6 +75,7 @@ public class BookingDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, userId);
+            System.out.println("✅ Querying bookings by user ID: " + userId);
             ResultSet rs = stmt.executeQuery();
             
             while (rs.next()) {
@@ -80,6 +84,7 @@ public class BookingDAO {
             return bookings;
             
         } catch (SQLException e) {
+            System.out.println("❌ Failed to query bookings: " + e.getMessage());
             throw new RuntimeException("Error getting bookings by user id: " + userId, e);
         }
     }
@@ -134,9 +139,11 @@ public class BookingDAO {
             stmt.setInt(2, bookingId);
             
             int affectedRows = stmt.executeUpdate();
+            System.out.println("✅ Updating booking status: " + bookingId + " -> " + status);
             return affectedRows > 0;
             
         } catch (SQLException e) {
+            System.out.println("❌ Failed to update booking status: " + e.getMessage());
             throw new RuntimeException("Error updating booking status: " + bookingId, e);
         }
     }

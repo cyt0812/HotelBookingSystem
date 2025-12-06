@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SessionManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.util</a> &gt; <span class="el_source">SessionManager.java</span></div><h1>SessionManager.java</h1><pre class="source lang-java linenums">/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.hotelbooking.util;
+
+import com.hotelbooking.entity.Hotel;
+import com.hotelbooking.entity.User;
+import java.time.LocalDate;
+
+<span class="nc" id="L11">public class SessionManager {</span>
+    private static LocalDate checkInDate;
+        private static LocalDate checkOutDate;
+        private static int roomCount;
+        private static int adultCount;
+        private static int childCount;
+        
+
+        // ====== 设置方法 ======
+        public static void setCheckInDate(LocalDate date) {
+<span class="fc" id="L21">            checkInDate = date;</span>
+<span class="fc" id="L22">        }</span>
+
+        public static void setCheckOutDate(LocalDate date) {
+<span class="fc" id="L25">            checkOutDate = date;</span>
+<span class="fc" id="L26">        }</span>
+
+        public static void setRoomCount(int count) {
+<span class="fc" id="L29">            roomCount = count;</span>
+<span class="fc" id="L30">        }</span>
+
+        public static void setAdultCount(int count) {
+<span class="fc" id="L33">            adultCount = count;</span>
+<span class="fc" id="L34">        }</span>
+
+        public static void setChildCount(int count) {
+<span class="fc" id="L37">            childCount = count;</span>
+<span class="fc" id="L38">        }</span>
+
+        // ====== 获取方法 ======
+        public static LocalDate getCheckInDate() {
+<span class="fc" id="L42">            return checkInDate;</span>
+        }
+
+        public static LocalDate getCheckOutDate() {
+<span class="fc" id="L46">            return checkOutDate;</span>
+        }
+
+        public static int getRoomCount() {
+<span class="fc" id="L50">            return roomCount;</span>
+        }
+
+        public static int getAdultCount() {
+<span class="fc" id="L54">            return adultCount;</span>
+        }
+
+        public static int getChildCount() {
+<span class="fc" id="L58">            return childCount;</span>
+        }
+
+        // ====== 清空状态 ======
+        public static void clear() {
+<span class="fc" id="L63">            currentHotel = null;</span>
+<span class="fc" id="L64">            checkInDate = null;</span>
+<span class="fc" id="L65">            checkOutDate = null;</span>
+<span class="fc" id="L66">            roomCount = 1;</span>
+<span class="fc" id="L67">            adultCount = 1;</span>
+<span class="fc" id="L68">            childCount = 0;</span>
+<span class="fc" id="L69">        }</span>
+
+    // 静态变量保存当前登录的用户对象
+<span class="fc" id="L72">    private static User currentUser = null;</span>
+    
+    // 当前酒店
+<span class="fc" id="L75">    private static Hotel currentHotel = null;</span>
+
+    // ====== 当前酒店设置和获取 ======
+    public static void setCurrentHotel(Hotel hotel) {
+<span class="fc" id="L79">        currentHotel = hotel;</span>
+<span class="fc" id="L80">        System.out.println(&quot;当前酒店已设置: &quot; + hotel.getName());</span>
+<span class="fc" id="L81">    }</span>
+
+    public static Hotel getCurrentHotel() {
+<span class="fc" id="L84">        return currentHotel;</span>
+    }
+
+    
+    
+    /**
+     * 登录用户 - 设置当前用户
+     * @param user 登录的用户对象
+     */
+    public static void login(User user) {
+<span class="fc" id="L94">        currentUser = user;</span>
+<span class="fc" id="L95">        System.out.println(&quot;用户登录成功: &quot; + user.getUsername());</span>
+<span class="fc" id="L96">    }</span>
+    
+    /**
+     * 获取当前登录的用户
+     * @return 当前用户对象，如果未登录返回null
+     */
+    public static User getCurrentUser() {
+<span class="fc" id="L103">        return currentUser;</span>
+    }
+    
+    public static void setCurrentUser(User user) {
+<span class="fc" id="L107">        currentUser = user;</span>
+<span class="fc" id="L108">        System.out.println(&quot;用户设置成功&quot;);</span>
+<span class="fc" id="L109">    }</span>
+    
+    /**
+     * 登出 - 清除当前用户信息
+     */
+    public static void logout() {
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        if (currentUser != null) {</span>
+<span class="fc" id="L116">            System.out.println(&quot;用户登出: &quot; + currentUser.getUsername());</span>
+<span class="fc" id="L117">            currentUser = null;</span>
+        }
+<span class="fc" id="L119">    }</span>
+    
+    /**
+     * 检查是否有用户登录
+     * @return true如果有用户登录，否则false
+     */
+    public static boolean isLoggedIn() {
+<span class="fc bfc" id="L126" title="All 2 branches covered.">        return currentUser != null;</span>
+    }
+    
+    /**
+     * 获取当前登录用户的用户名
+     * @return 用户名，如果未登录返回null
+     */
+    public static String getLoggedInUsername() {
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        return currentUser != null ? currentUser.getUsername() : null;</span>
+    }
+    
+    public static Integer getLoggedInId() {
+<span class="fc bfc" id="L138" title="All 2 branches covered.">        return currentUser != null ? currentUser.getId() : null;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

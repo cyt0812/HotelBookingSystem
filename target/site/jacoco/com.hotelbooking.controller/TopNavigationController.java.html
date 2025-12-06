@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TopNavigationController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.controller</a> &gt; <span class="el_source">TopNavigationController.java</span></div><h1>TopNavigationController.java</h1><pre class="source lang-java linenums">package com.hotelbooking.controller;
+
+import com.hotelbooking.util.NavigationManager;
+import com.hotelbooking.util.SessionManager;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
+
+<span class="nc" id="L13">public class TopNavigationController {</span>
+    
+    @FXML private Button btnHelp;
+    @FXML private Button btnTrips;
+    @FXML private Button btnLogin;
+    @FXML private Button btnBack;  // 返回按钮
+    
+    @FXML
+    public void initialize() {
+<span class="nc" id="L22">        setupHoverEffects();</span>
+<span class="nc" id="L23">        updateLoginButton();</span>
+<span class="nc" id="L24">        updateBackButton();</span>
+<span class="nc" id="L25">    }</span>
+    
+    /**
+     * 更新返回按钮状态
+     */
+    private void updateBackButton() {
+<span class="nc bnc" id="L31" title="All 2 branches missed.">        if (btnBack != null) {</span>
+            // 检查是否可以返回
+<span class="nc" id="L33">            boolean canGoBack = NavigationManager.getInstance().hasPrevious();</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">            btnBack.setDisable(!canGoBack);</span>
+<span class="nc" id="L35">            btnBack.setStyle(</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">                &quot;-fx-background-color: &quot; + (canGoBack ? &quot;#f5f5f5&quot; : &quot;#e0e0e0&quot;) + &quot;; &quot; +</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">                &quot;-fx-text-fill: &quot; + (canGoBack ? &quot;#333333&quot; : &quot;#999999&quot;) + &quot;; &quot; +</span>
+                &quot;-fx-font-size: 14px; &quot; +
+<span class="nc bnc" id="L39" title="All 2 branches missed.">                &quot;-fx-cursor: &quot; + (canGoBack ? &quot;hand&quot; : &quot;default&quot;) + &quot;; &quot; +</span>
+                &quot;-fx-padding: 8 15; &quot; +
+                &quot;-fx-border-radius: 5; &quot; +
+                &quot;-fx-background-radius: 5;&quot;
+            );
+        }
+<span class="nc" id="L45">    }</span>
+    
+    /**
+     * 设置鼠标悬停效果
+     */
+    private void setupHoverEffects() {
+        // 返回按钮悬停效果
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        if (btnBack != null) {</span>
+<span class="nc" id="L53">            btnBack.setOnMouseEntered(e -&gt; {</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">                if (!btnBack.isDisabled()) {</span>
+<span class="nc" id="L55">                    btnBack.setStyle(</span>
+                        &quot;-fx-background-color: #ddd; &quot; +
+                        &quot;-fx-text-fill: #1a1a1a; &quot; +
+                        &quot;-fx-font-size: 14px; &quot; +
+                        &quot;-fx-cursor: hand; &quot; +
+                        &quot;-fx-padding: 8 15; &quot; +
+                        &quot;-fx-border-radius: 5; &quot; +
+                        &quot;-fx-background-radius: 5;&quot;
+                    );
+                }
+<span class="nc" id="L65">            });</span>
+            
+<span class="nc" id="L67">            btnBack.setOnMouseExited(e -&gt; {</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">                if (!btnBack.isDisabled()) {</span>
+<span class="nc" id="L69">                    btnBack.setStyle(</span>
+                        &quot;-fx-background-color: #f5f5f5; &quot; +
+                        &quot;-fx-text-fill: #333333; &quot; +
+                        &quot;-fx-font-size: 14px; &quot; +
+                        &quot;-fx-cursor: hand; &quot; +
+                        &quot;-fx-padding: 8 15; &quot; +
+                        &quot;-fx-border-radius: 5; &quot; +
+                        &quot;-fx-background-radius: 5;&quot;
+                    );
+                }
+<span class="nc" id="L79">            });</span>
+        }
+        
+        // Help 按钮悬停效果
+<span class="nc" id="L83">        btnHelp.setOnMouseEntered(e -&gt; {</span>
+<span class="nc" id="L84">            btnHelp.setStyle(</span>
+                &quot;-fx-background-color: #f5f5f5; &quot; +
+                &quot;-fx-text-fill: #333333; &quot; +
+                &quot;-fx-font-size: 14px; &quot; +
+                &quot;-fx-cursor: hand; &quot; +
+                &quot;-fx-padding: 8 15; &quot; +
+                &quot;-fx-border-radius: 5; &quot; +
+                &quot;-fx-background-radius: 5;&quot;
+            );
+<span class="nc" id="L93">        });</span>
+        
+<span class="nc" id="L95">        btnHelp.setOnMouseExited(e -&gt; {</span>
+<span class="nc" id="L96">            btnHelp.setStyle(</span>
+                &quot;-fx-background-color: transparent; &quot; +
+                &quot;-fx-text-fill: #333333; &quot; +
+                &quot;-fx-font-size: 14px; &quot; +
+                &quot;-fx-cursor: hand; &quot; +
+                &quot;-fx-padding: 8 15; &quot; +
+                &quot;-fx-border-radius: 5; &quot; +
+                &quot;-fx-background-radius: 5;&quot;
+            );
+<span class="nc" id="L105">        });</span>
+        
+        // Trips 按钮悬停效果
+<span class="nc" id="L108">        btnTrips.setOnMouseEntered(e -&gt; {</span>
+<span class="nc" id="L109">            btnTrips.setStyle(</span>
+                &quot;-fx-background-color: #f5f5f5; &quot; +
+                &quot;-fx-text-fill: #333333; &quot; +
+                &quot;-fx-font-size: 14px; &quot; +
+                &quot;-fx-cursor: hand; &quot; +
+                &quot;-fx-padding: 8 15; &quot; +
+                &quot;-fx-border-radius: 5; &quot; +
+                &quot;-fx-background-radius: 5;&quot;
+            );
+<span class="nc" id="L118">        });</span>
+        
+<span class="nc" id="L120">        btnTrips.setOnMouseExited(e -&gt; {</span>
+<span class="nc" id="L121">            btnTrips.setStyle(</span>
+                &quot;-fx-background-color: transparent; &quot; +
+                &quot;-fx-text-fill: #333333; &quot; +
+                &quot;-fx-font-size: 14px; &quot; +
+                &quot;-fx-cursor: hand; &quot; +
+                &quot;-fx-padding: 8 15; &quot; +
+                &quot;-fx-border-radius: 5; &quot; +
+                &quot;-fx-background-radius: 5;&quot;
+            );
+<span class="nc" id="L130">        });</span>
+        
+        // Login 按钮悬停效果
+<span class="nc" id="L133">        btnLogin.setOnMouseEntered(e -&gt; {</span>
+<span class="nc" id="L134">            btnLogin.setStyle(</span>
+                &quot;-fx-background-color: #8B4513; &quot; +
+                &quot;-fx-text-fill: white; &quot; +
+                &quot;-fx-font-size: 14px; &quot; +
+                &quot;-fx-font-weight: bold; &quot; +
+                &quot;-fx-cursor: hand; &quot; +
+                &quot;-fx-padding: 10 25; &quot; +
+                &quot;-fx-border-radius: 20; &quot; +
+                &quot;-fx-background-radius: 20; &quot; +
+                &quot;-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);&quot;
+            );
+<span class="nc" id="L145">        });</span>
+        
+<span class="nc" id="L147">        btnLogin.setOnMouseExited(e -&gt; {</span>
+<span class="nc" id="L148">            btnLogin.setStyle(</span>
+                &quot;-fx-background-color: #1a1a1a; &quot; +
+                &quot;-fx-text-fill: white; &quot; +
+                &quot;-fx-font-size: 14px; &quot; +
+                &quot;-fx-font-weight: bold; &quot; +
+                &quot;-fx-cursor: hand; &quot; +
+                &quot;-fx-padding: 10 25; &quot; +
+                &quot;-fx-border-radius: 20; &quot; +
+                &quot;-fx-background-radius: 20;&quot;
+            );
+<span class="nc" id="L158">        });</span>
+<span class="nc" id="L159">    }</span>
+    
+    /**
+     * 返回上一个界面
+     */
+    @FXML
+    private void goBack() {
+<span class="nc" id="L166">        System.out.println(&quot;⬅️ 返回上一页&quot;);</span>
+<span class="nc" id="L167">        NavigationManager navManager = NavigationManager.getInstance();</span>
+<span class="nc" id="L168">        NavigationManager.NavigationHistory previous = navManager.getPrevious();</span>
+        
+<span class="nc bnc" id="L170" title="All 2 branches missed.">        if (previous != null) {</span>
+            try {
+<span class="nc" id="L172">                FXMLLoader loader = new FXMLLoader(</span>
+<span class="nc" id="L173">                    getClass().getResource(previous.fxmlPath)</span>
+                );
+<span class="nc" id="L175">                Parent root = loader.load();</span>
+                
+<span class="nc" id="L177">                Stage stage = (Stage) btnBack.getScene().getWindow();</span>
+<span class="nc" id="L178">                stage.setScene(new Scene(root));</span>
+<span class="nc" id="L179">                stage.setTitle(previous.title);</span>
+                
+                // 导航完成后，弹出当前页面
+<span class="nc" id="L182">                navManager.popCurrent();</span>
+<span class="nc" id="L183">                updateBackButton();</span>
+                
+<span class="nc" id="L185">            } catch (Exception e) {</span>
+<span class="nc" id="L186">                System.err.println(&quot;❌ 返回失败: &quot; + e.getMessage());</span>
+<span class="nc" id="L187">                e.printStackTrace();</span>
+<span class="nc" id="L188">            }</span>
+        } else {
+<span class="nc" id="L190">            System.out.println(&quot;⚠️ 没有上一页&quot;);</span>
+        }
+<span class="nc" id="L192">    }</span>
+    
+    /**
+     * 返回主页
+     */
+    @FXML
+    private void backToHome() {
+<span class="nc" id="L199">        System.out.println(&quot;🏠 返回主页&quot;);</span>
+        try {
+<span class="nc" id="L201">            NavigationManager.getInstance().goHome(</span>
+                &quot;/com/hotelbooking/view/main_dashboard.fxml&quot;,
+                &quot;Hotel Booking System&quot;
+            );
+            
+<span class="nc" id="L206">            FXMLLoader loader = new FXMLLoader(</span>
+<span class="nc" id="L207">                getClass().getResource(&quot;/com/hotelbooking/view/main_dashboard.fxml&quot;)</span>
+            );
+<span class="nc" id="L209">            Parent root = loader.load();</span>
+            
+<span class="nc" id="L211">            Stage stage = (Stage) btnBack.getScene().getWindow();</span>
+<span class="nc" id="L212">            stage.setScene(new Scene(root));</span>
+<span class="nc" id="L213">            stage.setTitle(&quot;Hotel Booking System&quot;);</span>
+            
+<span class="nc" id="L215">        } catch (Exception e) {</span>
+<span class="nc" id="L216">            System.err.println(&quot;❌ 返回主页失败: &quot; + e.getMessage());</span>
+<span class="nc" id="L217">            e.printStackTrace();</span>
+<span class="nc" id="L218">        }</span>
+<span class="nc" id="L219">    }</span>
+    
+    /**
+     * 更新登录按钮状态
+     */
+    private void updateLoginButton() {
+<span class="nc bnc" id="L225" title="All 2 branches missed.">        if (SessionManager.isLoggedIn()) {</span>
+<span class="nc" id="L226">            String username = SessionManager.getLoggedInUsername();</span>
+<span class="nc" id="L227">            btnLogin.setText(&quot;👤 &quot; + username);</span>
+<span class="nc" id="L228">        } else {</span>
+<span class="nc" id="L229">            btnLogin.setText(&quot;👤 Sign In&quot;);</span>
+        }
+<span class="nc" id="L231">    }</span>
+    
+    /**
+     * 处理 Help 按钮点击
+     */
+    @FXML
+    private void handleHelp() {
+<span class="nc" id="L238">        System.out.println(&quot;🔘 Help 按钮被点击&quot;);</span>
+<span class="nc" id="L239">        showHelpDialog();</span>
+<span class="nc" id="L240">    }</span>
+    
+    /**
+     * 处理 Trips 按钮点击
+     */
+    @FXML
+    private void handleTrips() {
+<span class="nc" id="L247">        System.out.println(&quot;🔘 Trips 按钮被点击&quot;);</span>
+        
+<span class="nc bnc" id="L249" title="All 2 branches missed.">        if (!SessionManager.isLoggedIn()) {</span>
+<span class="nc" id="L250">            System.out.println(&quot;⚠️ 用户未登录，跳转到登录页面&quot;);</span>
+<span class="nc" id="L251">            handleLogin();</span>
+<span class="nc" id="L252">            return;</span>
+        }
+        
+<span class="nc" id="L255">        navigateToTrips();</span>
+<span class="nc" id="L256">    }</span>
+    
+    /**
+     * 处理 Login 按钮点击
+     */
+    @FXML
+    private void handleLogin() {
+<span class="nc" id="L263">        System.out.println(&quot;🔘 Login 按钮被点击&quot;);</span>
+        
+<span class="nc bnc" id="L265" title="All 2 branches missed.">        if (SessionManager.isLoggedIn()) {</span>
+<span class="nc" id="L266">            showUserMenu();</span>
+        } else {
+<span class="nc" id="L268">            navigateToLogin();</span>
+        }
+<span class="nc" id="L270">    }</span>
+    
+    /**
+     * 显示帮助对话框
+     */
+    private void showHelpDialog() {
+<span class="nc" id="L276">        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(</span>
+            javafx.scene.control.Alert.AlertType.INFORMATION
+        );
+<span class="nc" id="L279">        alert.setTitle(&quot;Help Center&quot;);</span>
+<span class="nc" id="L280">        alert.setHeaderText(&quot;Need help?&quot;);</span>
+<span class="nc" id="L281">        alert.setContentText(</span>
+            &quot;Frequently Asked Questions:\n\n&quot; +
+            &quot;1. How to book a room?\n   Select the dates and destination, then browse the available rooms.\n\n&quot; +
+            &quot;2. How to view my bookings?\n   Click the 'My Trips' button.\n\n&quot; +
+            &quot;3. Contact customer service: 400-888-8888&quot;
+        );
+<span class="nc" id="L287">        alert.showAndWait();</span>
+<span class="nc" id="L288">    }</span>
+    
+    /**
+     * 跳转到我的行程页面
+     */
+    private void navigateToTrips() {
+        try {
+            // 记录当前页面到导航栈
+<span class="nc" id="L296">            NavigationManager.getInstance().push(</span>
+                &quot;/com/hotelbooking/view/my_bookings.fxml&quot;,
+                &quot;My Trips&quot;
+            );
+            
+<span class="nc" id="L301">            FXMLLoader loader = new FXMLLoader(</span>
+<span class="nc" id="L302">                getClass().getResource(&quot;/com/hotelbooking/view/my_bookings.fxml&quot;)</span>
+            );
+<span class="nc" id="L304">            Parent root = loader.load();</span>
+            
+<span class="nc" id="L306">            Stage stage = (Stage) btnTrips.getScene().getWindow();</span>
+<span class="nc" id="L307">            stage.setScene(new Scene(root));</span>
+<span class="nc" id="L308">            stage.setTitle(&quot;My Trips&quot;);</span>
+            
+<span class="nc" id="L310">            updateBackButton();</span>
+            
+<span class="nc" id="L312">        } catch (Exception e) {</span>
+<span class="nc" id="L313">            System.err.println(&quot;❌ 跳转失败: &quot; + e.getMessage());</span>
+<span class="nc" id="L314">            e.printStackTrace();</span>
+<span class="nc" id="L315">        }</span>
+<span class="nc" id="L316">    }</span>
+    
+    /**
+     * 跳转到登录页面
+     */
+    private void navigateToLogin() {
+        try {
+<span class="nc" id="L323">            NavigationManager.getInstance().push(</span>
+                &quot;/com/hotelbooking/view/login.fxml&quot;,
+                &quot;User Login&quot;
+            );
+            
+<span class="nc" id="L328">            FXMLLoader loader = new FXMLLoader(</span>
+<span class="nc" id="L329">                getClass().getResource(&quot;/com/hotelbooking/view/login.fxml&quot;)</span>
+            );
+<span class="nc" id="L331">            Parent root = loader.load();</span>
+            
+<span class="nc" id="L333">            Stage stage = (Stage) btnLogin.getScene().getWindow();</span>
+<span class="nc" id="L334">            stage.setScene(new Scene(root));</span>
+<span class="nc" id="L335">            stage.setTitle(&quot;User Login&quot;);</span>
+            
+<span class="nc" id="L337">            updateBackButton();</span>
+            
+<span class="nc" id="L339">        } catch (Exception e) {</span>
+<span class="nc" id="L340">            System.err.println(&quot;❌ 跳转失败: &quot; + e.getMessage());</span>
+<span class="nc" id="L341">            e.printStackTrace();</span>
+<span class="nc" id="L342">        }</span>
+<span class="nc" id="L343">    }</span>
+    
+    /**
+     * 显示用户菜单
+     */
+    private void showUserMenu() {
+<span class="nc" id="L349">        javafx.scene.control.ContextMenu contextMenu = new javafx.scene.control.ContextMenu();</span>
+        
+<span class="nc" id="L351">        javafx.scene.control.MenuItem profileItem = new javafx.scene.control.MenuItem(&quot;👤 My Profile&quot;);</span>
+<span class="nc" id="L352">        profileItem.setOnAction(e -&gt; navigateToProfile());</span>
+      
+        
+<span class="nc" id="L355">        javafx.scene.control.MenuItem logoutItem = new javafx.scene.control.MenuItem(&quot;🚪 Logout&quot;);</span>
+<span class="nc" id="L356">        logoutItem.setOnAction(e -&gt; handleLogout());</span>
+        
+<span class="nc" id="L358">        contextMenu.getItems().addAll(profileItem, logoutItem);</span>
+<span class="nc" id="L359">        contextMenu.show(btnLogin, javafx.geometry.Side.BOTTOM, 0, 5);</span>
+<span class="nc" id="L360">    }</span>
+    
+    /**
+     * 跳转到用户资料页面
+     */
+    private void navigateToProfile() {
+        try {
+<span class="nc" id="L367">            NavigationManager.getInstance().push(</span>
+                &quot;/com/hotelbooking/view/user_profile.fxml&quot;,
+                &quot;User Profile&quot;
+            );
+            
+<span class="nc" id="L372">            FXMLLoader loader = new FXMLLoader(</span>
+<span class="nc" id="L373">                getClass().getResource(&quot;/com/hotelbooking/view/user_profile.fxml&quot;)</span>
+            );
+<span class="nc" id="L375">            Parent root = loader.load();</span>
+            
+<span class="nc" id="L377">            Stage stage = (Stage) btnLogin.getScene().getWindow();</span>
+<span class="nc" id="L378">            stage.setScene(new Scene(root));</span>
+<span class="nc" id="L379">            stage.setTitle(&quot;User Profile&quot;);</span>
+            
+<span class="nc" id="L381">            updateBackButton();</span>
+            
+<span class="nc" id="L383">        } catch (Exception e) {</span>
+<span class="nc" id="L384">            System.err.println(&quot;❌ 跳转失败: &quot; + e.getMessage());</span>
+<span class="nc" id="L385">            e.printStackTrace();</span>
+<span class="nc" id="L386">        }</span>
+<span class="nc" id="L387">    }</span>
+    
+    /**
+     * 处理退出登录
+     */
+    private void handleLogout() {
+<span class="nc" id="L393">        SessionManager.logout();</span>
+<span class="nc" id="L394">        System.out.println(&quot;✅ 用户已退出登录&quot;);</span>
+<span class="nc" id="L395">        updateLoginButton();</span>
+<span class="nc" id="L396">        navigateToLogin();</span>
+<span class="nc" id="L397">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

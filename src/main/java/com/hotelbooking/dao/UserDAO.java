@@ -14,7 +14,7 @@ public class UserDAO {
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            System.out.println("⏳ 正在写入用户到数据库: " + user.getUsername());
+            System.out.println("⏳ Writing user to database: " + user.getUsername());
             stmt.setString(1, user.getUsername());
             stmt.setString(2, user.getEmail());
             stmt.setString(3, user.getPassword());
@@ -100,7 +100,7 @@ public class UserDAO {
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            System.out.println("⏳ 正在尝试从数据库验证用户: " + username);
+            System.out.println("⏳ Attempting to authenticate user from database: " + username);
             stmt.setString(1, username);
             stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();

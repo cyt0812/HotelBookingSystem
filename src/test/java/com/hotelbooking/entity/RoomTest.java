@@ -8,25 +8,25 @@ class RoomTest {
 
     @Test
     void roomCreation_WithAllFields_ShouldSetPropertiesCorrectly() {
-        // 修复：添加 description 参数
+        // Fix: Add description parameter
         Room room = new Room(1, "101", "SINGLE", 99.99, 2, true, "Standard single room");
         
-        // 验证
+        // Assert
         assertEquals(1, room.getHotelId());
         assertEquals("101", room.getRoomNumber());
         assertEquals("SINGLE", room.getRoomType());
         assertEquals(new BigDecimal("99.99"), room.getPrice());
         assertEquals("Standard single room", room.getDescription());
         assertTrue(room.isAvailable());
-        assertNull(room.getId()); // ID 应该为 null，直到保存到数据库
+        assertNull(room.getId()); // ID should be null until saved to database
     }
 
     @Test
     void roomSetters_ShouldUpdateFieldsCorrectly() {
-        // 准备 - 需要无参构造函数，添加一个
-        Room room = new Room(0, "", "", 0.0, 0, false, ""); // 使用有参构造函数
+        // Arrange - Need no-arg constructor, add one
+        Room room = new Room(0, "", "", 0.0, 0, false, ""); // Using parameterized constructor
         
-        // 执行
+        // Act
         room.setId(1);
         room.setHotelId(2);
         room.setRoomNumber("202");
@@ -35,7 +35,7 @@ class RoomTest {
         room.setAvailable(false);
         room.setDescription("Updated description");
         
-        // 验证
+        // Assert
         assertEquals(1, room.getId());
         assertEquals(2, room.getHotelId());
         assertEquals("202", room.getRoomNumber());
@@ -47,7 +47,7 @@ class RoomTest {
 
     @Test
     void roomTypes_ShouldHaveValidValues() {
-        // 测试房间类型常量
+        // Test room type constants
         Room room1 = new Room(1, "101", "SINGLE", 100, 2, true, "Single room");
         Room room2 = new Room(1, "102", "DOUBLE", 150, 2, true, "Double room");
         Room room3 = new Room(1, "103", "SUITE", 250, 2, true, "Suite room");
@@ -59,10 +59,10 @@ class RoomTest {
     
     @Test
     void testRoomConstructor_WithDefaultValues() {
-        // 如果你给 Room 类添加了无参构造函数，可以这样测试
+        // If you add a no-arg constructor to Room class, you can test like this
         Room room = new Room(0, "", "", 0.0, 0, false, "");
         
-        // 设置值
+        // Set values
         room.setId(100);
         room.setHotelId(200);
         room.setRoomNumber("301");
@@ -71,7 +71,7 @@ class RoomTest {
         room.setDescription("Deluxe room with view");
         room.setAvailable(true);
         
-        // 验证
+        // Assert
         assertEquals(100, room.getId());
         assertEquals(200, room.getHotelId());
         assertEquals("301", room.getRoomNumber());

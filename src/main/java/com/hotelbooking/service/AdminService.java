@@ -25,31 +25,31 @@ public class AdminService {
     }
     
     /**
-     * 获取所有用户
+     * Get all users
      */
     public List<User> getAllUsers() {
         try {
             return userDAO.getAllUsers();
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "获取用户列表失败: " + e.getMessage(), e);
+                "Failed to get user list: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 获取所有酒店
+     * Get all hotels
      */
     public List<Hotel> getAllHotels() {
         try {
             return hotelDAO.getAllHotels();
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "获取酒店列表失败: " + e.getMessage(), e);
+                "Failed to get hotel list: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 获取所有预订
+     * Get all bookings
      */
     public List<Booking> getAllBookings() {
         try {
@@ -64,12 +64,12 @@ public class AdminService {
             return allBookings;
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "获取预订列表失败: " + e.getMessage(), e);
+                "Failed to get booking list: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 获取预订统计信息
+     * Get booking statistics
      */
     public String getBookingStatistics() {
         try {
@@ -113,12 +113,12 @@ public class AdminService {
             );
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "获取统计信息失败: " + e.getMessage(), e);
+                "Failed to get statistics: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 更新用户角色
+     * Update user role
      */
     public boolean updateUserRole(Integer userId, String newRole) {
         try {
@@ -131,36 +131,36 @@ public class AdminService {
             return false;
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "更新用户角色失败: " + e.getMessage(), e);
+                "Failed to update user role: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 删除用户
+     * Delete user
      */
     public boolean deleteUser(Integer userId) {
         try {
             return userDAO.deleteUser(userId);
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "删除用户失败: " + e.getMessage(), e);
+                "Failed to delete user: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 删除酒店
+     * Delete hotel
      */
     public boolean deleteHotel(Integer hotelId) {
         try {
             return hotelDAO.deleteHotel(hotelId);
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "删除酒店失败: " + e.getMessage(), e);
+                "Failed to delete hotel: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 取消用户预订（管理员权限）
+     * Cancel user booking (admin permission)
      */
     public boolean cancelUserBooking(Integer bookingId) {
         try {
@@ -171,12 +171,12 @@ public class AdminService {
             return false;
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "取消用户预订失败: " + e.getMessage(), e);
+                "Failed to cancel user booking: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 获取系统总收入
+     * Get system total revenue
      */
     public BigDecimal getTotalRevenue() {
         try {
@@ -187,12 +187,12 @@ public class AdminService {
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "获取总收入失败: " + e.getMessage(), e);
+                "Failed to get total revenue: " + e.getMessage(), e);
         }
     }
     
     /**
-     * 获取最受欢迎的酒店
+     * Get most popular hotels
      */
     public String getMostPopularHotel() {
         try {
@@ -217,7 +217,7 @@ public class AdminService {
                 "No bookings yet";
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "获取热门酒店失败: " + e.getMessage(), e);
+                "Failed to get popular hotels: " + e.getMessage(), e);
         }
     }
 }

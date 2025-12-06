@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DatabaseConnection.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.util</a> &gt; <span class="el_source">DatabaseConnection.java</span></div><h1>DatabaseConnection.java</h1><pre class="source lang-java linenums">package com.hotelbooking.util;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+<span class="nc" id="L7">public class DatabaseConnection {</span>
+    // 数据库连接参数
+    //private static final String URL = &quot;jdbc:derby:hotel_booking_db;create=true&quot;;
+<span class="fc" id="L10">    private static String URL = &quot;jdbc:derby:./database/hotel_booking_db;create=true&quot;;</span>
+    //private static String URL = &quot;jdbc:derby:memory:hotel_booking_test;create=true&quot;;
+    private static final String USER = &quot;app&quot;;
+    private static final String PASSWORD = &quot;app&quot;;
+    
+    // 静态块用于加载数据库驱动
+    static {
+        // 检查是否有测试环境指定的数据库URL
+<span class="fc" id="L18">        String testUrl = System.getProperty(&quot;test.derby.url&quot;);</span>
+<span class="pc bpc" id="L19" title="2 of 4 branches missed.">        if (testUrl != null &amp;&amp; !testUrl.isEmpty()) {</span>
+<span class="fc" id="L20">            URL = testUrl;</span>
+<span class="fc" id="L21">            System.out.println(&quot;测试模式：使用数据库 &quot; + URL);</span>
+        }
+        
+        try {
+            // 加载 Derby 驱动
+<span class="fc" id="L26">            Class.forName(&quot;org.apache.derby.jdbc.EmbeddedDriver&quot;);</span>
+<span class="fc" id="L27">            System.out.println(&quot;Derby database driver loaded successfully&quot;);</span>
+<span class="nc" id="L28">        } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L29">            System.err.println(&quot;Error loading Derby driver: &quot; + e.getMessage());</span>
+<span class="nc" id="L30">            throw new RuntimeException(&quot;Failed to load Derby database driver&quot;, e);</span>
+<span class="fc" id="L31">        }</span>
+<span class="fc" id="L32">    }</span>
+    
+    /**
+     * 获取数据库连接
+     * @return Connection 数据库连接对象
+     * @throws SQLException 如果连接失败
+     */
+    public static Connection getConnection() throws SQLException {
+        try {
+<span class="fc" id="L41">            Connection connection = DriverManager.getConnection(URL);</span>
+<span class="fc" id="L42">            connection.setAutoCommit(true);</span>
+<span class="fc" id="L43">            return connection;</span>
+<span class="nc" id="L44">        } catch (SQLException e) {</span>
+<span class="nc" id="L45">            System.err.println(&quot;Failed to get database connection to: &quot; + URL);</span>
+<span class="nc" id="L46">            System.err.println(&quot;Error: &quot; + e.getMessage());</span>
+<span class="nc" id="L47">            throw e;</span>
+        }
+    }
+    
+    /**
+     * 测试数据库连接是否正常
+     * @return boolean 连接是否成功
+     */
+    public static boolean testConnection() {
+<span class="fc" id="L56">        try (Connection conn = getConnection()) {</span>
+<span class="pc bpc" id="L57" title="2 of 4 branches missed.">            return conn != null &amp;&amp; !conn.isClosed();</span>
+<span class="nc" id="L58">        } catch (SQLException e) {</span>
+<span class="nc" id="L59">            System.err.println(&quot;Database connection test failed: &quot; + e.getMessage());</span>
+<span class="nc" id="L60">            return false;</span>
+        }
+    }
+    
+    /**
+     * 关闭数据库连接
+     * @param connection 要关闭的连接
+     */
+    public static void closeConnection(Connection connection) {
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (connection != null) {</span>
+            try {
+<span class="nc bnc" id="L71" title="All 2 branches missed.">                if (!connection.isClosed()) {</span>
+<span class="nc" id="L72">                    connection.close();</span>
+<span class="nc" id="L73">                    System.out.println(&quot;Database connection closed successfully&quot;);</span>
+                }
+<span class="nc" id="L75">            } catch (SQLException e) {</span>
+<span class="nc" id="L76">                System.err.println(&quot;Error closing database connection: &quot; + e.getMessage());</span>
+<span class="nc" id="L77">            }</span>
+        }
+<span class="nc" id="L79">    }</span>
+
+
+    
+    /**
+     * 获取数据库URL
+     * @return String 数据库连接URL
+     */
+    public static String getDatabaseUrl() {
+<span class="fc" id="L88">        return URL;</span>
+    }
+    
+    /**
+     * 关闭 Derby 数据库（在应用关闭时调用）
+     */
+    public static void shutdownDatabase() {
+        try {
+            // Derby 关闭数据库的特殊 URL
+<span class="nc" id="L97">            DriverManager.getConnection(&quot;jdbc:derby:;shutdown=true&quot;);</span>
+<span class="nc" id="L98">        } catch (SQLException e) {</span>
+            // Derby 在关闭时总是抛出 SQLException，这是正常的
+<span class="nc bnc" id="L100" title="All 2 branches missed.">            if (&quot;XJ015&quot;.equals(e.getSQLState())) {</span>
+<span class="nc" id="L101">                System.out.println(&quot;Derby database shut down normally&quot;);</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">            } else if (&quot;08006&quot;.equals(e.getSQLState())) {</span>
+<span class="nc" id="L103">                System.out.println(&quot;Derby database shut down normally&quot;);</span>
+            } else {
+<span class="nc" id="L105">                System.err.println(&quot;Derby database did not shut down normally: &quot; + e.getMessage());</span>
+            }
+<span class="nc" id="L107">        }</span>
+<span class="nc" id="L108">    }</span>
+    
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

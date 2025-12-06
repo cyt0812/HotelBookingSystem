@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RoomService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.service</a> &gt; <span class="el_source">RoomService.java</span></div><h1>RoomService.java</h1><pre class="source lang-java linenums">package com.hotelbooking.service;
+
+import com.hotelbooking.dao.RoomDAO;
+import com.hotelbooking.entity.Room;
+import com.hotelbooking.exception.BusinessException;
+import com.hotelbooking.exception.ErrorType;
+import com.hotelbooking.exception.ValidationException;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+
+public class RoomService {
+    private RoomDAO roomDAO;
+    
+<span class="fc" id="L15">    public RoomService(RoomDAO roomDAO) {</span>
+<span class="fc" id="L16">        this.roomDAO = roomDAO;</span>
+<span class="fc" id="L17">    }</span>
+    
+    /**
+     * Create room
+     */
+    public Room createRoom(Integer hotelId, String roomNumber, String roomType, 
+                      BigDecimal price, boolean available) {
+    try {
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (hotelId == null) {</span>
+<span class="fc" id="L26">            throw new ValidationException(&quot;Hotel ID cannot be empty&quot;);</span>
+        }
+<span class="pc bpc" id="L28" title="1 of 4 branches missed.">        if (roomNumber == null || roomNumber.trim().isEmpty()) {</span>
+<span class="fc" id="L29">            throw new ValidationException(&quot;Room number cannot be empty&quot;);</span>
+        }
+<span class="pc bpc" id="L31" title="2 of 4 branches missed.">        if (roomType == null || roomType.trim().isEmpty()) {</span>
+<span class="nc" id="L32">            throw new ValidationException(&quot;Room type cannot be empty&quot;);</span>
+        }
+<span class="pc bpc" id="L34" title="1 of 4 branches missed.">        if (price == null || price.compareTo(BigDecimal.ZERO) &lt;= 0) {</span>
+<span class="fc" id="L35">            throw new ValidationException(&quot;Price must be positive&quot;);</span>
+        }
+        
+        // Check if room number already exists
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (roomDAO.isRoomNumberExists(hotelId, roomNumber)) {</span>
+<span class="fc" id="L40">            throw new BusinessException(ErrorType.ROOM_ALREADY_EXISTS);</span>
+        }
+        
+<span class="fc" id="L43">        int defaultMaxOccupancy = 2;</span>
+<span class="fc" id="L44">        String defaultDescription = roomType.trim() + &quot; room&quot;; // Add default description</span>
+        
+        // Use 7-parameter constructor
+<span class="fc" id="L47">        Room room = new Room(hotelId, roomNumber.trim(), roomType.trim(), </span>
+<span class="fc" id="L48">                            price.doubleValue(), defaultMaxOccupancy, </span>
+                            available, defaultDescription);
+        
+<span class="fc" id="L51">        return roomDAO.createRoom(room);</span>
+<span class="fc" id="L52">    } catch (BusinessException | ValidationException e) {</span>
+<span class="fc" id="L53">        throw e;</span>
+<span class="nc" id="L54">    } catch (Exception e) {</span>
+<span class="nc" id="L55">        throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L56">            &quot;Failed to create room: &quot; + e.getMessage(), e);</span>
+    }
+}
+    
+    /**
+     * Get room by ID
+     */
+    public Optional&lt;Room&gt; getRoomById(Integer id) {
+        try {
+<span class="fc" id="L65">            return roomDAO.getRoomById(id);</span>
+<span class="nc" id="L66">        } catch (Exception e) {</span>
+<span class="nc" id="L67">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L68">                &quot;Failed to get room information: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Get all rooms of a hotel
+     */
+    public List&lt;Room&gt; getRoomsByHotelId(Integer hotelId) {
+        try {
+<span class="pc bpc" id="L77" title="1 of 4 branches missed.">             if (hotelId == null || hotelId &lt;= 0) {</span>
+<span class="fc" id="L78">            throw new ValidationException(&quot;Hotel ID cannot be empty&quot;);</span>
+        }
+<span class="fc" id="L80">            return roomDAO.getRoomsByHotelId(hotelId);</span>
+<span class="fc" id="L81">        } catch (ValidationException e) {</span>
+<span class="fc" id="L82">        throw e;</span>
+<span class="nc" id="L83">    }catch (Exception e) {</span>
+<span class="nc" id="L84">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L85">                &quot;Failed to get hotel rooms: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Get available rooms of a hotel
+     */
+    public List&lt;Room&gt; getAvailableRoomsByHotelId(Integer hotelId) {
+        try {
+<span class="pc bpc" id="L94" title="1 of 4 branches missed.">               if (hotelId == null || hotelId &lt;= 0) {</span>
+<span class="fc" id="L95">            throw new ValidationException(&quot;Hotel ID cannot be empty&quot;);</span>
+        }
+<span class="fc" id="L97">            return roomDAO.getAvailableRoomsByHotelId(hotelId);</span>
+<span class="fc" id="L98">        } catch (ValidationException e) {</span>
+<span class="fc" id="L99">        throw e;</span>
+<span class="nc" id="L100">    } catch (Exception e) {</span>
+<span class="nc" id="L101">          throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L102">            &quot;Failed to get available rooms: &quot; + e.getMessage(), e);</span>
+    }
+    }
+    
+    /**
+     * Get rooms by type
+     */
+    public List&lt;Room&gt; getRoomsByType(String roomType) {
+        try {
+<span class="fc bfc" id="L111" title="All 4 branches covered.">            if (roomType == null || roomType.trim().isEmpty()) {</span>
+<span class="fc" id="L112">                return List.of();</span>
+            }
+<span class="fc" id="L114">            return roomDAO.getRoomsByType(roomType.trim());</span>
+<span class="nc" id="L115">        } catch (Exception e) {</span>
+<span class="nc" id="L116">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L117">                &quot;Failed to get rooms by type: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Get rooms by price range
+     */
+    public List&lt;Room&gt; getRoomsByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
+        try {
+<span class="pc bpc" id="L126" title="2 of 4 branches missed.">            if (minPrice == null || maxPrice == null) {</span>
+<span class="nc" id="L127">                throw new ValidationException(&quot;Price range cannot be empty&quot;);</span>
+            }
+<span class="pc bpc" id="L129" title="2 of 4 branches missed.">            if (minPrice.compareTo(BigDecimal.ZERO) &lt; 0 || maxPrice.compareTo(BigDecimal.ZERO) &lt; 0) {</span>
+<span class="nc" id="L130">                throw new ValidationException(&quot;Price cannot be negative&quot;);</span>
+            }
+<span class="fc bfc" id="L132" title="All 2 branches covered.">            if (minPrice.compareTo(maxPrice) &gt; 0) {</span>
+<span class="fc" id="L133">                throw new ValidationException(&quot;Minimum price cannot be greater than maximum price&quot;);</span>
+            }
+            
+<span class="fc" id="L136">            return roomDAO.getRoomsByPriceRange(minPrice, maxPrice);</span>
+<span class="fc" id="L137">        } catch (ValidationException e) {</span>
+<span class="fc" id="L138">            throw e;</span>
+<span class="nc" id="L139">        } catch (Exception e) {</span>
+<span class="nc" id="L140">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L141">                &quot;Failed to get rooms by price range: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Get available rooms of a specific type in a hotel
+     */
+    public List&lt;Room&gt; getAvailableRoomsByHotelAndType(Integer hotelId, String roomType) {
+        try {
+<span class="nc bnc" id="L150" title="All 2 branches missed.">            if (hotelId == null) {</span>
+<span class="nc" id="L151">                throw new ValidationException(&quot;Hotel ID cannot be empty&quot;);</span>
+            }
+<span class="nc bnc" id="L153" title="All 4 branches missed.">            if (roomType == null || roomType.trim().isEmpty()) {</span>
+<span class="nc" id="L154">                return List.of();</span>
+            }
+            
+<span class="nc" id="L157">            return roomDAO.getAvailableRoomsByHotelAndType(hotelId, roomType.trim());</span>
+<span class="nc" id="L158">        } catch (ValidationException e) {</span>
+<span class="nc" id="L159">            throw e;</span>
+<span class="nc" id="L160">        } catch (Exception e) {</span>
+<span class="nc" id="L161">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L162">                &quot;Failed to get available rooms by type: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Update room price
+     */
+    public boolean updateRoomPrice(Integer roomId, BigDecimal newPrice) {
+        try {
+<span class="fc bfc" id="L171" title="All 2 branches covered.">            if (roomId == null) {</span>
+<span class="fc" id="L172">                throw new ValidationException(&quot;Room ID cannot be empty&quot;);</span>
+            }
+<span class="pc bpc" id="L174" title="1 of 4 branches missed.">            if (newPrice == null || newPrice.compareTo(BigDecimal.ZERO) &lt;= 0) {</span>
+<span class="fc" id="L175">                throw new ValidationException(&quot;Price must be positive&quot;);</span>
+            }
+            
+<span class="fc" id="L178">            return roomDAO.updateRoomPrice(roomId, newPrice);</span>
+<span class="fc" id="L179">        } catch (ValidationException e) {</span>
+<span class="fc" id="L180">            throw e;</span>
+<span class="nc" id="L181">        } catch (Exception e) {</span>
+<span class="nc" id="L182">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L183">                &quot;Failed to update room price: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Check if room number already exists in hotel
+     */
+    public boolean isRoomNumberExists(Integer hotelId, String roomNumber) {
+        try {
+<span class="fc bfc" id="L192" title="All 2 branches covered.">            if (hotelId == null) {</span>
+<span class="fc" id="L193">                throw new ValidationException(&quot;Hotel ID cannot be empty&quot;);</span>
+            }
+<span class="pc bpc" id="L195" title="2 of 4 branches missed.">            if (roomNumber == null || roomNumber.trim().isEmpty()) {</span>
+<span class="nc" id="L196">                throw new ValidationException(&quot;Room number cannot be empty&quot;);</span>
+            }
+            
+<span class="fc" id="L199">            return roomDAO.isRoomNumberExists(hotelId, roomNumber.trim());</span>
+<span class="fc" id="L200">        } catch (ValidationException e) {</span>
+<span class="fc" id="L201">            throw e;</span>
+<span class="nc" id="L202">        } catch (Exception e) {</span>
+<span class="nc" id="L203">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L204">                &quot;Failed to check room number existence: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Get all available rooms
+     */
+    public List&lt;Room&gt; getAllAvailableRooms() {
+        try {
+<span class="fc" id="L213">            return roomDAO.getAllAvailableRooms();</span>
+<span class="nc" id="L214">        } catch (Exception e) {</span>
+<span class="nc" id="L215">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L216">                &quot;Failed to get all available rooms: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Get room count statistics for a hotel
+     */
+    public int getRoomCountByHotel(Integer hotelId) {
+        try {
+<span class="pc bpc" id="L225" title="1 of 2 branches missed.">            if (hotelId == null) {</span>
+<span class="nc" id="L226">                throw new ValidationException(&quot;Hotel ID cannot be empty&quot;);</span>
+            }
+<span class="fc" id="L228">            return roomDAO.getRoomCountByHotel(hotelId);</span>
+<span class="nc" id="L229">        } catch (ValidationException e) {</span>
+<span class="nc" id="L230">            throw e;</span>
+<span class="nc" id="L231">        } catch (Exception e) {</span>
+<span class="nc" id="L232">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L233">                &quot;Failed to get room count statistics: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Get available room count of a hotel
+     */
+    public int getAvailableRoomCountByHotel(Integer hotelId) {
+        try {
+<span class="pc bpc" id="L242" title="1 of 2 branches missed.">            if (hotelId == null) {</span>
+<span class="nc" id="L243">                throw new ValidationException(&quot;Hotel ID cannot be empty&quot;);</span>
+            }
+<span class="fc" id="L245">            return roomDAO.getAvailableRoomCountByHotel(hotelId);</span>
+<span class="nc" id="L246">        } catch (ValidationException e) {</span>
+<span class="nc" id="L247">            throw e;</span>
+<span class="nc" id="L248">        } catch (Exception e) {</span>
+<span class="nc" id="L249">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L250">                &quot;Failed to get available room count: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Update room information
+     */
+    public boolean updateRoom(Room room) {
+        try {
+<span class="pc bpc" id="L259" title="1 of 4 branches missed.">            if (room == null || room.getRoomId() == 0) {</span>
+<span class="fc" id="L260">                return false;</span>
+            }
+<span class="fc" id="L262">            return roomDAO.updateRoom(room);</span>
+<span class="nc" id="L263">        } catch (Exception e) {</span>
+<span class="nc" id="L264">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L265">                &quot;Failed to update room information: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Update room availability
+     */
+    public boolean updateRoomAvailability(Integer roomId, boolean available) {
+        try {
+<span class="fc" id="L274">            Optional&lt;Room&gt; roomOpt = roomDAO.getRoomById(roomId);</span>
+<span class="fc bfc" id="L275" title="All 2 branches covered.">            if (roomOpt.isPresent()) {</span>
+<span class="fc" id="L276">                Room room = roomOpt.get();</span>
+<span class="fc" id="L277">                room.setIsAvailable(available);</span>
+<span class="fc" id="L278">                return roomDAO.updateRoom(room);</span>
+            }
+<span class="fc" id="L280">            return false;</span>
+<span class="nc" id="L281">        } catch (Exception e) {</span>
+<span class="nc" id="L282">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L283">                &quot;Failed to update room availability: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Delete room
+     */
+    public boolean deleteRoom(Integer roomId) {
+        try {
+<span class="fc" id="L292">            return roomDAO.deleteRoom(roomId);</span>
+<span class="nc" id="L293">        } catch (Exception e) {</span>
+<span class="nc" id="L294">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L295">                &quot;Failed to delete room: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Check if room is available
+     */
+    public boolean isRoomAvailable(Integer roomId) {
+        try {
+<span class="pc bpc" id="L304" title="2 of 4 branches missed.">             if (roomId == null || roomId &lt;= 0) {</span>
+<span class="nc" id="L305">            throw new ValidationException(&quot;Room ID cannot be empty or invalid&quot;);</span>
+        }
+<span class="fc" id="L307">            Optional&lt;Room&gt; room = roomDAO.getRoomById(roomId);</span>
+<span class="fc bfc" id="L308" title="All 2 branches covered.">              if (room.isEmpty()) {</span>
+<span class="fc" id="L309">            throw new BusinessException(ErrorType.ROOM_NOT_FOUND);</span>
+        }
+<span class="pc bpc" id="L311" title="1 of 4 branches missed.">            return room.isPresent() &amp;&amp; room.get().isAvailable();</span>
+<span class="fc" id="L312">        } catch (Exception e) {</span>
+<span class="fc" id="L313">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="fc" id="L314">                &quot;Failed to check room availability: &quot; + e.getMessage(), e);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

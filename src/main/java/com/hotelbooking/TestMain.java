@@ -4,7 +4,7 @@ import com.hotelbooking.util.DatabaseInitializer;
 
 public class TestMain {
     public static void main(String[] args) {
-        System.out.println("=== 酒店预订系统测试 ===");
+        System.out.println("=== Hotel Booking System Test ===");
         
         // 测试数据库初始化
         DatabaseInitializer.initializeDatabase();
@@ -12,13 +12,13 @@ public class TestMain {
         // 测试数据库连接
         try {
             var conn = com.hotelbooking.util.DatabaseConnection.getConnection();
-            System.out.println("✅ 数据库连接成功！");
+            System.out.println("✅ Database connection successful!");
             conn.close();
         } catch (Exception e) {
-            System.out.println("❌ 数据库连接失败: " + e.getMessage());
+            System.out.println("❌ Database connection failed: " + e.getMessage());
         }
         
-        System.out.println("=== 基础环境测试完成 ===");
-        System.out.println("下一步：角色B创建FXML界面文件");
+        System.out.println("=== Basic Environment Test Completed ===");
+        
     }
 }

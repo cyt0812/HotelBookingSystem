@@ -59,7 +59,7 @@ class RoomServiceTest {
             () -> roomService.createRoom(null, "101", "SINGLE", new BigDecimal("100"), true)
         );
         
-        assertEquals("酒店ID不能为空", exception.getMessage());
+        assertEquals("Hotel ID cannot be empty", exception.getMessage());
         verify(roomDAO, never()).createRoom(any(Room.class));
     }
 
@@ -71,7 +71,7 @@ class RoomServiceTest {
             () -> roomService.createRoom(1, "", "SINGLE", new BigDecimal("100"), true)
         );
         
-        assertEquals("房间号不能为空", exception.getMessage());
+        assertEquals("Room number cannot be empty", exception.getMessage());
         verify(roomDAO, never()).createRoom(any(Room.class));
     }
 
@@ -83,7 +83,7 @@ class RoomServiceTest {
             () -> roomService.createRoom(1, "101", "SINGLE", new BigDecimal("-100"), true)
         );
         
-        assertEquals("价格必须为正数", exception.getMessage());
+        assertEquals("Price must be positive", exception.getMessage());
         verify(roomDAO, never()).createRoom(any(Room.class));
     }
 
@@ -95,7 +95,7 @@ class RoomServiceTest {
             () -> roomService.createRoom(1, "101", "SINGLE", BigDecimal.ZERO, true)
         );
         
-        assertEquals("价格必须为正数", exception.getMessage());
+        assertEquals("Price must be positive", exception.getMessage());
         verify(roomDAO, never()).createRoom(any(Room.class));
     }
 
@@ -177,7 +177,7 @@ class RoomServiceTest {
             () -> roomService.getRoomsByHotelId(null)
         );
         
-        assertEquals("酒店ID不能为空", exception.getMessage());
+        assertEquals("Hotel ID cannot be empty", exception.getMessage());
         verify(roomDAO, never()).getRoomsByHotelId(anyInt());
     }
 
@@ -208,7 +208,7 @@ class RoomServiceTest {
             () -> roomService.getAvailableRoomsByHotelId(null)
         );
         
-        assertEquals("酒店ID不能为空", exception.getMessage());
+        assertEquals("Hotel ID cannot be empty", exception.getMessage());
         verify(roomDAO, never()).getAvailableRoomsByHotelId(anyInt());
     }
 
@@ -280,7 +280,7 @@ class RoomServiceTest {
             () -> roomService.getRoomsByPriceRange(new BigDecimal("200"), new BigDecimal("100"))
         );
         
-        assertEquals("最低价格不能大于最高价格", exception.getMessage());
+        assertEquals("Minimum price cannot be greater than maximum price", exception.getMessage());
         verify(roomDAO, never()).getRoomsByPriceRange(any(), any());
     }
 
@@ -337,7 +337,7 @@ class RoomServiceTest {
             () -> roomService.updateRoomPrice(null, new BigDecimal("199.99"))
         );
         
-        assertEquals("房间ID不能为空", exception.getMessage());
+        assertEquals("Room ID cannot be empty", exception.getMessage());
         verify(roomDAO, never()).updateRoomPrice(anyInt(), any());
     }
 
@@ -349,7 +349,7 @@ class RoomServiceTest {
             () -> roomService.updateRoomPrice(1, new BigDecimal("-100"))
         );
         
-        assertEquals("价格必须为正数", exception.getMessage());
+        assertEquals("Price must be positive", exception.getMessage());
         verify(roomDAO, never()).updateRoomPrice(anyInt(), any());
     }
 
@@ -373,7 +373,7 @@ class RoomServiceTest {
             () -> roomService.isRoomNumberExists(null, "101")
         );
         
-        assertEquals("酒店ID不能为空", exception.getMessage());
+        assertEquals("Hotel ID cannot be empty", exception.getMessage());
         verify(roomDAO, never()).isRoomNumberExists(anyInt(), anyString());
     }
 
@@ -516,7 +516,7 @@ class RoomServiceTest {
             () -> roomService.isRoomAvailable(999)
         );
         
-        assertTrue(exception.getMessage().contains("检查房间可用性失败"));
+        assertTrue(exception.getMessage().contains("Failed to check room availability"));
         verify(roomDAO, times(1)).getRoomById(999);
     }
 }

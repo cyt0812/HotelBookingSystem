@@ -119,7 +119,7 @@ public class RoomDAO {
     }
 
     /**
-     * 根据价格范围查询房间
+     * Query rooms by price range
      */
     public List<Room> getRoomsByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
        String sql = "SELECT * FROM rooms WHERE price BETWEEN ? AND ? AND available = 1 ORDER BY price ASC";
@@ -143,7 +143,7 @@ public class RoomDAO {
     }
 
     /**
-     * 获取酒店内特定类型的可用房间
+     * Get available rooms by hotel and type
      */
     public List<Room> getAvailableRoomsByHotelAndType(Integer hotelId, String roomType) {
        String sql = "SELECT * FROM rooms WHERE hotel_id = ? AND room_type = ? AND available = 1 ORDER BY price ASC";
@@ -167,7 +167,7 @@ public class RoomDAO {
     }
 
     /**
-     * 更新房间可用状态
+     * Update room availability
      */
     public boolean updateRoomAvailability(Integer roomId, boolean available) {
         String sql = "UPDATE rooms SET available = ? WHERE id = ?";
@@ -186,7 +186,7 @@ public class RoomDAO {
     }
 
     /**
-     * 更新房间价格
+     * Update room price
      */
     public boolean updateRoomPrice(Integer roomId, BigDecimal newPrice) {
         String sql = "UPDATE rooms SET price = ? WHERE id = ?";
@@ -205,7 +205,7 @@ public class RoomDAO {
     }
 
     /**
-     * 检查房间号是否在酒店中已存在
+     * Check if room number exists in hotel
      */
     public boolean isRoomNumberExists(Integer hotelId, String roomNumber) {
         String sql = "SELECT COUNT(*) FROM rooms WHERE hotel_id = ? AND room_number = ?";
@@ -228,7 +228,7 @@ public class RoomDAO {
     }
 
     /**
-     * 获取所有可用房间
+     * Get all available rooms
      */
     public List<Room> getAllAvailableRooms() {
        String sql = "SELECT * FROM rooms WHERE available = 1 ORDER BY hotel_id, room_number ASC";
@@ -249,7 +249,7 @@ public class RoomDAO {
     }
 
     /**
-     * 获取酒店的房间数量统计
+     * Get room count by hotel
      */
     public int getRoomCountByHotel(Integer hotelId) {
         String sql = "SELECT COUNT(*) FROM rooms WHERE hotel_id = ?";
@@ -271,7 +271,7 @@ public class RoomDAO {
     }
 
     /**
-     * 获取酒店的可用房间数量
+     * Get available room count by hotel
      */
     public int getAvailableRoomCountByHotel(Integer hotelId) {
        String sql = "SELECT COUNT(*) FROM rooms WHERE hotel_id = ? AND available = 1";

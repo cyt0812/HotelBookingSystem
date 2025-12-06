@@ -21,7 +21,7 @@ public class ApiResponse<T> {
     
     // 成功响应静态方法
     public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>(true, "操作成功", data, null);
+        return new ApiResponse<>(true, "Operation successful", data, null);
     }
     
     public static <T> ApiResponse<T> success(String message, T data) {

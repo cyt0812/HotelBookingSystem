@@ -87,7 +87,7 @@ class UserServiceTest {
             () -> userService.registerUser("", "test@example.com", "password", "CUSTOMER")
         );
         
-        assertEquals("用户名不能为空", exception.getMessage());
+        assertEquals("Username cannot be empty", exception.getMessage());
         verify(userDAO, never()).createUser(any(User.class));
     }
 
@@ -164,8 +164,8 @@ class UserServiceTest {
         );
         
         // 修改：匹配你的业务逻辑实际抛出的错误信息
-        // 你的 UserService 当前抛出的是："用户名不能为空"
-        assertEquals("用户名不能为空", exception.getMessage());
+        // 你的 UserService 当前抛出的是："Username cannot be empty"
+        assertEquals("Username cannot be empty", exception.getMessage());
         verify(userDAO, never()).authenticateUser(anyString(), anyString());
     }
 
@@ -178,8 +178,8 @@ class UserServiceTest {
         );
         
         // 修改：匹配你的业务逻辑实际抛出的错误信息
-        // 你的 UserService 当前抛出的是："密码不能为空"
-        assertEquals("密码不能为空", exception.getMessage());
+        // 你的 UserService 当前抛出的是："Password cannot be empty"
+        assertEquals("Password cannot be empty", exception.getMessage());
         verify(userDAO, never()).authenticateUser(anyString(), anyString());
     }
 
@@ -192,7 +192,7 @@ class UserServiceTest {
         );
         
         // 修改：匹配你的业务逻辑实际抛出的错误信息
-        assertEquals("用户名不能为空", exception.getMessage());
+        assertEquals("Username cannot be empty", exception.getMessage());
         verify(userDAO, never()).authenticateUser(anyString(), anyString());
     }
 
@@ -205,7 +205,7 @@ class UserServiceTest {
         );
         
         // 修改：匹配你的业务逻辑实际抛出的错误信息
-        assertEquals("密码不能为空", exception.getMessage());
+        assertEquals("Password cannot be empty", exception.getMessage());
         verify(userDAO, never()).authenticateUser(anyString(), anyString());
     }
 

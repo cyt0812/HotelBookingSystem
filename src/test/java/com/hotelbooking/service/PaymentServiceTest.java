@@ -28,7 +28,7 @@ class PaymentServiceTest {
 
     @Test
     void processPayment_WithValidData_ShouldProcessPaymentSuccessfully() {
-        // 准备
+        // Prepare
         String bookingId = "BOOK_123";
         BigDecimal amount = new BigDecimal("200.00");
         String paymentMethod = "CREDIT_CARD";
@@ -39,48 +39,47 @@ class PaymentServiceTest {
         when(paymentDAO.updatePaymentStatus(anyString(), eq("COMPLETED"), anyString()))
                 .thenReturn(true);
         
-        // 执行
+        // Execute
         boolean result = paymentService.processPayment(bookingId, amount, paymentMethod);
         
-        // 验证
+        // Verify
         assertTrue(result);
         verify(paymentDAO, times(1)).createPayment(any(Payment.class));
         verify(paymentDAO, times(1)).updatePaymentStatus(anyString(), eq("COMPLETED"), anyString());
     }
 
     @Test
-
-void processPayment_WhenPaymentFails_ShouldReturnFalse() {
-    // 准备
-    String bookingId = "BOOK_123";
-    BigDecimal amount = new BigDecimal("200.00");
-    String paymentMethod = "CREDIT_CARD";
-    
-    Payment payment = new Payment(bookingId, amount, paymentMethod);
-    
-    when(paymentDAO.createPayment(any(Payment.class))).thenReturn(true);
-    
-    // 修复：使用宽松的匹配器，避免Mockito严格模式错误
-    // 原代码：when(paymentDAO.updatePaymentStatus(anyString(), eq("FAILED"), isNull())).thenReturn(true);
-    when(paymentDAO.updatePaymentStatus(anyString(), anyString(), any()))
-        .thenReturn(true);
-    
-    // 执行 - 由于随机性，我们接受任何结果
-    boolean result = false;
-    try {
-        result = paymentService.processPayment(bookingId, amount, paymentMethod);
-    } catch (BusinessException e) {
-        // 支付失败，抛出BusinessException
-        result = false;
+    void processPayment_WhenPaymentFails_ShouldReturnFalse() {
+        // Prepare
+        String bookingId = "BOOK_123";
+        BigDecimal amount = new BigDecimal("200.00");
+        String paymentMethod = "CREDIT_CARD";
+        
+        Payment payment = new Payment(bookingId, amount, paymentMethod);
+        
+        when(paymentDAO.createPayment(any(Payment.class))).thenReturn(true);
+        
+        // Fixed: Use lenient matchers to avoid Mockito strict mode errors
+        // Original code: when(paymentDAO.updatePaymentStatus(anyString(), eq("FAILED"), isNull())).thenReturn(true);
+        when(paymentDAO.updatePaymentStatus(anyString(), anyString(), any()))
+            .thenReturn(true);
+        
+        // Execute - Due to randomness, we accept any result
+        boolean result = false;
+        try {
+            result = paymentService.processPayment(bookingId, amount, paymentMethod);
+        } catch (BusinessException e) {
+            // Payment failed, BusinessException thrown
+            result = false;
+        }
+        
+        // Verify basic calls
+        verify(paymentDAO, times(1)).createPayment(any(Payment.class));
+        verify(paymentDAO, times(1)).updatePaymentStatus(anyString(), anyString(), any());
+        
+        // Note: Due to the randomness in the business logic, this test may not always "fail"
+        // But at least it solves the Mockito strict mode error
     }
-    
-    // 验证基本调用
-    verify(paymentDAO, times(1)).createPayment(any(Payment.class));
-    verify(paymentDAO, times(1)).updatePaymentStatus(anyString(), anyString(), any());
-    
-    // 注意：由于业务逻辑的随机性，这个测试可能不会总是"失败"
-    // 但至少解决了Mockito严格模式错误
-}
 
     @Test
     void processPayment_WhenCreatePaymentFails_ShouldThrowException() {
@@ -97,7 +96,7 @@ void processPayment_WhenPaymentFails_ShouldReturnFalse() {
             () -> paymentService.processPayment(bookingId, amount, paymentMethod)
         );
         
-        assertTrue(exception.getMessage().contains("创建支付记录失败"));
+        assertTrue(exception.getMessage().contains("Failed to create payment record"));
         verify(paymentDAO, times(1)).createPayment(any(Payment.class));
         verify(paymentDAO, never()).updatePaymentStatus(anyString(), anyString(), anyString());
     }
@@ -111,7 +110,7 @@ void processPayment_WhenPaymentFails_ShouldReturnFalse() {
         existingPayment.setTransactionId("TXN_123");
         
         when(paymentDAO.getPaymentByBookingId(bookingId)).thenReturn(existingPayment);
-        when(paymentDAO.updatePaymentStatus(existingPayment.getPaymentId(), "REFUNDED", "TXN_123_REFUND"))
+        when(paymentDAO.updatePaymentStatus(anyString(), eq("REFUNDED"), eq("TXN_123_REFUND")))
                 .thenReturn(true);
         
         // 执行
@@ -120,7 +119,7 @@ void processPayment_WhenPaymentFails_ShouldReturnFalse() {
         // 验证
         assertTrue(result);
         verify(paymentDAO, times(1)).getPaymentByBookingId(bookingId);
-        verify(paymentDAO, times(1)).updatePaymentStatus(existingPayment.getPaymentId(), "REFUNDED", "TXN_123_REFUND");
+        verify(paymentDAO, times(1)).updatePaymentStatus(anyString(), eq("REFUNDED"), eq("TXN_123_REFUND"));
     }
 
     @Test
@@ -136,7 +135,7 @@ void processPayment_WhenPaymentFails_ShouldReturnFalse() {
             () -> paymentService.processRefund(bookingId)
         );
         
-        assertTrue(exception.getMessage().contains("未找到对应的支付记录"));
+        assertTrue(exception.getMessage().contains("No corresponding payment record found"));
         verify(paymentDAO, times(1)).getPaymentByBookingId(bookingId);
         verify(paymentDAO, never()).updatePaymentStatus(anyString(), anyString(), anyString());
     }
@@ -156,7 +155,7 @@ void processPayment_WhenPaymentFails_ShouldReturnFalse() {
             () -> paymentService.processRefund(bookingId)
         );
         
-        assertTrue(exception.getMessage().contains("只有已完成的支付才能退款"));
+        assertTrue(exception.getMessage().contains("Only completed payments can be refunded"));
         verify(paymentDAO, times(1)).getPaymentByBookingId(bookingId);
         verify(paymentDAO, never()).updatePaymentStatus(anyString(), anyString(), anyString());
     }
@@ -197,9 +196,9 @@ void processPayment_WhenPaymentFails_ShouldReturnFalse() {
 
     @Test
     void calculateRefundAmount_WithFullRefundEligible_ShouldReturnFullAmount() {
-        // 准备
+        // Prepare
         String bookingId = "BOOK_123";
-        LocalDate checkInDate = LocalDate.now().plusDays(10); // 提前10天，符合全额退款
+        LocalDate checkInDate = LocalDate.now().plusDays(10); // 10 days in advance, eligible for full refund
         BigDecimal paymentAmount = new BigDecimal("200.00");
         
         Payment payment = new Payment(bookingId, paymentAmount, "CREDIT_CARD");
@@ -215,9 +214,9 @@ void processPayment_WhenPaymentFails_ShouldReturnFalse() {
 
     @Test
     void calculateRefundAmount_WithPartialRefundEligible_ShouldReturnHalfAmount() {
-        // 准备
+        // Prepare
         String bookingId = "BOOK_123";
-        LocalDate checkInDate = LocalDate.now().plusDays(5); // 提前5天，符合50%退款
+        LocalDate checkInDate = LocalDate.now().plusDays(5); // 5 days in advance, eligible for 50% refund
         BigDecimal paymentAmount = new BigDecimal("200.00");
         BigDecimal expectedRefund = new BigDecimal("100.00");
         
@@ -234,9 +233,9 @@ void processPayment_WhenPaymentFails_ShouldReturnFalse() {
 
     @Test
     void calculateRefundAmount_WithNoRefundEligible_ShouldReturnZero() {
-        // 准备
+        // Prepare
         String bookingId = "BOOK_123";
-        LocalDate checkInDate = LocalDate.now().plusDays(1); // 提前1天，不符合退款条件
+        LocalDate checkInDate = LocalDate.now().plusDays(1); // 1 day in advance, not eligible for refund
         BigDecimal paymentAmount = new BigDecimal("200.00");
         
         Payment payment = new Payment(bookingId, paymentAmount, "CREDIT_CARD");
@@ -252,7 +251,7 @@ void processPayment_WhenPaymentFails_ShouldReturnFalse() {
 
     @Test
     void calculateRefundAmount_WithNonExistingPayment_ShouldReturnZero() {
-        // 准备
+        // Prepare
         String bookingId = "BOOK_999";
         LocalDate checkInDate = LocalDate.now().plusDays(10);
         

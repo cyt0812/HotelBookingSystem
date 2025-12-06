@@ -4,6 +4,8 @@ import com.hotelbooking.dao.HotelDAO;
 import com.hotelbooking.entity.Hotel;
 import com.hotelbooking.entity.Room;
 import com.hotelbooking.service.HotelService;
+import com.hotelbooking.util.NavigationManager;
+import com.hotelbooking.util.SessionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -22,6 +24,25 @@ public class HotelRoomsController {
     @FXML private Label lblHotelAmenities;
     @FXML private Label lblRoomCount;
     @FXML private VBox roomListContainer;
+    
+    @FXML
+    public void initialize() {
+        // 从 SessionManager 获取当前酒店信息
+        currentHotel = SessionManager.getCurrentHotel();
+
+        // 如果当前酒店不为空，则显示酒店信息和房间信息
+        if (currentHotel != null) {
+            displayHotelInfo();  // 显示酒店信息
+            displayRooms();      // 显示房间信息
+        } else {
+            // 如果没有酒店信息，则显示错误信息或进行其他处理
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Hotel Information Missing");
+            alert.setContentText("The hotel information could not be loaded. Please go back and try again.");
+            alert.showAndWait();
+        }
+    }
     
 //    private HotelService hotelService = new HotelService();
     private Hotel currentHotel;
@@ -53,7 +74,7 @@ public class HotelRoomsController {
     private void displayRooms() {
         if (currentHotel == null) return;
         
-        System.out.println("✅ 当前酒店ID = " + currentHotel.getId());
+        System.out.println("✅ Current hotel ID = " + currentHotel.getId());
         
         // 假设你已经有了一个 DatabaseConnection 类来获取数据库连接
         HotelDAO hotelDAO = new HotelDAO();  // 创建 HotelDAO 实例
@@ -225,7 +246,7 @@ public class HotelRoomsController {
      * 预订房间
      */
     private void bookRoom(Room room) {
-        System.out.println("🎫 预订房间: " + room.getRoomType() + " - " + room.getRoomNumber());
+        System.out.println("🎫 Booking room: " + room.getRoomType() + " - " + room.getRoomNumber());
         
         // 显示确认对话框
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -251,7 +272,12 @@ public class HotelRoomsController {
      */
     private void navigateToPayment(Room room) {
         try {
-            System.out.println("💳 跳转到支付页面");
+            // 在任何导航前调用
+            NavigationManager.getInstance().push(
+                "/com/hotelbooking/view/payment.fxml",  // ← 要导航到的页面
+                "Payment"
+            );
+            System.out.println("💳 Navigating to payment page");
             
             FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/com/hotelbooking/view/payment.fxml")
@@ -259,17 +285,17 @@ public class HotelRoomsController {
             Parent root = loader.load();
             
             // 传递预订信息给支付页面
-            PaymentController controller = loader.getController();
+             PaymentController controller = loader.getController();
             controller.setBookingInfo(currentHotel, room);
             
             Stage stage = (Stage) roomListContainer.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Payment - " + currentHotel.getName());
             
-            System.out.println("✅ 跳转成功");
+            System.out.println("✅ Navigation successful");
             
         } catch (Exception e) {
-            System.err.println("❌ 跳转支付页面失败: " + e.getMessage());
+            System.err.println("❌ Failed to navigate to payment page: " + e.getMessage());
             e.printStackTrace();
             
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);

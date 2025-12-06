@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PaymentDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.dao</a> &gt; <span class="el_source">PaymentDAO.java</span></div><h1>PaymentDAO.java</h1><pre class="source lang-java linenums">// PaymentDAO.java - Payment Data Access Layer
+package com.hotelbooking.dao;
+
+import com.hotelbooking.entity.Payment;
+import com.hotelbooking.util.DatabaseConnection;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class PaymentDAO {
+    
+<span class="fc" id="L12">    public PaymentDAO() {</span>
+        // Empty constructor, not using class-level connection
+<span class="fc" id="L14">    }</span>
+    
+    // Create payment record
+    public boolean createPayment(Payment payment) {
+<span class="fc" id="L18">        String sql = &quot;INSERT INTO payments (payment_id, booking_id, amount, payment_method, payment_status, payment_date, transaction_id) VALUES (?, ?, ?, ?, ?, ?, ?)&quot;;</span>
+        
+<span class="fc" id="L20">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L21">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L23">            stmt.setString(1, payment.getPaymentId());</span>
+<span class="fc" id="L24">            stmt.setString(2, payment.getBookingId());</span>
+<span class="fc" id="L25">            stmt.setBigDecimal(3, payment.getAmount());</span>
+<span class="fc" id="L26">            stmt.setString(4, payment.getPaymentMethod());</span>
+<span class="fc" id="L27">            stmt.setString(5, payment.getPaymentStatus());</span>
+<span class="fc" id="L28">            stmt.setTimestamp(6, Timestamp.valueOf(payment.getPaymentDate()));</span>
+<span class="fc" id="L29">            stmt.setString(7, payment.getTransactionId());</span>
+            
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">            return stmt.executeUpdate() &gt; 0;</span>
+<span class="nc" id="L32">        } catch (SQLException e) {</span>
+<span class="nc" id="L33">            throw new RuntimeException(&quot;Error creating payment&quot;, e);</span>
+        }
+    }
+    
+    // Get payment record by payment ID
+    public Payment getPaymentById(String paymentId) {
+<span class="fc" id="L39">        String sql = &quot;SELECT * FROM payments WHERE payment_id = ?&quot;;</span>
+        
+<span class="fc" id="L41">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L42">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L44">            stmt.setString(1, paymentId);</span>
+<span class="fc" id="L45">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="fc bfc" id="L47" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L48">                return mapResultSetToPayment(rs);</span>
+            }
+<span class="fc" id="L50">            return null;</span>
+<span class="pc bpc" id="L51" title="2 of 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L52">            throw new RuntimeException(&quot;Error getting payment by id: &quot; + paymentId, e);</span>
+        }
+    }
+    
+    // Get payment record by booking ID
+    public Payment getPaymentByBookingId(String bookingId) {
+<span class="fc" id="L58">        String sql = &quot;SELECT * FROM payments WHERE booking_id = ?&quot;;</span>
+        
+<span class="fc" id="L60">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L61">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L63">            stmt.setString(1, bookingId);</span>
+<span class="fc" id="L64">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L67">                return mapResultSetToPayment(rs);</span>
+            }
+<span class="nc" id="L69">            return null;</span>
+<span class="pc bpc" id="L70" title="2 of 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L71">            throw new RuntimeException(&quot;Error getting payment by booking id: &quot; + bookingId, e);</span>
+        }
+    }
+    
+    // Update payment status
+    public boolean updatePaymentStatus(String paymentId, String status, String transactionId) {
+<span class="fc" id="L77">        String sql = &quot;UPDATE payments SET payment_status = ?, transaction_id = ? WHERE payment_id = ?&quot;;</span>
+        
+<span class="fc" id="L79">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L80">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L82">            stmt.setString(1, status);</span>
+<span class="fc" id="L83">            stmt.setString(2, transactionId);</span>
+<span class="fc" id="L84">            stmt.setString(3, paymentId);</span>
+            
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">            return stmt.executeUpdate() &gt; 0;</span>
+<span class="nc" id="L87">        } catch (SQLException e) {</span>
+<span class="nc" id="L88">            throw new RuntimeException(&quot;Error updating payment status: &quot; + paymentId, e);</span>
+        }
+    }
+    
+    // Get all payment records
+    public List&lt;Payment&gt; getAllPayments() {
+<span class="fc" id="L94">        String sql = &quot;SELECT * FROM payments ORDER BY payment_date DESC&quot;;</span>
+<span class="fc" id="L95">        List&lt;Payment&gt; payments = new ArrayList&lt;&gt;();</span>
+        
+<span class="fc" id="L97">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L98">             PreparedStatement stmt = conn.prepareStatement(sql);</span>
+<span class="fc" id="L99">             ResultSet rs = stmt.executeQuery()) {</span>
+            
+<span class="fc bfc" id="L101" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L102">                payments.add(mapResultSetToPayment(rs));</span>
+            }
+<span class="fc" id="L104">            return payments;</span>
+<span class="nc" id="L105">        } catch (SQLException e) {</span>
+<span class="nc" id="L106">            throw new RuntimeException(&quot;Error getting all payments&quot;, e);</span>
+        }
+    }
+    
+    // Get payment records by status
+    public List&lt;Payment&gt; getPaymentsByStatus(String status) {
+<span class="fc" id="L112">        String sql = &quot;SELECT * FROM payments WHERE payment_status = ? ORDER BY payment_date DESC&quot;;</span>
+<span class="fc" id="L113">        List&lt;Payment&gt; payments = new ArrayList&lt;&gt;();</span>
+        
+<span class="fc" id="L115">        try (Connection conn = DatabaseConnection.getConnection();</span>
+<span class="fc" id="L116">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
+            
+<span class="fc" id="L118">            stmt.setString(1, status);</span>
+<span class="fc" id="L119">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="fc bfc" id="L121" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L122">                payments.add(mapResultSetToPayment(rs));</span>
+            }
+<span class="fc" id="L124">            return payments;</span>
+<span class="nc" id="L125">        } catch (SQLException e) {</span>
+<span class="nc" id="L126">            throw new RuntimeException(&quot;Error getting payments by status: &quot; + status, e);</span>
+        }
+    }
+    
+    // Map ResultSet to Payment object
+    private Payment mapResultSetToPayment(ResultSet rs) throws SQLException {
+<span class="fc" id="L132">        Payment payment = new Payment();</span>
+<span class="fc" id="L133">        payment.setPaymentId(rs.getString(&quot;payment_id&quot;));</span>
+<span class="fc" id="L134">        payment.setBookingId(rs.getString(&quot;booking_id&quot;));</span>
+<span class="fc" id="L135">        payment.setAmount(rs.getBigDecimal(&quot;amount&quot;));</span>
+<span class="fc" id="L136">        payment.setPaymentMethod(rs.getString(&quot;payment_method&quot;));</span>
+<span class="fc" id="L137">        payment.setPaymentStatus(rs.getString(&quot;payment_status&quot;));</span>
+<span class="fc" id="L138">        payment.setPaymentDate(rs.getTimestamp(&quot;payment_date&quot;).toLocalDateTime());</span>
+<span class="fc" id="L139">        payment.setTransactionId(rs.getString(&quot;transaction_id&quot;));</span>
+<span class="fc" id="L140">        return payment;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

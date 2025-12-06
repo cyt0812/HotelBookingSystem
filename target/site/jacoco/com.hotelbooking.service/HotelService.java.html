@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HotelService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.service</a> &gt; <span class="el_source">HotelService.java</span></div><h1>HotelService.java</h1><pre class="source lang-java linenums">// HotelService.java - Complete fixed version
+package com.hotelbooking.service;
+
+import com.hotelbooking.dao.HotelDAO;
+import com.hotelbooking.entity.Hotel;
+import com.hotelbooking.entity.Room;
+import com.hotelbooking.exception.BusinessException;
+import com.hotelbooking.exception.ErrorType;
+import com.hotelbooking.exception.ValidationException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public class HotelService {
+    
+    private final HotelDAO hotelDAO;
+    private volatile List&lt;Hotel&gt; hotelCache; // Use volatile to ensure visibility
+    
+    // Default constructor
+<span class="nc" id="L20">    public HotelService() {</span>
+<span class="nc" id="L21">        this.hotelDAO = new HotelDAO();</span>
+<span class="nc" id="L22">        this.hotelCache = null; // Lazy initialization</span>
+<span class="nc" id="L23">    }</span>
+    
+    // Support dependency injection
+<span class="fc" id="L26">    public HotelService(HotelDAO hotelDAO) {</span>
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        this.hotelDAO = hotelDAO != null ? hotelDAO : new HotelDAO();</span>
+<span class="fc" id="L28">        this.hotelCache = null; // Lazy initialization</span>
+<span class="fc" id="L29">    }</span>
+    
+    /**
+     * Get hotel cache (lazy loading)
+     */
+    private List&lt;Hotel&gt; getHotelCache() {
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        if (hotelCache == null) {</span>
+<span class="nc" id="L36">            synchronized (this) {</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">                if (hotelCache == null) {</span>
+<span class="nc" id="L38">                    hotelCache = hotelDAO.getAllHotels();</span>
+                }
+<span class="nc" id="L40">            }</span>
+        }
+<span class="nc" id="L42">        return hotelCache;</span>
+    }
+    
+    /**
+     * Clear cache (used after testing or data updates)
+     */
+    public void clearCache() {
+<span class="fc" id="L49">        synchronized (this) {</span>
+<span class="fc" id="L50">            hotelCache = null;</span>
+<span class="fc" id="L51">        }</span>
+<span class="fc" id="L52">    }</span>
+    
+    /**
+     * Create hotel
+     */
+    public Hotel createHotel(String name, String location, String description, String amenities, Integer availableRooms) {
+        try {
+            // Parameter validation
+<span class="fc" id="L60">            validateHotelParameters(name, location, availableRooms);</span>
+            
+<span class="fc" id="L62">            Hotel hotel = new Hotel(name.trim(), location.trim(), description, amenities, availableRooms);</span>
+<span class="fc" id="L63">            Hotel createdHotel = hotelDAO.createHotel(hotel);</span>
+            
+            // Clear cache after successful creation
+<span class="fc" id="L66">            clearCache();</span>
+            
+<span class="fc" id="L68">            return createdHotel;</span>
+<span class="fc" id="L69">        } catch (ValidationException e) {</span>
+<span class="fc" id="L70">            throw e;</span>
+<span class="nc" id="L71">        } catch (Exception e) {</span>
+<span class="nc" id="L72">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L73">                &quot;Failed to create hotel: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Parameter validation
+     */
+    private void validateHotelParameters(String name, String location, Integer availableRooms) {
+<span class="fc bfc" id="L81" title="All 4 branches covered.">        if (name == null || name.trim().isEmpty()) {</span>
+<span class="fc" id="L82">            throw new ValidationException(&quot;Hotel name cannot be empty&quot;);</span>
+        }
+<span class="pc bpc" id="L84" title="1 of 4 branches missed.">        if (location == null || location.trim().isEmpty()) {</span>
+<span class="fc" id="L85">            throw new ValidationException(&quot;Location cannot be empty&quot;);</span>
+        }
+<span class="pc bpc" id="L87" title="1 of 4 branches missed.">        if (availableRooms == null || availableRooms &lt; 0) {</span>
+<span class="fc" id="L88">            throw new ValidationException(&quot;Available rooms must be non-negative&quot;);</span>
+        }
+<span class="fc" id="L90">    }</span>
+    
+    /**
+     * Get hotel by ID
+     */
+    public Optional&lt;Hotel&gt; getHotelById(Integer id) {
+        try {
+<span class="fc" id="L97">            return hotelDAO.getHotelById(id);</span>
+<span class="nc" id="L98">        } catch (Exception e) {</span>
+<span class="nc" id="L99">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L100">                &quot;Failed to get hotel information: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Get all hotels
+     */
+    public List&lt;Hotel&gt; getAllHotels() {
+        try {
+<span class="fc" id="L109">            return hotelDAO.getAllHotels();</span>
+<span class="fc" id="L110">        } catch (Exception e) {</span>
+<span class="fc" id="L111">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="fc" id="L112">                &quot;Failed to get hotel list: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Get hotels by location
+     */
+    public List&lt;Hotel&gt; getHotelsByLocation(String location) {
+        try {
+<span class="pc bpc" id="L121" title="1 of 4 branches missed.">            if (location == null || location.trim().isEmpty()) {</span>
+<span class="fc" id="L122">                return List.of();</span>
+            }
+<span class="fc" id="L124">            return hotelDAO.getHotelsByLocation(location.trim());</span>
+<span class="nc" id="L125">        } catch (Exception e) {</span>
+<span class="nc" id="L126">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L127">                &quot;Failed to get hotels by location: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Update hotel information
+     */
+    public boolean updateHotel(Hotel hotel) {
+        try {
+<span class="fc bfc" id="L136" title="All 4 branches covered.">            if (hotel == null || hotel.getId() == null) {</span>
+<span class="fc" id="L137">                return false;</span>
+            }
+<span class="fc" id="L139">            boolean result = hotelDAO.updateHotel(hotel);</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">            if (result) {</span>
+<span class="fc" id="L141">                clearCache(); // Clear cache after successful update</span>
+            }
+<span class="fc" id="L143">            return result;</span>
+<span class="nc" id="L144">        } catch (Exception e) {</span>
+<span class="nc" id="L145">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L146">                &quot;Failed to update hotel information: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Delete hotel
+     */
+    public boolean deleteHotel(Integer hotelId) {
+        try {
+<span class="fc" id="L155">            boolean result = hotelDAO.deleteHotel(hotelId);</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">            if (result) {</span>
+<span class="fc" id="L157">                clearCache(); // Clear cache after successful deletion</span>
+            }
+<span class="fc" id="L159">            return result;</span>
+<span class="nc" id="L160">        } catch (Exception e) {</span>
+<span class="nc" id="L161">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L162">                &quot;Failed to delete hotel: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Search hotels
+     */
+    public List&lt;Hotel&gt; searchHotels(String keyword) {
+        try {
+<span class="fc bfc" id="L171" title="All 4 branches covered.">            if (keyword == null || keyword.trim().isEmpty()) {</span>
+<span class="fc" id="L172">                return getAllHotels();</span>
+            }
+<span class="fc" id="L174">            return hotelDAO.searchHotels(keyword.trim());</span>
+<span class="nc" id="L175">        } catch (Exception e) {</span>
+<span class="nc" id="L176">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR,</span>
+<span class="nc" id="L177">                &quot;Failed to search hotels: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Get rooms by hotel ID
+     */
+    public List&lt;Room&gt; getRoomsByHotelId(int hotelId) {
+        try {
+<span class="nc" id="L186">            return hotelDAO.getRoomsByHotelId(hotelId);</span>
+<span class="nc" id="L187">        } catch (Exception e) {</span>
+<span class="nc" id="L188">            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, </span>
+<span class="nc" id="L189">                &quot;Failed to get rooms by hotel ID: &quot; + e.getMessage(), e);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

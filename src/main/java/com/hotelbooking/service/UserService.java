@@ -19,25 +19,25 @@ public class UserService {
     }
 
     /**
-     * 注册新用户
+     * Register a new user
      */
     public User registerUser(String username, String email, String password, String role) {
         try {
-            // 基本校验
+            // Basic validation
             if (username == null || username.trim().isEmpty()) {
-                throw new ValidationException("用户名不能为空");
+                throw new ValidationException("Username cannot be empty");
             }
             if (email == null || !email.contains("@")) {
-                throw new ValidationException("邮箱格式无效");
+                throw new ValidationException("Invalid email format");
             }
             if (password == null || password.trim().isEmpty()) {
-                throw new ValidationException("密码不能为空");
+                throw new ValidationException("Password cannot be empty");
             }
             if (role == null || role.trim().isEmpty()) {
                 role = "CUSTOMER";
             }
 
-            // 唯一性校验
+            // Uniqueness validation
             if (userDAO.isUsernameExists(username)) {
                 throw new BusinessException(ErrorType.USERNAME_EXISTS);
             }
@@ -45,83 +45,83 @@ public class UserService {
                 throw new BusinessException(ErrorType.EMAIL_EXISTS);
             }
 
-            // 创建用户实体
+            // Create user entity
             User user = new User(username.trim(), email.trim(), password, role);
-            user.setCreatedAt(LocalDateTime.now()); // ⭐ 必须设置，否则数据库插入失败
+            user.setCreatedAt(LocalDateTime.now()); // ⭐ Must be set, otherwise database insertion fails
 
-            // 写入数据库
-            System.out.println("准备调用 createUser: " + username);
+            // Write to database
+            System.out.println("Preparing to call createUser: " + username);
             User savedUser = userDAO.createUser(user);
-            System.out.println("createUser 调用结束: " + savedUser.getId());
+            System.out.println("createUser call completed: " + savedUser.getId());
             return savedUser;
 
         } catch (BusinessException | ValidationException e) {
             throw e;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, "用户注册失败: " + e.getMessage(), e);
+            throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, "Failed to register user: " + e.getMessage(), e);
         }
     }
 
     /**
-     * 用户登录（兼容新老版本）
+     * User login (compatible with new and old versions)
      */
    public User loginUser(String username, String password) {
     try {
-        // 修复点1：先进行空值验证，必须抛出 ValidationException
+        // Fix 1: First validate null values, must throw ValidationException
         if (username == null || username.trim().isEmpty()) {
-            throw new ValidationException("用户名不能为空");
+            throw new ValidationException("Username cannot be empty");
         }
         if (password == null || password.trim().isEmpty()) {
-            throw new ValidationException("密码不能为空");
+            throw new ValidationException("Password cannot be empty");
         }
         
-        // 修复点2：简化登录逻辑，根据实际情况选择一种
-        // 优先使用新版的 authenticateUser 方法
+        // Fix 2: Simplify login logic, choose one based on actual situation
+        // Prefer to use the new authenticateUser method
         try {
             Optional<User> authenticatedUser = userDAO.authenticateUser(username.trim(), password.trim());
             if (authenticatedUser.isPresent()) {
                 return authenticatedUser.get();
             }
-            // 用户不存在或密码错误
+            // User does not exist or password is incorrect
             throw new BusinessException(ErrorType.INVALID_CREDENTIALS);
         } catch (NoSuchMethodError | UnsupportedOperationException e) {
-            // 如果 userDAO 没有 authenticateUser 方法，使用旧版逻辑
-            System.out.println("使用旧版登录逻辑...");
+            // If userDAO doesn't have authenticateUser method, use old logic
+            System.out.println("Using old login logic...");
             return loginUserLegacy(username.trim(), password.trim());
         }
 
     } catch (ValidationException e) {
-        // 修复点3：确保 ValidationException 被正确抛出
+        // Fix 3: Ensure ValidationException is properly thrown
         throw e;
     } catch (BusinessException e) {
         throw e;
     } catch (Exception e) {
         throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-            "用户登录失败: " + e.getMessage(), e);
+            "Failed to login: " + e.getMessage(), e);
     }
 }
    /**
-     * 登录参数验证
+     * Login parameter validation
      */
     private void validateLoginParameters(String username, String password) {
         if (username == null || username.trim().isEmpty()) {
-            throw new ValidationException("用户名不能为空");
+            throw new ValidationException("Username cannot be empty");
         }
         if (password == null || password.trim().isEmpty()) {
-            throw new ValidationException("密码不能为空");
+            throw new ValidationException("Password cannot be empty");
         }
     }
     /**
-     * 用户登录（旧版本逻辑）
+     * User login (old version logic)
      */
    public User loginUserLegacy(String username, String password) {
         try {
             if (username == null || password == null) {
-                throw new ValidationException("用户名和密码不能为空");
+                throw new ValidationException("Username and password cannot be empty");
             }
             
-            // 旧版本的逻辑
+            // Old version logic
             User user = userDAO.getUserByUsername(username)
                     .orElseThrow(() -> new BusinessException(ErrorType.USER_NOT_FOUND));
             
@@ -134,40 +134,40 @@ public class UserService {
             throw e;
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
-                "用户登录失败: " + e.getMessage(), e);
+                "Failed to login: " + e.getMessage(), e);
         }
     }
 
     /**
-     * 获取所有用户
+     * Get all users
      */
     public List<User> getAllUsers() {
         return userDAO.getAllUsers();
     }
 
     /**
-     * 根据ID获取用户
+     * Get user by ID
      */
     public Optional<User> getUserById(Integer id) {
         return userDAO.getUserById(id);
     }
 
     /**
-     * 根据用户名获取用户
+     * Get user by username
      */
     public Optional<User> getUserByUsername(String username) {
         return userDAO.getUserByUsername(username);
     }
 
     /**
-     * 删除用户
+     * Delete user
      */
     public boolean deleteUser(Integer userId) {
         return userDAO.deleteUser(userId);
     }
 
     /**
-     * 更新用户
+     * Update user
      */
     public boolean updateUser(User user) {
         if (user == null || user.getId() == null) {

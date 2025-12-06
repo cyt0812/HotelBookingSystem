@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MyBookingsController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HotelBookingSystem</a> &gt; <a href="index.source.html" class="el_package">com.hotelbooking.controller</a> &gt; <span class="el_source">MyBookingsController.java</span></div><h1>MyBookingsController.java</h1><pre class="source lang-java linenums">package com.hotelbooking.controller;
+
+import com.hotelbooking.dao.BookingDAO;
+import com.hotelbooking.dao.RoomDAO;
+import com.hotelbooking.entity.Booking;
+import com.hotelbooking.service.BookingService;
+import com.hotelbooking.util.NavigationManager;
+import com.hotelbooking.util.SessionManager;
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
+import java.util.ArrayList;
+
+<span class="nc" id="L28">public class MyBookingsController {</span>
+    
+    @FXML
+    private VBox bookingListContainer;
+    
+    @FXML
+    private VBox emptyStateContainer;
+    
+    @FXML
+    private Label lblBookingCount;
+    
+    @FXML
+    private ComboBox&lt;String&gt; cbStatus;
+    
+    @FXML
+    private Button btnLogin;
+    
+    private BookingService bookingService;
+    private Integer currentUserId;
+<span class="nc" id="L47">    private String selectedStatus = &quot;All&quot;;</span>
+    
+    @FXML
+    public void initialize() {
+        // 初始化 DAO 和 Service
+<span class="nc" id="L52">        BookingDAO bookingDAO = new BookingDAO();</span>
+<span class="nc" id="L53">        RoomDAO roomDAO = new RoomDAO();</span>
+<span class="nc" id="L54">        bookingService = new BookingService(bookingDAO, roomDAO);</span>
+        
+<span class="nc" id="L56">        setupStatusFilter();</span>
+<span class="nc" id="L57">        loadBookings();</span>
+<span class="nc" id="L58">    }</span>
+    
+    private void setupStatusFilter() {
+<span class="nc" id="L61">        cbStatus.getItems().addAll(&quot;All&quot;, &quot;CONFIRMED&quot;, &quot;PENDING&quot;, &quot;CANCELLED&quot;, &quot;COMPLETED&quot;);</span>
+<span class="nc" id="L62">        cbStatus.setValue(&quot;All&quot;);</span>
+<span class="nc" id="L63">    }</span>
+    
+    private void loadBookings() {
+<span class="nc" id="L66">        Thread thread = new Thread(new Runnable() {</span>
+            @Override
+            public void run() {
+                try {
+<span class="nc" id="L70">                    currentUserId = getCurrentUserId();</span>
+
+<span class="nc bnc" id="L72" title="All 2 branches missed.">                    if (currentUserId == null) {</span>
+<span class="nc" id="L73">                        Platform.runLater(new Runnable() {</span>
+                            @Override
+                            public void run() {
+<span class="nc" id="L76">                                showLoginRequired();</span>
+<span class="nc" id="L77">                            }</span>
+                        });
+<span class="nc" id="L79">                        return;</span>
+                    }
+
+<span class="nc" id="L82">                    List&lt;Booking&gt; bookings = bookingService.getBookingsByUserId(currentUserId);</span>
+
+                    // 按选定的状态过滤
+<span class="nc bnc" id="L85" title="All 2 branches missed.">                    if (!&quot;All&quot;.equals(selectedStatus)) {</span>
+<span class="nc" id="L86">                        List&lt;Booking&gt; filtered = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">                        for (Booking b : bookings) {</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">                            if (selectedStatus.equals(b.getStatus())) {</span>
+<span class="nc" id="L89">                                filtered.add(b);</span>
+                            }
+<span class="nc" id="L91">                        }</span>
+<span class="nc" id="L92">                        bookings = filtered;</span>
+                    }
+
+<span class="nc" id="L95">                    final List&lt;Booking&gt; finalBookings = bookings;</span>
+<span class="nc" id="L96">                    Platform.runLater(new Runnable() {</span>
+                        @Override
+                        public void run() {
+<span class="nc" id="L99">                            displayBookings(finalBookings);</span>
+<span class="nc" id="L100">                        }</span>
+                    });
+
+<span class="nc" id="L103">                } catch (Exception e) {</span>
+<span class="nc" id="L104">                    e.printStackTrace();</span>
+<span class="nc" id="L105">                    Platform.runLater(new Runnable() {</span>
+                        @Override
+                        public void run() {
+<span class="nc" id="L108">                            showError(&quot;Failed to load bookings: &quot; + e.getMessage());</span>
+<span class="nc" id="L109">                        }</span>
+                    });
+<span class="nc" id="L111">                }</span>
+<span class="nc" id="L112">            }</span>
+        });
+
+<span class="nc" id="L115">        thread.start();</span>
+<span class="nc" id="L116">    }</span>
+    
+    private void displayBookings(List&lt;Booking&gt; bookings) {
+<span class="nc" id="L119">        bookingListContainer.getChildren().clear();</span>
+        
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (bookings.isEmpty()) {</span>
+<span class="nc" id="L122">            bookingListContainer.setVisible(false);</span>
+<span class="nc" id="L123">            emptyStateContainer.setVisible(true);</span>
+<span class="nc" id="L124">            lblBookingCount.setText(&quot;Total bookings: 0&quot;);</span>
+<span class="nc" id="L125">            return;</span>
+        }
+        
+<span class="nc" id="L128">        bookingListContainer.setVisible(true);</span>
+<span class="nc" id="L129">        emptyStateContainer.setVisible(false);</span>
+<span class="nc" id="L130">        lblBookingCount.setText(&quot;Total bookings: &quot; + bookings.size());</span>
+        
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        for (Booking booking : bookings) {</span>
+<span class="nc" id="L133">            VBox bookingCard = createBookingCard(booking);</span>
+<span class="nc" id="L134">            bookingListContainer.getChildren().add(bookingCard);</span>
+<span class="nc" id="L135">        }</span>
+<span class="nc" id="L136">    }</span>
+    
+    private VBox createBookingCard(Booking booking) {
+<span class="nc" id="L139">        VBox card = new VBox();</span>
+<span class="nc" id="L140">        card.setStyle(&quot;-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-width: 1; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 20;&quot;);</span>
+<span class="nc" id="L141">        card.setSpacing(12);</span>
+        
+        // 预订信息头部
+<span class="nc" id="L144">        HBox header = createCardHeader(booking);</span>
+        
+        // 预订详情
+<span class="nc" id="L147">        VBox details = createBookingDetails(booking);</span>
+        
+        // 操作按钮
+<span class="nc" id="L150">        HBox actions = createActionButtons(booking);</span>
+        
+<span class="nc" id="L152">        card.getChildren().addAll(header, new Separator(), details, actions);</span>
+<span class="nc" id="L153">        return card;</span>
+    }
+    
+    private HBox createCardHeader(Booking booking) {
+<span class="nc" id="L157">        HBox header = new HBox();</span>
+<span class="nc" id="L158">        header.setSpacing(15);</span>
+<span class="nc" id="L159">        header.setAlignment(Pos.CENTER_LEFT);</span>
+        
+<span class="nc" id="L161">        Label bookingId = new Label(&quot;Booking #&quot; + booking.getId());</span>
+<span class="nc" id="L162">        bookingId.setStyle(&quot;-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;&quot;);</span>
+        
+<span class="nc" id="L164">        Label status = createStatusBadge(booking.getStatus());</span>
+        
+<span class="nc" id="L166">        Region spacer = new Region();</span>
+<span class="nc" id="L167">        HBox.setHgrow(spacer, Priority.ALWAYS);</span>
+        
+<span class="nc" id="L169">        Label date = new Label(&quot;Booked: &quot; + booking.getCreatedAt().format(DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm&quot;)));</span>
+<span class="nc" id="L170">        date.setStyle(&quot;-fx-font-size: 12px; -fx-text-fill: #999;&quot;);</span>
+        
+<span class="nc" id="L172">        header.getChildren().addAll(bookingId, status, spacer, date);</span>
+<span class="nc" id="L173">        return header;</span>
+    }
+    
+    private Label createStatusBadge(String status) {
+<span class="nc" id="L177">        Label badge = new Label(status);</span>
+<span class="nc bnc" id="L178" title="All 5 branches missed.">        String color = switch (status) {</span>
+<span class="nc" id="L179">            case &quot;CONFIRMED&quot; -&gt; &quot;#4CAF50&quot;;</span>
+<span class="nc" id="L180">            case &quot;PENDING&quot; -&gt; &quot;#FF9800&quot;;</span>
+<span class="nc" id="L181">            case &quot;CANCELLED&quot; -&gt; &quot;#F44336&quot;;</span>
+<span class="nc" id="L182">            case &quot;COMPLETED&quot; -&gt; &quot;#2196F3&quot;;</span>
+<span class="nc" id="L183">            default -&gt; &quot;#999&quot;;</span>
+        };
+<span class="nc" id="L185">        badge.setStyle(&quot;-fx-background-color: &quot; + color + &quot;; -fx-text-fill: white; -fx-padding: 5 12; -fx-border-radius: 15; -fx-background-radius: 15; -fx-font-size: 12px; -fx-font-weight: bold;&quot;);</span>
+<span class="nc" id="L186">        return badge;</span>
+    }
+    
+    private VBox createBookingDetails(Booking booking) {
+<span class="nc" id="L190">        VBox details = new VBox();</span>
+<span class="nc" id="L191">        details.setSpacing(8);</span>
+        
+<span class="nc" id="L193">        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
+        
+        // 入住和退房日期
+<span class="nc" id="L196">        HBox dates = new HBox();</span>
+<span class="nc" id="L197">        dates.setSpacing(20);</span>
+<span class="nc" id="L198">        Label checkIn = new Label(&quot;✓ Check-in: &quot; + booking.getCheckInDate().format(dateFormat));</span>
+<span class="nc" id="L199">        Label checkOut = new Label(&quot;✓ Check-out: &quot; + booking.getCheckOutDate().format(dateFormat));</span>
+<span class="nc" id="L200">        checkIn.setStyle(&quot;-fx-text-fill: #666; -fx-font-size: 13px;&quot;);</span>
+<span class="nc" id="L201">        checkOut.setStyle(&quot;-fx-text-fill: #666; -fx-font-size: 13px;&quot;);</span>
+<span class="nc" id="L202">        dates.getChildren().addAll(checkIn, checkOut);</span>
+        
+        // 房间和酒店信息
+<span class="nc" id="L205">        HBox info = new HBox();</span>
+<span class="nc" id="L206">        info.setSpacing(20);</span>
+<span class="nc" id="L207">        Label room = new Label(&quot;🛏️ Room ID: &quot; + booking.getRoomId());</span>
+<span class="nc" id="L208">        Label hotel = new Label(&quot;🏨 Hotel ID: &quot; + booking.getHotelId());</span>
+<span class="nc" id="L209">        room.setStyle(&quot;-fx-text-fill: #666; -fx-font-size: 13px;&quot;);</span>
+<span class="nc" id="L210">        hotel.setStyle(&quot;-fx-text-fill: #666; -fx-font-size: 13px;&quot;);</span>
+<span class="nc" id="L211">        info.getChildren().addAll(room, hotel);</span>
+        
+        // 总价格
+<span class="nc" id="L214">        Label price = new Label(&quot;💰 Total Price: $&quot; + booking.getTotalPrice());</span>
+<span class="nc" id="L215">        price.setStyle(&quot;-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #8B4513;&quot;);</span>
+        
+<span class="nc" id="L217">        details.getChildren().addAll(dates, info, price);</span>
+<span class="nc" id="L218">        return details;</span>
+    }
+    
+    private HBox createActionButtons(Booking booking) {
+<span class="nc" id="L222">        HBox actions = new HBox();</span>
+<span class="nc" id="L223">        actions.setSpacing(10);</span>
+<span class="nc" id="L224">        actions.setAlignment(Pos.CENTER_RIGHT);</span>
+        
+<span class="nc" id="L226">        Button viewDetails = new Button(&quot;View Details&quot;);</span>
+<span class="nc" id="L227">        viewDetails.setStyle(&quot;-fx-background-color: #8B4513; -fx-text-fill: white; -fx-font-size: 12px; -fx-padding: 8 15; -fx-border-radius: 5; -fx-background-radius: 5; -fx-cursor: hand;&quot;);</span>
+<span class="nc" id="L228">        viewDetails.setOnAction(e -&gt; showBookingDetails(booking));</span>
+        
+<span class="nc" id="L230">        Button completeBooking = new Button(&quot;Complete&quot;);</span>
+<span class="nc" id="L231">        completeBooking.setStyle(&quot;-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 12px; -fx-padding: 8 15; -fx-border-radius: 5; -fx-background-radius: 5; -fx-cursor: hand;&quot;);</span>
+<span class="nc" id="L232">        completeBooking.setOnAction(e -&gt; handleCompleteBooking(booking));</span>
+        
+<span class="nc" id="L234">        Button cancelBooking = new Button(&quot;Cancel&quot;);</span>
+<span class="nc" id="L235">        cancelBooking.setStyle(&quot;-fx-background-color: #f0f0f0; -fx-text-fill: #333; -fx-font-size: 12px; -fx-padding: 8 15; -fx-border-radius: 5; -fx-background-radius: 5; -fx-cursor: hand;&quot;);</span>
+<span class="nc" id="L236">        cancelBooking.setOnAction(e -&gt; handleCancelBooking(booking));</span>
+        
+        // 根据预订状态禁用相应的按钮
+<span class="nc bnc" id="L239" title="All 4 branches missed.">        if (&quot;CANCELLED&quot;.equals(booking.getStatus()) || &quot;COMPLETED&quot;.equals(booking.getStatus())) {</span>
+<span class="nc" id="L240">            cancelBooking.setDisable(true);</span>
+<span class="nc" id="L241">            completeBooking.setDisable(true);</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">        } else if (&quot;COMPLETED&quot;.equals(booking.getStatus())) {</span>
+<span class="nc" id="L243">            completeBooking.setDisable(true);</span>
+        }
+        
+<span class="nc" id="L246">        actions.getChildren().addAll(viewDetails, completeBooking, cancelBooking);</span>
+<span class="nc" id="L247">        return actions;</span>
+    }
+    
+    @FXML
+    private void handleStatusFilter() {
+<span class="nc" id="L252">        selectedStatus = cbStatus.getValue();</span>
+<span class="nc" id="L253">        loadBookings();</span>
+<span class="nc" id="L254">    }</span>
+    
+    private void showBookingDetails(Booking booking) {
+<span class="nc" id="L257">        Alert alert = new Alert(Alert.AlertType.INFORMATION);</span>
+<span class="nc" id="L258">        alert.setTitle(&quot;Booking Details&quot;);</span>
+<span class="nc" id="L259">        alert.setHeaderText(&quot;Booking #&quot; + booking.getId());</span>
+        
+<span class="nc" id="L261">        String details = String.format(</span>
+            &quot;User ID: %d\n&quot; +
+            &quot;Hotel ID: %d\n&quot; +
+            &quot;Room ID: %d\n&quot; +
+            &quot;Check-in: %s\n&quot; +
+            &quot;Check-out: %s\n&quot; +
+            &quot;Total Price: $%s\n&quot; +
+            &quot;Status: %s\n&quot; +
+            &quot;Created: %s&quot;,
+<span class="nc" id="L270">            booking.getUserId(),</span>
+<span class="nc" id="L271">            booking.getHotelId(),</span>
+<span class="nc" id="L272">            booking.getRoomId(),</span>
+<span class="nc" id="L273">            booking.getCheckInDate(),</span>
+<span class="nc" id="L274">            booking.getCheckOutDate(),</span>
+<span class="nc" id="L275">            booking.getTotalPrice(),</span>
+<span class="nc" id="L276">            booking.getStatus(),</span>
+<span class="nc" id="L277">            booking.getCreatedAt()</span>
+        );
+        
+<span class="nc" id="L280">        alert.setContentText(details);</span>
+<span class="nc" id="L281">        alert.showAndWait();</span>
+<span class="nc" id="L282">    }</span>
+    
+    private void handleCancelBooking(Booking booking) {
+<span class="nc" id="L285">        Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);</span>
+<span class="nc" id="L286">        confirmDialog.setTitle(&quot;Cancel Booking&quot;);</span>
+<span class="nc" id="L287">        confirmDialog.setHeaderText(&quot;Are you sure?&quot;);</span>
+<span class="nc" id="L288">        confirmDialog.setContentText(&quot;Cancel booking #&quot; + booking.getId() + &quot;?&quot;);</span>
+        
+<span class="nc bnc" id="L290" title="All 2 branches missed.">        if (confirmDialog.showAndWait().get() == ButtonType.OK) {</span>
+<span class="nc" id="L291">            new Thread(() -&gt; {</span>
+                try {
+<span class="nc" id="L293">                    boolean success = bookingService.cancelBooking(booking.getId());</span>
+<span class="nc" id="L294">                    Platform.runLater(() -&gt; {</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">                        if (success) {</span>
+<span class="nc" id="L296">                            showSuccess(&quot;Booking cancelled successfully&quot;);</span>
+<span class="nc" id="L297">                            loadBookings();</span>
+                        } else {
+<span class="nc" id="L299">                            showError(&quot;Failed to cancel booking&quot;);</span>
+                        }
+<span class="nc" id="L301">                    });</span>
+<span class="nc" id="L302">                } catch (Exception e) {</span>
+<span class="nc" id="L303">                    Platform.runLater(() -&gt; showError(&quot;Failed to cancel booking: &quot; + e.getMessage()));</span>
+<span class="nc" id="L304">                }</span>
+<span class="nc" id="L305">            }).start();</span>
+        }
+<span class="nc" id="L307">    }</span>
+    
+    private void handleCompleteBooking(Booking booking) {
+<span class="nc" id="L310">        Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);</span>
+<span class="nc" id="L311">        confirmDialog.setTitle(&quot;Complete Booking&quot;);</span>
+<span class="nc" id="L312">        confirmDialog.setHeaderText(&quot;Check out?&quot;);</span>
+<span class="nc" id="L313">        confirmDialog.setContentText(&quot;Mark booking #&quot; + booking.getId() + &quot; as completed?&quot;);</span>
+        
+<span class="nc bnc" id="L315" title="All 2 branches missed.">        if (confirmDialog.showAndWait().get() == ButtonType.OK) {</span>
+<span class="nc" id="L316">            new Thread(() -&gt; {</span>
+                try {
+<span class="nc" id="L318">                    boolean success = bookingService.completeBooking(booking.getId());</span>
+<span class="nc" id="L319">                    Platform.runLater(() -&gt; {</span>
+<span class="nc bnc" id="L320" title="All 2 branches missed.">                        if (success) {</span>
+<span class="nc" id="L321">                            showSuccess(&quot;Booking completed successfully&quot;);</span>
+<span class="nc" id="L322">                            loadBookings();</span>
+                        } else {
+<span class="nc" id="L324">                            showError(&quot;Failed to complete booking&quot;);</span>
+                        }
+<span class="nc" id="L326">                    });</span>
+<span class="nc" id="L327">                } catch (Exception e) {</span>
+<span class="nc" id="L328">                    Platform.runLater(() -&gt; showError(&quot;Failed to complete booking: &quot; + e.getMessage()));</span>
+<span class="nc" id="L329">                }</span>
+<span class="nc" id="L330">            }).start();</span>
+        }
+<span class="nc" id="L332">    }</span>
+    
+    @FXML
+    private void backToHome() {
+<span class="nc" id="L336">        loadScene(&quot;main_dashboard.fxml&quot;);</span>
+<span class="nc" id="L337">    }</span>
+    
+    @FXML
+    private void goToSearch() {
+        // 在任何导航前调用
+<span class="nc" id="L342">        NavigationManager.getInstance().push(</span>
+            &quot;/com/hotelbooking/view/my_bookings.fxml&quot;,
+            &quot;Bookings&quot;
+        );
+<span class="nc" id="L346">        loadScene(&quot;search_hotels.fxml&quot;);</span>
+<span class="nc" id="L347">    }</span>
+    
+    @FXML
+    private void backToPrevious() {
+<span class="nc" id="L351">        loadScene(&quot;search_hotels.fxml&quot;);</span>
+<span class="nc" id="L352">    }</span>
+    
+    private void showLoginRequired() {
+<span class="nc" id="L355">        Alert alert = new Alert(Alert.AlertType.WARNING);</span>
+<span class="nc" id="L356">        alert.setTitle(&quot;Login Required&quot;);</span>
+<span class="nc" id="L357">        alert.setHeaderText(&quot;Please log in first&quot;);</span>
+<span class="nc" id="L358">        alert.setContentText(&quot;You need to log in to view your bookings.&quot;);</span>
+<span class="nc" id="L359">        alert.showAndWait();</span>
+<span class="nc" id="L360">    }</span>
+    
+    private void showError(String message) {
+<span class="nc" id="L363">        Alert alert = new Alert(Alert.AlertType.ERROR);</span>
+<span class="nc" id="L364">        alert.setTitle(&quot;Error&quot;);</span>
+<span class="nc" id="L365">        alert.setContentText(message);</span>
+<span class="nc" id="L366">        alert.showAndWait();</span>
+<span class="nc" id="L367">    }</span>
+    
+    private void showSuccess(String message) {
+<span class="nc" id="L370">        Alert alert = new Alert(Alert.AlertType.INFORMATION);</span>
+<span class="nc" id="L371">        alert.setTitle(&quot;Success&quot;);</span>
+<span class="nc" id="L372">        alert.setContentText(message);</span>
+<span class="nc" id="L373">        alert.showAndWait();</span>
+<span class="nc" id="L374">    }</span>
+    
+    private void loadScene(String fxmlFile) {
+        try {
+<span class="nc" id="L378">            FXMLLoader loader = new FXMLLoader(getClass().getResource(&quot;/com/hotelbooking/view/&quot; + fxmlFile));</span>
+<span class="nc" id="L379">            Parent root = loader.load();</span>
+<span class="nc" id="L380">            Stage stage = (Stage) bookingListContainer.getScene().getWindow();</span>
+<span class="nc" id="L381">            stage.setScene(new Scene(root));</span>
+<span class="nc" id="L382">        } catch (IOException e) {</span>
+<span class="nc" id="L383">            e.printStackTrace();</span>
+<span class="nc" id="L384">            showError(&quot;Failed to load page: &quot; + e.getMessage());</span>
+<span class="nc" id="L385">        }</span>
+<span class="nc" id="L386">    }</span>
+    
+    private Integer getCurrentUserId() {
+        // 从全局用户会话获取当前用户ID
+        // 这里需要根据你的实际实现调整
+<span class="nc" id="L391">        return SessionManager.getLoggedInId();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
