@@ -13,7 +13,9 @@
     
     <!-- 顶部导航栏 -->
     <top>
-        <HBox alignment="CENTER_RIGHT" 
+                <fx:include source="/com/hotelbooking/view/components/TopNavigationBar.fxml"/>
+
+<!--        <HBox alignment="CENTER_RIGHT" 
               spacing="20"
               style="-fx-background-color: white; -fx-padding: 15 30; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;">
  
@@ -30,7 +32,7 @@
             <Button text="My Trips" style="-fx-background-color: transparent; -fx-text-fill: #333; -fx-font-size: 14px;"/>
             <Button text="Sign In" 
                     style="-fx-background-color: #1a1a1a; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10 25; -fx-border-radius: 20; -fx-background-radius: 20;"/>
-        </HBox>
+        </HBox>-->
     </top>
     
     <!-- 主要内容 -->

@@ -1,18 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.hotelbooking.controller;
 
-/**
- *
- * @author a1-6
- */
+import com.hotelbooking.util.NavigationManager;
 import com.hotelbooking.util.SessionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
@@ -21,17 +15,70 @@ public class TopNavigationController {
     @FXML private Button btnHelp;
     @FXML private Button btnTrips;
     @FXML private Button btnLogin;
+    @FXML private Button btnBack;  // 返回按钮
     
     @FXML
     public void initialize() {
         setupHoverEffects();
         updateLoginButton();
+        updateBackButton();
+    }
+    
+    /**
+     * 更新返回按钮状态
+     */
+    private void updateBackButton() {
+        if (btnBack != null) {
+            // 检查是否可以返回
+            boolean canGoBack = NavigationManager.getInstance().hasPrevious();
+            btnBack.setDisable(!canGoBack);
+            btnBack.setStyle(
+                "-fx-background-color: " + (canGoBack ? "#f5f5f5" : "#e0e0e0") + "; " +
+                "-fx-text-fill: " + (canGoBack ? "#333333" : "#999999") + "; " +
+                "-fx-font-size: 14px; " +
+                "-fx-cursor: " + (canGoBack ? "hand" : "default") + "; " +
+                "-fx-padding: 8 15; " +
+                "-fx-border-radius: 5; " +
+                "-fx-background-radius: 5;"
+            );
+        }
     }
     
     /**
      * 设置鼠标悬停效果
      */
     private void setupHoverEffects() {
+        // 返回按钮悬停效果
+        if (btnBack != null) {
+            btnBack.setOnMouseEntered(e -> {
+                if (!btnBack.isDisabled()) {
+                    btnBack.setStyle(
+                        "-fx-background-color: #ddd; " +
+                        "-fx-text-fill: #1a1a1a; " +
+                        "-fx-font-size: 14px; " +
+                        "-fx-cursor: hand; " +
+                        "-fx-padding: 8 15; " +
+                        "-fx-border-radius: 5; " +
+                        "-fx-background-radius: 5;"
+                    );
+                }
+            });
+            
+            btnBack.setOnMouseExited(e -> {
+                if (!btnBack.isDisabled()) {
+                    btnBack.setStyle(
+                        "-fx-background-color: #f5f5f5; " +
+                        "-fx-text-fill: #333333; " +
+                        "-fx-font-size: 14px; " +
+                        "-fx-cursor: hand; " +
+                        "-fx-padding: 8 15; " +
+                        "-fx-border-radius: 5; " +
+                        "-fx-background-radius: 5;"
+                    );
+                }
+            });
+        }
+        
         // Help 按钮悬停效果
         btnHelp.setOnMouseEntered(e -> {
             btnHelp.setStyle(
@@ -82,10 +129,10 @@ public class TopNavigationController {
             );
         });
         
-        // Login 按钮悬停效果（变色加深）
+        // Login 按钮悬停效果
         btnLogin.setOnMouseEntered(e -> {
             btnLogin.setStyle(
-                "-fx-background-color: #8B4513; " +  // 深棕色（类似Marriott风格）
+                "-fx-background-color: #8B4513; " +
                 "-fx-text-fill: white; " +
                 "-fx-font-size: 14px; " +
                 "-fx-font-weight: bold; " +
@@ -112,25 +159,67 @@ public class TopNavigationController {
     }
     
     /**
+     * 返回上一个界面
+     */
+    @FXML
+    private void goBack() {
+        System.out.println("⬅️ 返回上一页");
+        NavigationManager navManager = NavigationManager.getInstance();
+        NavigationManager.NavigationHistory previous = navManager.getPrevious();
+        
+        if (previous != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource(previous.fxmlPath)
+                );
+                Parent root = loader.load();
+                
+                Stage stage = (Stage) btnBack.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle(previous.title);
+                
+                // 导航完成后，弹出当前页面
+                navManager.popCurrent();
+                updateBackButton();
+                
+            } catch (Exception e) {
+                System.err.println("❌ 返回失败: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("⚠️ 没有上一页");
+        }
+    }
+    
+    /**
      * 返回主页
      */
     @FXML
     private void backToHome() {
+        System.out.println("🏠 返回主页");
         try {
+            NavigationManager.getInstance().goHome(
+                "/com/hotelbooking/view/main_dashboard.fxml",
+                "Hotel Booking System"
+            );
+            
             FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/com/hotelbooking/view/main_dashboard.fxml")
             );
             Parent root = loader.load();
             
-            
+            Stage stage = (Stage) btnBack.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Hotel Booking System");
             
         } catch (Exception e) {
+            System.err.println("❌ 返回主页失败: " + e.getMessage());
             e.printStackTrace();
         }
     }
     
     /**
-     * 更新登录按钮状态（如果已登录显示用户名）
+     * 更新登录按钮状态
      */
     private void updateLoginButton() {
         if (SessionManager.isLoggedIn()) {
@@ -147,7 +236,6 @@ public class TopNavigationController {
     @FXML
     private void handleHelp() {
         System.out.println("🔘 Help 按钮被点击");
-        // 可以打开帮助对话框或跳转到帮助页面
         showHelpDialog();
     }
     
@@ -164,7 +252,6 @@ public class TopNavigationController {
             return;
         }
         
-        // 跳转到我的订单页面
         navigateToTrips();
     }
     
@@ -176,10 +263,8 @@ public class TopNavigationController {
         System.out.println("🔘 Login 按钮被点击");
         
         if (SessionManager.isLoggedIn()) {
-            // 如果已登录，显示用户菜单
             showUserMenu();
         } else {
-            // 如果未登录，跳转到登录页面
             navigateToLogin();
         }
     }
@@ -191,17 +276,13 @@ public class TopNavigationController {
         javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
             javafx.scene.control.Alert.AlertType.INFORMATION
         );
-        alert.setTitle("帮助中心");
-        alert.setHeaderText("需要帮助吗？");
+        alert.setTitle("Help Center");
+        alert.setHeaderText("Need help?");
         alert.setContentText(
-            "常见问题：\n\n" +
-            "1. 如何预订房间？\n" +
-            "   - 选择日期和目的地，浏览可用房间并完成预订\n\n" +
-            "2. 如何查看我的订单？\n" +
-            "   - 点击 'My Trips' 按钮查看所有预订\n\n" +
-            "3. 如何联系客服？\n" +
-            "   - 拨打热线: 400-888-8888\n" +
-            "   - 邮箱: support@hotel.com"
+            "Frequently Asked Questions:\n\n" +
+            "1. How to book a room?\n   Select the dates and destination, then browse the available rooms.\n\n" +
+            "2. How to view my bookings?\n   Click the 'My Trips' button.\n\n" +
+            "3. Contact customer service: 400-888-8888"
         );
         alert.showAndWait();
     }
@@ -211,14 +292,22 @@ public class TopNavigationController {
      */
     private void navigateToTrips() {
         try {
+            // 记录当前页面到导航栈
+            NavigationManager.getInstance().push(
+                "/com/hotelbooking/view/my_bookings.fxml",
+                "My Trips"
+            );
+            
             FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/com/hotelbooking/view/my_trips.fxml")
+                getClass().getResource("/com/hotelbooking/view/my_bookings.fxml")
             );
             Parent root = loader.load();
             
             Stage stage = (Stage) btnTrips.getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("我的行程");
+            stage.setTitle("My Trips");
+            
+            updateBackButton();
             
         } catch (Exception e) {
             System.err.println("❌ 跳转失败: " + e.getMessage());
@@ -231,6 +320,11 @@ public class TopNavigationController {
      */
     private void navigateToLogin() {
         try {
+            NavigationManager.getInstance().push(
+                "/com/hotelbooking/view/login.fxml",
+                "User Login"
+            );
+            
             FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/com/hotelbooking/view/login.fxml")
             );
@@ -238,7 +332,9 @@ public class TopNavigationController {
             
             Stage stage = (Stage) btnLogin.getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("用户登录");
+            stage.setTitle("User Login");
+            
+            updateBackButton();
             
         } catch (Exception e) {
             System.err.println("❌ 跳转失败: " + e.getMessage());
@@ -247,21 +343,19 @@ public class TopNavigationController {
     }
     
     /**
-     * 显示用户菜单（已登录状态）
+     * 显示用户菜单
      */
     private void showUserMenu() {
         javafx.scene.control.ContextMenu contextMenu = new javafx.scene.control.ContextMenu();
         
-        javafx.scene.control.MenuItem profileItem = new javafx.scene.control.MenuItem("👤 我的资料");
+        javafx.scene.control.MenuItem profileItem = new javafx.scene.control.MenuItem("👤 My Profile");
         profileItem.setOnAction(e -> navigateToProfile());
+      
         
-        javafx.scene.control.MenuItem tripsItem = new javafx.scene.control.MenuItem("🧳 我的行程");
-        tripsItem.setOnAction(e -> navigateToTrips());
-        
-        javafx.scene.control.MenuItem logoutItem = new javafx.scene.control.MenuItem("🚪 退出登录");
+        javafx.scene.control.MenuItem logoutItem = new javafx.scene.control.MenuItem("🚪 Logout");
         logoutItem.setOnAction(e -> handleLogout());
         
-        contextMenu.getItems().addAll(profileItem, tripsItem, logoutItem);
+        contextMenu.getItems().addAll(profileItem, logoutItem);
         contextMenu.show(btnLogin, javafx.geometry.Side.BOTTOM, 0, 5);
     }
     
@@ -270,6 +364,11 @@ public class TopNavigationController {
      */
     private void navigateToProfile() {
         try {
+            NavigationManager.getInstance().push(
+                "/com/hotelbooking/view/user_profile.fxml",
+                "用户资料"
+            );
+            
             FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/com/hotelbooking/view/user_profile.fxml")
             );
@@ -279,8 +378,11 @@ public class TopNavigationController {
             stage.setScene(new Scene(root));
             stage.setTitle("用户资料");
             
+            updateBackButton();
+            
         } catch (Exception e) {
             System.err.println("❌ 跳转失败: " + e.getMessage());
+            e.printStackTrace();
         }
     }
     
@@ -291,8 +393,6 @@ public class TopNavigationController {
         SessionManager.logout();
         System.out.println("✅ 用户已退出登录");
         updateLoginButton();
-        
-        // 可以选择跳转回主页
         navigateToLogin();
     }
 }

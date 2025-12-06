@@ -14,7 +14,9 @@
     <!-- 顶部导航栏 -->
     <top>
         <VBox>
-            <HBox alignment="CENTER_RIGHT" 
+            <fx:include source="/com/hotelbooking/view/components/TopNavigationBar.fxml"/>
+
+<!--            <HBox alignment="CENTER_RIGHT" 
                   spacing="20"
                   style="-fx-background-color: white; -fx-padding: 15 30; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;">
                 
@@ -28,7 +30,7 @@
                 <Button text="My Trips" style="-fx-background-color: transparent; -fx-text-fill: #333; -fx-font-size: 14px;"/>
                 <Button fx:id="btnLogin" text="Sign In" 
                         style="-fx-background-color: #1a1a1a; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10 25; -fx-border-radius: 20; -fx-background-radius: 20;"/>
-            </HBox>
+            </HBox>-->
             
             <!-- 搜索栏 -->
             <HBox spacing="15" alignment="CENTER" 
@@ -53,7 +55,7 @@
             <!-- 搜索结果标题 -->
             <HBox alignment="CENTER_LEFT" spacing="10">
                 <Label fx:id="lblResultCount" 
-                       text="Found 4 hotels"
+                       text="Found 0 hotels"
                        style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;"/>
             </HBox>
             

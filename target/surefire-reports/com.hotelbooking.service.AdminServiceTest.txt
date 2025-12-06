@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.hotelbooking.service.AdminServiceTest
 -------------------------------------------------------------------------------
-Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.318 s -- in com.hotelbooking.service.AdminServiceTest
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s -- in com.hotelbooking.service.AdminServiceTest

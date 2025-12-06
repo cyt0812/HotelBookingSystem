@@ -4,7 +4,8 @@ import com.hotelbooking.dao.BookingDAO;
 import com.hotelbooking.dao.RoomDAO;
 import com.hotelbooking.entity.Booking;
 import com.hotelbooking.service.BookingService;
-import com.hotelbooking.util.UserSession;
+import com.hotelbooking.util.NavigationManager;
+import com.hotelbooking.util.SessionManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -332,12 +333,22 @@ public class MyBookingsController {
     
     @FXML
     private void backToHome() {
-        loadScene("MainWindow.fxml");
+        loadScene("main_dashboard.fxml");
     }
     
     @FXML
     private void goToSearch() {
-        loadScene("SearchHotels.fxml");
+        // 在任何导航前调用
+        NavigationManager.getInstance().push(
+            "/com/hotelbooking/view/my_bookings.fxml",
+            "Bookings"
+        );
+        loadScene("search_hotels.fxml");
+    }
+    
+    @FXML
+    private void backToPrevious() {
+        loadScene("search_hotels.fxml");
     }
     
     private void showLoginRequired() {
@@ -377,6 +388,6 @@ public class MyBookingsController {
     private Integer getCurrentUserId() {
         // 从全局用户会话获取当前用户ID
         // 这里需要根据你的实际实现调整
-        return UserSession.getInstance().getCurrentUserId();
+        return SessionManager.getLoggedInId();
     }
 }

@@ -7,7 +7,8 @@ import java.sql.SQLException;
 public class DatabaseConnection {
     // 数据库连接参数
     //private static final String URL = "jdbc:derby:hotel_booking_db;create=true";
-    private static String URL = "jdbc:derby:memory:hotel_booking_test;create=true";
+    private static String URL = "jdbc:derby:./database/hotel_booking_db;create=true";
+    //private static String URL = "jdbc:derby:memory:hotel_booking_test;create=true";
     private static final String USER = "app";
     private static final String PASSWORD = "app";
     

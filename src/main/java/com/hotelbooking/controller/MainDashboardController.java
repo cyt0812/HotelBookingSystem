@@ -1,5 +1,6 @@
 package com.hotelbooking.controller;
 
+import com.hotelbooking.util.NavigationManager;
 import com.hotelbooking.util.SessionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -107,6 +108,11 @@ public class MainDashboardController {
      */
     private void navigateToHotelSearch() {
         try {
+            // 在任何导航前调用
+            NavigationManager.getInstance().push(
+                "/com/hotelbooking/view/search_hotels.fxml",
+                "Search Hotel"
+            );
             String keyword = txtDestination.getText().trim();
             FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/com/hotelbooking/view/search_hotels.fxml")
@@ -437,13 +443,13 @@ public class MainDashboardController {
     @FXML
     private void handleHelp() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("帮助中心");
-        alert.setHeaderText("需要帮助吗？");
+        alert.setTitle("Help Center");
+        alert.setHeaderText("Need help?");
         alert.setContentText(
-            "常见问题：\n\n" +
-            "1. 如何预订房间？\n   选择日期和目的地，浏览可用房间\n\n" +
-            "2. 如何查看订单？\n   点击 'My Trips' 按钮\n\n" +
-            "3. 联系客服：400-888-8888"
+            "Frequently Asked Questions:\n\n" +
+            "1. How to book a room?\n   Select the dates and destination, then browse the available rooms.\n\n" +
+            "2. How to view my bookings?\n   Click the 'My Trips' button.\n\n" +
+            "3. Contact customer service: 400-888-8888"
         );
         alert.showAndWait();
     }
@@ -459,7 +465,7 @@ public class MainDashboardController {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("need login");
             alert.setHeaderText(null);
-            alert.setContentText("请先登录查看您的订单");
+            alert.setContentText("please log in first");
             // 添加按钮
             ButtonType loginBtn = new ButtonType("Login");
             ButtonType cancelBtn = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -486,6 +492,11 @@ public class MainDashboardController {
      */
     private void navigateToBooking() {
         try {
+            // 在任何导航前调用
+            NavigationManager.getInstance().push(
+                "/com/hotelbooking/view/my_bookings.fxml",
+                "Bookings"
+            );
             FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/com/hotelbooking/view/my_bookings.fxml")
             );
@@ -515,7 +526,7 @@ public class MainDashboardController {
         ContextMenu contextMenu = new ContextMenu();
         
         MenuItem profileItem = new MenuItem("👤 My Profile");
-        profileItem.setOnAction(e -> System.out.println("打开资料"));
+        profileItem.setOnAction(e -> navigateToProfile());
         
         MenuItem logoutItem = new MenuItem("🚪 Logout");
         logoutItem.setOnAction(e -> handleLogout());
@@ -524,8 +535,40 @@ public class MainDashboardController {
         contextMenu.show(btnLogin, javafx.geometry.Side.BOTTOM, 0, 5);
     }
     
+    /**
+     * 跳转到用户资料页面
+     */
+    private void navigateToProfile() {
+        try {
+            NavigationManager.getInstance().push(
+                "/com/hotelbooking/view/user_profile.fxml",
+                "用户资料"
+            );
+            
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/com/hotelbooking/view/user_profile.fxml")
+            );
+            Parent root = loader.load();
+            
+            Stage stage = (Stage) btnLogin.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("用户资料");
+            
+//            updateBackButton();
+            
+        } catch (Exception e) {
+            System.err.println("❌ 跳转失败: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
     private void navigateToLogin() {
         try {
+            // 在任何导航前调用
+            NavigationManager.getInstance().push(
+                "/com/hotelbooking/view/login.fxml",
+                "User Login"
+            );
             FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/com/hotelbooking/view/login.fxml")
             );
@@ -545,7 +588,7 @@ public class MainDashboardController {
         
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Logout Successful");
-        alert.setContentText("您已成功退出登录");
+        alert.setContentText("You have successfully logged out");
         alert.showAndWait();
     }
     

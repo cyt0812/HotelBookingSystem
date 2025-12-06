@@ -4,6 +4,8 @@ import com.hotelbooking.dao.HotelDAO;
 import com.hotelbooking.entity.Hotel;
 import com.hotelbooking.entity.Room;
 import com.hotelbooking.service.HotelService;
+import com.hotelbooking.util.NavigationManager;
+import com.hotelbooking.util.SessionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -22,6 +24,25 @@ public class HotelRoomsController {
     @FXML private Label lblHotelAmenities;
     @FXML private Label lblRoomCount;
     @FXML private VBox roomListContainer;
+    
+    @FXML
+    public void initialize() {
+        // 从 SessionManager 获取当前酒店信息
+        currentHotel = SessionManager.getCurrentHotel();
+
+        // 如果当前酒店不为空，则显示酒店信息和房间信息
+        if (currentHotel != null) {
+            displayHotelInfo();  // 显示酒店信息
+            displayRooms();      // 显示房间信息
+        } else {
+            // 如果没有酒店信息，则显示错误信息或进行其他处理
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Hotel Information Missing");
+            alert.setContentText("The hotel information could not be loaded. Please go back and try again.");
+            alert.showAndWait();
+        }
+    }
     
 //    private HotelService hotelService = new HotelService();
     private Hotel currentHotel;
@@ -251,6 +272,11 @@ public class HotelRoomsController {
      */
     private void navigateToPayment(Room room) {
         try {
+            // 在任何导航前调用
+            NavigationManager.getInstance().push(
+                "/com/hotelbooking/view/payment.fxml",  // ← 要导航到的页面
+                "Payment"
+            );
             System.out.println("💳 跳转到支付页面");
             
             FXMLLoader loader = new FXMLLoader(
@@ -259,7 +285,7 @@ public class HotelRoomsController {
             Parent root = loader.load();
             
             // 传递预订信息给支付页面
-            PaymentController controller = loader.getController();
+             PaymentController controller = loader.getController();
             controller.setBookingInfo(currentHotel, room);
             
             Stage stage = (Stage) roomListContainer.getScene().getWindow();

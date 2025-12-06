@@ -11,7 +11,9 @@
     
     
     <top>
-        <HBox alignment="CENTER_RIGHT" spacing="20"
+        <fx:include source="/com/hotelbooking/view/components/TopNavigationBar.fxml"/>
+
+<!--        <HBox alignment="CENTER_RIGHT" spacing="20"
               style="-fx-background-color: white; -fx-padding: 15 30; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;">
             
  
@@ -26,7 +28,7 @@
             </HBox>
 
             <fx:include source="/com/hotelbooking/view/components/TopNavigationBar.fxml"/>
-        </HBox>
+        </HBox>-->
     </top>
     
     <center>

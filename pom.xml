@@ -110,8 +110,6 @@
                 <configuration>
                     <mainClass>${mainClass}</mainClass>
                     <options>
-                        <option>--module-path</option>
-                        <option>D:\javafx-sdk-21.0.9\lib</option>
                         <option>--add-modules</option>
                         <option>javafx.controls,javafx.fxml</option>
                         <option>--add-opens</option>

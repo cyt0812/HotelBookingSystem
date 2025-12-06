@@ -115,3 +115,41 @@ A GUI-based Java hotel booking system for COMP603 Program Design &amp; Construct
 2. Open in NetBeans 23
 3. Run `Main.java`
 >>>>>>> Stashed changes
+酒店预订系统 - 运行说明
+=========================
+
+系统要求：
+1. JDK 21（必须）
+   - 下载地址：https://www.oracle.com/java/technologies/downloads/
+   - 安装后需要设置JAVA_HOME环境变量
+
+2. 操作系统：Windows 10/11, macOS, Linux
+
+运行方法（任选一种）：
+
+方法1：一键运行（推荐）
+---------------------
+1. 确保已安装JDK 21
+2. 双击运行项目中的 run.bat（Windows）或 run.sh（Mac/Linux）
+3. 系统将自动编译并启动
+
+方法2：使用NetBeans IDE
+---------------------
+1. 安装NetBeans 23
+2. 打开项目文件夹
+3. 找到 Main.java (在src/main/java/com/hotelbooking/)
+4. 右键点击 → "Run File"
+
+方法3：使用Maven命令
+-----------------
+1. 打开命令行
+2. 进入项目目录
+3. 运行：
+   mvn clean javafx:run
+
+方法4：直接运行JAR文件
+-------------------
+1. 先编译项目：
+   mvn clean package
+2. 运行：
+   java --add-modules javafx.controls,javafx.fxml -jar target/HotelBookingSystem-1.0-SNAPSHOT.jar
