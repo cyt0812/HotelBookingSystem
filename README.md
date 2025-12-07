@@ -1,289 +1,247 @@
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-# HotelBookingSystem
-A GUI-based Java hotel booking system for COMP603 Program Design &amp; Construction course at CJLU. Developed with JavaFX and Apache Derby.
-
-## 🛠️ Tech Stack
-- **Language**: Java 21
-- **GUI**: JavaFX
-- **Database**: Apache Derby
-- **IDE**: NetBeans 23
-- **Build Tool**: Maven
-
-## 👥 Team Members
-- Xintong Wu - Backend & Database
-- Jiayi Mo - GUI & Frontend  
-- Yuting Chen - Testing & Integration
-
-## 📋 Project Features
-- User registration and authentication
-- Hotel search and room availability check
-- Booking management
-- Payment processing (simulated)
-- Admin dashboard
-
-## 🚀 How to Run
-1. Clone this repository
-2. Open in NetBeans 23
-3. Run `Main.java`
-
-## 🧪 Testing
-
-### Test Structure
-- `DatabaseConnectionTest` - 测试数据库连接和驱动
-- `UserServiceTest` - 测试用户认证、注册和密码验证
-- `BookingServiceTest` - 测试预订相关功能和日期验证
-
-### How to Run Tests
-```bash
-# 运行所有测试
-mvn test
-
-# 运行测试并生成覆盖率报告
-mvn clean test jacoco:report
-
-# 运行特定测试类
-mvn test -Dtest=UserServiceTest
-
-## 🧪 Testing & Quality Assurance
-
-### Test Framework
-- **Testing Framework**: JUnit 5
-- **Coverage Tool**: JaCoCo
-- **Build Tool**: Maven
-
-### Test Structure
-- `DatabaseConnectionTest` - 测试数据库连接类
-- `UserServiceTest` - 测试用户服务功能
-- `BookingServiceTest` - 测试预订服务功能  
-- `PaymentServiceTest` - 测试支付服务实例化
-- `AdminControllerTest` - 测试管理员控制器
-
-### Test Coverage Report
-**Current Coverage (Latest):**
-- Overall: 6% (从 0% 提升)
-- Instructions: 6%
-- Branches: 0%
-- Complexity: 13%
-- Lines: 6%
-- Methods: 16%
-- Classes: 33%
-
-**Package Coverage:**
-- com.hotelbooking.controller: 42% ✅
-- com.hotelbooking.service: 14% ✅
-- com.hotelbooking: 0% ⚠️
-- com.hotelbooking.util: 0% ⚠️
-
-### How to Run Tests
-```bash
-# 运行所有测试
-mvn test
-
-# 运行测试并生成覆盖率报告
-mvn clean test jacoco:report
-
-# 查看覆盖率报告
-open target/site/jacoco/index.html
-
-# 运行特定测试类
-mvn test -Dtest=DatabaseConnectionTest
-=======
-# HotelBookingSystem
-A GUI-based Java hotel booking system for COMP603 Program Design &amp; Construction course at CJLU. Developed with JavaFX and Apache Derby.
-
-## 🛠️ Tech Stack
-- **Language**: Java 21
-- **GUI**: JavaFX
-- **Database**: Apache Derby
-- **IDE**: NetBeans 23
-- **Build Tool**: Maven
-
-## 👥 Team Members
-- Xintong Wu - Backend & Database
-- Jiayi Mo - GUI & Frontend  
-- Yuting Chen - Testing & Integration
-
-## 📋 Project Features
-- User registration and authentication
-- Hotel search and room availability check
-- Booking management
-- Payment processing (simulated)
-- Admin dashboard
-
-## 🚀 How to Run
-1. Clone this repository
-2. Open in NetBeans 23
-3. Run `Main.java`
->>>>>>> Stashed changes
-酒店预订系统 - 运行说明
-=========================
-
-系统要求：
-1. JDK 21（必须）
-   - 下载地址：https://www.oracle.com/java/technologies/downloads/
-   - 安装后需要设置JAVA_HOME环境变量
-
-2. 操作系统：Windows 10/11, macOS, Linux
-
-运行方法（任选一种）：
-
-方法1：一键运行（推荐）
----------------------
-1. 确保已安装JDK 21
-2. 双击运行项目中的 run.bat（Windows）或 run.sh（Mac/Linux）
-3. 系统将自动编译并启动
-
-方法2：使用NetBeans IDE
----------------------
-1. 安装NetBeans 23
-2. 打开项目文件夹
-3. 找到 Main.java (在src/main/java/com/hotelbooking/)
-4. 右键点击 → "Run File"
-
-方法3：使用Maven命令
------------------
-1. 打开命令行
-2. 进入项目目录
-3. 运行：
-   mvn clean javafx:run
-
-方法4：直接运行JAR文件
--------------------
-1. 先编译项目：
-   mvn clean package
-2. 运行：
-   java --add-modules javafx.controls,javafx.fxml -jar target/HotelBookingSystem-1.0-SNAPSHOT.jar
-=======
 # HotelBookingSystem
 A GUI-based Java hotel booking system for COMP603 Program Design & Construction course at CJLU. Developed with JavaFX and Apache Derby.
 
-# 🛠️ Tech Stack
+## 🛠️ Tech Stack
 
-Language: Java 21
+| Technology | Version | Description |
+|------------|---------|-------------|
+| Java | 21 | Programming language |
+| JavaFX | 21 | GUI framework |
+| Apache Derby | 10.15 | Embedded database |
+| NetBeans | 23 | Integrated development environment |
+| Maven | 3.9+ | Build and dependency management |
+| JUnit | 5 | Testing framework |
+| Mockito | 5 | Mocking library |
+| JaCoCo | 0.8.10 | Code coverage tool |
 
-GUI: JavaFX
+## 👥 Team Members
 
-Database: Apache Derby
+- **Xintong Wu** - Backend & Database Development
+- **Jiayi Mo** - GUI & Frontend Development
+- **Yuting Chen** - Testing & Integration
 
-IDE: NetBeans 23
+## 📋 Project Features
 
-Build Tool: Maven
+### User Management
+- User registration with validation
+- Secure authentication system
+- Role-based access control (Admin, Hotel Manager, Customer)
 
-# 👥 Team Members
+### Hotel & Room Management
+- Hotel search functionality
+- Real-time room availability check
+- Room type classification (Single, Double, Suite, etc.)
 
-Xintong Wu - Backend & Database
+### Booking System
+- Easy booking creation and management
+- Booking history tracking
+- Booking cancellation and modification
 
-Jiayi Mo - GUI & Frontend
+### Payment Processing
+- Secure payment simulation
+- Transaction history
+- Invoice generation
 
-Yuting Chen - Testing & Integration
+### Admin Dashboard
+- User management
+- Hotel and room management
+- Booking statistics and reporting
+- Real-time database monitoring
 
-# 📋 Project Features
+## 🚀 How to Run
 
-User registration and authentication
+### Option 1: Using NetBeans IDE (Recommended)
 
-Hotel search and room availability check
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/cyt0812/HotelBookingSystem.git
+   ```
 
-Booking management
+2. Open NetBeans 23
 
-Payment processing (simulated)
+3. Select **File → Open Project**
 
-Admin dashboard
+4. Navigate to the project folder and open it
 
-# 🚀 How to Run
+5. Right-click on the project and select **Run**
 
-Option 1: Using NetBeans IDE (Recommended)
+### Option 2: Using Maven (Command Line)
 
-- Clone this repository:
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/cyt0812/HotelBookingSystem.git
+   ```
 
-  bash
+2. Navigate to the project directory:
+   ```bash
+   cd HotelBookingSystem
+   ```
 
-  git clone https://github.com/cyt0812/HotelBookingSystem.git
-  
-- Open NetBeans 23
+3. Compile the project:
+   ```bash
+   mvn clean compile
+   ```
 
-- Select File → Open Project
+4. Run the application:
+   ```bash
+   mvn javafx:run
+   ```
 
-- Navigate to the project folder and open it
+### Option 3: Using JAR File
 
-- Right-click on the project and select Run
+1. Build the JAR file:
+   ```bash
+   mvn clean package
+   ```
 
-Option 2: Using Maven (Command Line)
+2. Run the JAR file:
+   ```bash
+   java --add-modules javafx.controls,javafx.fxml -jar target/HotelBookingSystem-1.0-SNAPSHOT.jar
+   ```
 
-bash
+## 🧪 Testing
 
-- Clone this repository
-  
-  git clone https://github.com/cyt0812/HotelBookingSystem.git
+### Test Framework
 
-- Navigate to project directory:
-  
-  cd HotelBookingSystem
+- **Testing Framework**: JUnit 5
+- **Mocking Library**: Mockito 5
+- **Code Coverage**: JaCoCo
 
-- Compile the project:
-  
-  mvn clean compile
+### How to Run Tests
 
-- Run the application:
-  
-  mvn javafx:run
-  
-# 🧪 Testing
+```bash
+# Run all tests
+mvn test
 
-Test Framework
+# Run specific test class
+mvn test -Dtest=UserServiceTest
 
-Testing Framework: JUnit 5
+# Run tests with code coverage
+mvn clean test jacoco:report
 
-Mocking: Mockito
+# Format the JaCoCo report for better readability
+python format_jacoco_report.py
 
-How to Run Tests
+# View coverage report
+# Open target/site/jacoco/index.html in a browser
+```
 
-bash
+### Test Coverage
 
-- Run all tests:
-  
-  mvn test
+**Current Coverage:**
+- Overall: 38%
+- Instructions: 38%
+- Branches: 34%
+- Complexity: 39%
+- Lines: 38%
+- Methods: 53%
+- Classes: 64%
 
-- Run specific test class
-  
-  mvn test -Dtest=UserServiceTest
+**Package Coverage:**
+- `com.hotelbooking.dto`: 100%
+- `com.hotelbooking.validation`: 96%
+- `com.hotelbooking.util`: 81%
+- `com.hotelbooking.exception`: 78%
+- `com.hotelbooking.entity`: 76%
+- `com.hotelbooking.service`: 67%
+- `com.hotelbooking.dao`: 56%
+- `com.hotelbooking`: 20%
+- `com.hotelbooking.controller`: 8% (needs improvement)
 
-- Run tests with coverage (if Jacoco configured):
-  
-  mvn clean test jacoco:report
-  
-# 📁 Project Structure
+## 📁 Project Structure
 
-text
-
+```
 HotelBookingSystem/
-
 ├── src/main/java/com/hotelbooking/
+│   ├── controller/          # MVC Controllers
+│   ├── dao/                 # Data Access Objects
+│   ├── dto/                 # Data Transfer Objects
+│   ├── entity/              # Domain Entities
+│   ├── exception/           # Custom Exceptions
+│   ├── service/             # Business Logic Services
+│   ├── util/                # Utility Classes
+│   │   ├── DatabaseConnection.java    # Database Connection Manager
+│   │   ├── DatabaseInitializer.java   # Database Setup
+│   │   ├── NavigationManager.java     # Scene Navigation
+│   │   └── SessionManager.java        # User Session Management
+│   ├── validation/          # Input Validation
+│   └── Main.java            # Application Entry Point
+├── src/test/java/com/hotelbooking/
+│   ├── controller/          # Controller Tests
+│   ├── dao/                 # DAO Tests
+│   ├── dto/                 # DTO Tests
+│   ├── entity/              # Entity Tests
+│   ├── service/             # Service Tests
+│   ├── util/                # Utility Tests
+│   └── validation/          # Validation Tests
+├── database/                # Embedded Derby Database Files
+├── src/main/resources/      # Application Resources
+├── src/test/resources/      # Test Resources
+├── target/                  # Build Output Directory
+├── pom.xml                  # Maven Configuration
+├── format_jacoco_report.py  # JaCoCo Report Formatter
+└── README.md                # Project Documentation
+```
 
-│   ├── controller/     # MVC Controllers
+## 🔧 Requirements
 
-│   ├── dao/           # Data Access Objects
+- **JDK**: 21 or later
+- **Maven**: 3.9+ (for command line execution)
+- **NetBeans**: 23 (recommended for easiest setup)
+- **Operating System**: Windows 10/11, macOS 10.15+, or Linux
 
-│   ├── entity/        # Domain Entities
+## 🗄️ Database Configuration
 
-│   ├── service/       # Business Logic
+### Embedded Derby Setup
 
-│   ├── util/          # Utility Classes
+The system uses embedded Apache Derby database:
 
-│   └── view/          # FXML Views
+- **Database Location**: `./database/hotel_booking_db`
+- **Connection URL**: `jdbc:derby:./database/hotel_booking_db;create=true`
+- **Driver**: `org.apache.derby.jdbc.EmbeddedDriver`
+- **Auto-creation**: Enabled (`create=true`)
 
-├── src/test/java/     # Unit Tests
+### Sample Data
 
-├── pom.xml            # Maven Configuration
+The system includes pre-configured sample data:
 
-└── README.md          # This file
+- **Users**: Admin, hotel managers, and customer accounts
+- **Hotels**: 3 sample hotels with detailed descriptions
+- **Rooms**: 7 sample rooms with different types and prices
 
-# 🔧 Requirements
+### Viewing Database Content
 
-JDK 21 or later
+To view data in NetBeans:
 
-Maven 3.9+ (for command line execution)
+1. Connect to the database as described above
+2. Expand **Tables** in the Services window
+3. Right-click any table → **View Data**
 
-NetBeans 23 (recommended for easiest setup)
+## 📝 Contributing
 
->>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature/AmazingFeature`)
+3. Make changes and commit (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## 📞 Contact
+
+- **Project Link**: [https://github.com/cyt0812/HotelBookingSystem](https://github.com/cyt0812/HotelBookingSystem)
+- **Team Email**: [hotelbookingsystem@cjlu.edu.cn](mailto:hotelbookingsystem@cjlu.edu.cn)
+
+## 🎯 Project Goals
+
+- Build a fully functional hotel booking system using modern Java technologies
+- Implement proper MVC architecture
+- Ensure high test coverage for critical components
+- Create an intuitive and user-friendly GUI
+- Demonstrate good software engineering practices
+
+---
+
+**Last Updated**: 2024-05-20
