@@ -153,7 +153,7 @@ python format_jacoco_report.py
 ```
 HotelBookingSystem/
 ├── src/main/java/com/hotelbooking/
-│   ├── controller/          # MVC Controllers
+│   ├── controller/          # MVC Controllers (Logic for UI)
 │   ├── dao/                 # Data Access Objects
 │   ├── dto/                 # Data Transfer Objects
 │   ├── entity/              # Domain Entities
@@ -166,16 +166,20 @@ HotelBookingSystem/
 │   │   └── SessionManager.java        # User Session Management
 │   ├── validation/          # Input Validation
 │   └── Main.java            # Application Entry Point
+├── src/main/resources/      # Resources Root
+│   ├── view/                # GUI Layout Files (Views)
+│   └── assets/              # CSS Stylesheets & Images
 ├── src/test/java/com/hotelbooking/
+│   ├── test/                # Test Utilities
 │   ├── controller/          # Controller Tests
 │   ├── dao/                 # DAO Tests
 │   ├── dto/                 # DTO Tests
 │   ├── entity/              # Entity Tests
 │   ├── service/             # Service Tests
 │   ├── util/                # Utility Tests
-│   └── validation/          # Validation Tests
+│   ├── validation/          # Validation Tests
+│   └── integration/         # Integration Tests
 ├── database/                # Embedded Derby Database Files
-├── src/main/resources/      # Application Resources
 ├── src/test/resources/      # Test Resources
 ├── target/                  # Build Output Directory
 ├── pom.xml                  # Maven Configuration
@@ -217,23 +221,6 @@ To view data in NetBeans:
 2. Expand **Tables** in the Services window
 3. Right-click any table → **View Data**
 
-## 📝 Contributing
-
-1. Fork the repository
-2. Create a new branch (`git checkout -b feature/AmazingFeature`)
-3. Make changes and commit (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-## 📞 Contact
-
-- **Project Link**: [https://github.com/cyt0812/HotelBookingSystem](https://github.com/cyt0812/HotelBookingSystem)
-- **Team Email**: [hotelbookingsystem@cjlu.edu.cn](mailto:hotelbookingsystem@cjlu.edu.cn)
-
 ## 🎯 Project Goals
 
 - Build a fully functional hotel booking system using modern Java technologies
@@ -244,4 +231,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-**Last Updated**: 2024-05-20
+**Last Updated**: 2025-12-07
