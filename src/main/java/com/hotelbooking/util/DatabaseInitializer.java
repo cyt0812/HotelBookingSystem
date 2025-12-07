@@ -88,6 +88,7 @@ public class DatabaseInitializer {
 
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement()) {
+<<<<<<< HEAD
   System.out.println("Starting to drop old tables...");
         for (String dropSql : dropTables) {
             try {
@@ -97,6 +98,17 @@ public class DatabaseInitializer {
                 // 表不存在也没关系
                 if (!"42Y55".equals(e.getSQLState())) { // Derby的表不存在错误码
                     System.out.println("Warning when dropping table: " + e.getMessage());
+=======
+  System.out.println("开始删除旧表...");
+        for (String dropSql : dropTables) {
+            try {
+                stmt.executeUpdate(dropSql);
+                System.out.println("删除表成功: " + dropSql);
+            } catch (SQLException e) {
+                // 表不存在也没关系
+                if (!"42Y55".equals(e.getSQLState())) { // Derby的表不存在错误码
+                    System.out.println("删除表时警告: " + e.getMessage());
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
                 }
             }
         }

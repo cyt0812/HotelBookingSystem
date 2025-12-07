@@ -78,6 +78,7 @@ public class DatabaseConnection {
         }
     }
 
+<<<<<<< HEAD
 
     
     /**
@@ -86,6 +87,23 @@ public class DatabaseConnection {
      */
     public static String getDatabaseUrl() {
         return URL;
+=======
+    /**
+     * 获取数据库信息
+     */
+    public static void printDatabaseInfo() {
+        try (Connection conn = getConnection()) {
+            System.out.println("=== Database Information ===");
+            System.out.println("Database: " + conn.getMetaData().getDatabaseProductName());
+            System.out.println("Version: " + conn.getMetaData().getDatabaseProductVersion());
+            System.out.println("URL: " + conn.getMetaData().getURL());
+            System.out.println("Driver: " + conn.getMetaData().getDriverName());
+            System.out.println("Auto Commit: " + conn.getAutoCommit());
+            System.out.println("============================");
+        } catch (SQLException e) {
+            System.err.println("Error getting database info: " + e.getMessage());
+        }
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
     }
     
     /**
@@ -107,5 +125,14 @@ public class DatabaseConnection {
         }
     }
     
+<<<<<<< HEAD
 
+=======
+    /**
+     * 获取当前使用的数据库URL（用于调试）
+     */
+    public static String getDatabaseUrl() {
+        return URL;
+    }
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
 }

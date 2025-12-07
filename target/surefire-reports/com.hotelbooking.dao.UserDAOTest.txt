@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.hotelbooking.dao.UserDAOTest
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.345 s -- in com.hotelbooking.dao.UserDAOTest
+=======
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.252 s -- in com.hotelbooking.dao.UserDAOTest
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab

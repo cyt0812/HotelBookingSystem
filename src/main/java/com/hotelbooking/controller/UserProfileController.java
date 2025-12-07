@@ -1,7 +1,10 @@
 package com.hotelbooking.controller;
 
 import com.hotelbooking.entity.User;
+<<<<<<< HEAD
 import com.hotelbooking.util.NavigationManager;
+=======
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
 import com.hotelbooking.util.SessionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,13 +13,20 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+<<<<<<< HEAD
+=======
+import javafx.scene.image.ImageView;
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+<<<<<<< HEAD
 import java.util.Locale;
+=======
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
 
 public class UserProfileController {
     
@@ -25,12 +35,24 @@ public class UserProfileController {
     @FXML private Label fullNameLabel;
     @FXML private Label memberSinceLabel;
     @FXML private Label roleLabel;
+<<<<<<< HEAD
     
     private User currentUser;
+=======
+    @FXML private ImageView profileImage;
+    
+    private User currentUser;
+    private String avatarPath;
+    private static final String DEFAULT_AVATAR = "file:src/main/resources/com/hotelbooking/images/default_avatar.png";
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
     
     @FXML
     public void initialize() {
         loadUserProfile();
+<<<<<<< HEAD
+=======
+        loadProfileImage();
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
     }
     
     private void loadUserProfile() {
@@ -54,18 +76,60 @@ public class UserProfileController {
         System.out.println("✅ User profile loaded: " + currentUser.getUsername());
     }
     
+<<<<<<< HEAD
     
     
+=======
+    private void loadProfileImage() {
+        try {
+            if (avatarPath != null && !avatarPath.isEmpty()) {
+                profileImage.setImage(new Image(new File(avatarPath).toURI().toString()));
+            } else {
+                profileImage.setImage(new Image(DEFAULT_AVATAR));
+            }
+        } catch (Exception e) {
+            System.out.println("⚠ Could not load profile image, using default");
+            try {
+                profileImage.setImage(new Image(DEFAULT_AVATAR));
+            } catch (Exception ex) {
+                System.err.println("❌ Failed to load default avatar");
+            }
+        }
+    }
+    
+    @FXML
+    private void handleChangeAvatar() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Profile Image");
+        fileChooser.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"),
+            new FileChooser.ExtensionFilter("All Files", "*.*")
+        );
+        
+        Stage stage = (Stage) profileImage.getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        
+        if (selectedFile != null) {
+            avatarPath = selectedFile.getAbsolutePath();
+            loadProfileImage();
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Profile image updated!");
+            System.out.println("🖼 Avatar path: " + avatarPath);
+        }
+    }
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
     
     @FXML
     private void handleEditProfile() {
         try {
+<<<<<<< HEAD
             // 在任何导航前调用
             NavigationManager.getInstance().push(
                 "/com/hotelbooking/view/edit_profile.fxml",
                 "Edit Profile"
             );
             
+=======
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/com/hotelbooking/view/edit_profile.fxml")
             );
@@ -134,13 +198,21 @@ public class UserProfileController {
     private void backToHome() {
         try {
             FXMLLoader loader = new FXMLLoader(
+<<<<<<< HEAD
                 getClass().getResource("/com/hotelbooking/view/main_dashboard.fxml")
+=======
+                getClass().getResource("/com/hotelbooking/view/home.fxml")
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             );
             Parent root = loader.load();
             
             Stage stage = (Stage) usernameLabel.getScene().getWindow();
             stage.setScene(new Scene(root));
+<<<<<<< HEAD
             stage.setTitle("Hotel Booking System");
+=======
+            stage.setTitle("Hotel Booking System - Home");
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             
             System.out.println("🏠 Back to home");
         } catch (Exception e) {
@@ -160,7 +232,11 @@ public class UserProfileController {
     
     private String formatDate(LocalDateTime dateTime) {
         if (dateTime == null) return "Unknown";
+<<<<<<< HEAD
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.ENGLISH);
+=======
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         return dateTime.format(formatter);
     }
     

@@ -72,13 +72,33 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-inline</artifactId>
+<<<<<<< HEAD
             <version>4.0.0</version>
+=======
+            <version>4.0.0</version> <!-- 你可以替换为适合的版本 -->
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             <scope>test</scope>
         </dependency>
     </dependencies>
     
     <build>
         <plugins>
+<<<<<<< HEAD
+=======
+            
+            <!-- 完全移除 exec-maven-plugin，防止 NetBeans 自动使用它 -->
+            <!-- 或者只保留配置但不设置默认执行 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <!-- 不设置 executions，防止默认执行 -->
+                <configuration>
+                    <skip>true</skip>  <!-- 跳过执行 -->
+                </configuration>
+            </plugin>
+            
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             <!-- 添加 JavaFX 插件 -->
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -115,6 +135,7 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
+<<<<<<< HEAD
 
 <plugin>
     <groupId>org.jacoco</groupId>
@@ -135,6 +156,8 @@
         </execution>
     </executions>
 </plugin>
+=======
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         </plugins>
     </build>
 </project>

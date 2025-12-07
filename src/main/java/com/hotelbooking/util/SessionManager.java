@@ -103,11 +103,14 @@ public class SessionManager {
         return currentUser;
     }
     
+<<<<<<< HEAD
     public static void setCurrentUser(User user) {
         currentUser = user;
         System.out.println("用户设置成功");
     }
     
+=======
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
     /**
      * 登出 - 清除当前用户信息
      */

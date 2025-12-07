@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.hotelbooking.entity.RoomTest
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in com.hotelbooking.entity.RoomTest
+=======
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s -- in com.hotelbooking.entity.RoomTest
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab

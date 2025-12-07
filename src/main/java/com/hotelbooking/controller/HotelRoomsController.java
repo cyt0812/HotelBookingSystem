@@ -74,7 +74,11 @@ public class HotelRoomsController {
     private void displayRooms() {
         if (currentHotel == null) return;
         
+<<<<<<< HEAD
         System.out.println("✅ Current hotel ID = " + currentHotel.getId());
+=======
+        System.out.println("✅ 当前酒店ID = " + currentHotel.getId());
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         
         // 假设你已经有了一个 DatabaseConnection 类来获取数据库连接
         HotelDAO hotelDAO = new HotelDAO();  // 创建 HotelDAO 实例
@@ -246,7 +250,11 @@ public class HotelRoomsController {
      * 预订房间
      */
     private void bookRoom(Room room) {
+<<<<<<< HEAD
         System.out.println("🎫 Booking room: " + room.getRoomType() + " - " + room.getRoomNumber());
+=======
+        System.out.println("🎫 预订房间: " + room.getRoomType() + " - " + room.getRoomNumber());
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         
         // 显示确认对话框
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -277,7 +285,11 @@ public class HotelRoomsController {
                 "/com/hotelbooking/view/payment.fxml",  // ← 要导航到的页面
                 "Payment"
             );
+<<<<<<< HEAD
             System.out.println("💳 Navigating to payment page");
+=======
+            System.out.println("💳 跳转到支付页面");
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             
             FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/com/hotelbooking/view/payment.fxml")
@@ -292,10 +304,17 @@ public class HotelRoomsController {
             stage.setScene(new Scene(root));
             stage.setTitle("Payment - " + currentHotel.getName());
             
+<<<<<<< HEAD
             System.out.println("✅ Navigation successful");
             
         } catch (Exception e) {
             System.err.println("❌ Failed to navigate to payment page: " + e.getMessage());
+=======
+            System.out.println("✅ 跳转成功");
+            
+        } catch (Exception e) {
+            System.err.println("❌ 跳转支付页面失败: " + e.getMessage());
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             e.printStackTrace();
             
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);

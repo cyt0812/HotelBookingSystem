@@ -2,8 +2,11 @@ package com.hotelbooking.controller;
 
 import com.hotelbooking.util.NavigationManager;
 import com.hotelbooking.util.SessionManager;
+<<<<<<< HEAD
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+=======
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,14 +14,21 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+<<<<<<< HEAD
 import javafx.scene.layout.StackPane;  // ⭐ 新增导入
+=======
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
 import javafx.stage.Stage;
 import javafx.collections.FXCollections;
 import java.util.ArrayList;
 import java.util.List;
+<<<<<<< HEAD
 import java.util.Locale;
 import java.util.Optional;
 import javafx.util.converter.LocalDateStringConverter;
+=======
+import java.util.Optional;
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
 
 public class MainDashboardController {
     
@@ -37,7 +47,11 @@ public class MainDashboardController {
     @FXML private Button btnRoomsGuests;
     @FXML private Label lblRoomsGuestsDisplay;
     @FXML private Label lblArrow;
+<<<<<<< HEAD
     @FXML private StackPane selectorPanel;  // ⭐ 改为 StackPane
+=======
+    @FXML private VBox selectorPanel;
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
     
     @FXML private Button btnRoomMinus;
     @FXML private Button btnRoomPlus;
@@ -67,6 +81,7 @@ public class MainDashboardController {
     
     @FXML
     public void initialize() {
+<<<<<<< HEAD
         System.out.println("✅ Main Dashboard initialized");
         Locale.setDefault(Locale.ENGLISH);
 
@@ -82,6 +97,23 @@ public class MainDashboardController {
         });
 
         // Initialize other UI elements
+=======
+        System.out.println("✅ 主界面初始化成功");
+        
+        // 初始化儿童年龄
+        for (int i = 0; i < childCount; i++) {
+            childrenAges.add(0);
+        }
+        
+        // 初始化日期选择器（默认值）
+        if (checkInDate != null) {
+            checkInDate.setValue(java.time.LocalDate.now().plusDays(1));
+        }
+        if (checkOutDate != null) {
+            checkOutDate.setValue(java.time.LocalDate.now().plusDays(2));
+        }
+        
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         setupHoverEffects();
         updateWelcomeMessage();
         updateLoginButton();
@@ -90,6 +122,7 @@ public class MainDashboardController {
         updateButtons();
     }
     
+<<<<<<< HEAD
 
     public void initializeDatePickers() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.ENGLISH);
@@ -107,11 +140,14 @@ public class MainDashboardController {
         }
     }
     
+=======
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
     /**
      * 处理搜索酒店按钮
      */
     @FXML
     private void handleSearchHotel() {
+<<<<<<< HEAD
         System.out.println("🔍 Searching for hotels");
 
         // Get today's date
@@ -143,6 +179,18 @@ public class MainDashboardController {
         SessionManager.setAdultCount(adultCount);
         SessionManager.setChildCount(childCount);
 
+=======
+        System.out.println("🔍 开始搜索酒店");
+        // 保存日期
+        SessionManager.setCheckInDate(checkInDate.getValue());
+        SessionManager.setCheckOutDate(checkOutDate.getValue());
+
+        // 保存人数
+        SessionManager.setRoomCount(roomCount);
+        SessionManager.setAdultCount(adultCount);
+        SessionManager.setChildCount(childCount);
+        
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         navigateToHotelSearch();
     }
     
@@ -151,6 +199,10 @@ public class MainDashboardController {
      */
     private void navigateToHotelSearch() {
         try {
+<<<<<<< HEAD
+=======
+            // 在任何导航前调用
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             NavigationManager.getInstance().push(
                 "/com/hotelbooking/view/search_hotels.fxml",
                 "Search Hotel"
@@ -161,7 +213,14 @@ public class MainDashboardController {
             );
             Parent root = loader.load();
             
+<<<<<<< HEAD
             SearchHotelsController controller = loader.getController();
+=======
+            // ⭐⭐ 获取 search 页面 controller
+            SearchHotelsController controller = loader.getController();
+
+            // ⭐⭐ 把搜索关键词传进去
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             controller.setSearchKeyword(keyword);
             
             Stage stage = (Stage) btnLogin.getScene().getWindow();
@@ -190,6 +249,30 @@ public class MainDashboardController {
         // 更新箭头
         lblArrow.setText(isVisible ? "▼" : "▲");
         
+<<<<<<< HEAD
+=======
+        // 如果要显示，计算面板位置
+        if (!isVisible) {
+            // 获取按钮在屏幕上的位置
+            javafx.geometry.Bounds buttonBounds = btnRoomsGuests.localToScreen(btnRoomsGuests.getBoundsInLocal());
+            
+
+            // 获取窗口对象
+            javafx.stage.Window window = selectorPanel.getScene().getWindow();
+
+             // 计算面板位置：与按钮左对齐，显示在按钮下方
+            selectorPanel.setLayoutX(buttonBounds.getMinX() - window.getX());
+            selectorPanel.setLayoutY(buttonBounds.getMaxY() - window.getY() + 5);
+//            // 计算面板位置
+//            selectorPanel.setLayoutX(buttonBounds.getMinX() - 200);
+//            selectorPanel.setLayoutY(buttonBounds.getMaxY() + 5);
+//            
+//            // 设置面板位置：按钮下方5px，右对齐
+//            selectorPanel.setLayoutX(buttonBounds.getMinX() - selectorPanel.getScene().getWindow().getX() - 200);
+//            selectorPanel.setLayoutY(buttonBounds.getMaxY() - selectorPanel.getScene().getWindow().getY() + 5);
+        }
+        
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         System.out.println("选择器" + (isVisible ? "关闭" : "打开"));
     }
     
@@ -258,7 +341,11 @@ public class MainDashboardController {
         
         if (totalGuests < maxAllowed) {
             childCount++;
+<<<<<<< HEAD
             childrenAges.add(0);
+=======
+            childrenAges.add(0); // 默认 <1 岁
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             updateRoomsGuestsDisplay();
             updateChildrenAgeSelectors();
             updateButtons();
@@ -299,15 +386,27 @@ public class MainDashboardController {
             HBox ageSelector = new HBox(15);
             ageSelector.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
             
+<<<<<<< HEAD
             Label label = new Label("Child " + (i + 1) + ": Age");
             label.setStyle("-fx-font-size: 14px; -fx-text-fill: #333333;");
             
+=======
+            // 标签
+            Label label = new Label("Child " + (i + 1) + ": Age");
+            label.setStyle("-fx-font-size: 14px; -fx-text-fill: #333333;");
+            
+            // 年龄下拉框
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             ComboBox<String> ageComboBox = new ComboBox<>();
             ageComboBox.setItems(FXCollections.observableArrayList(
                 "<1", "1", "2", "3", "4", "5", "6", "7", "8", "9", 
                 "10", "11", "12", "13", "14", "15", "16", "17"
             ));
             
+<<<<<<< HEAD
+=======
+            // 设置默认值
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             if (index < childrenAges.size()) {
                 int age = childrenAges.get(index);
                 ageComboBox.setValue(age == 0 ? "<1" : String.valueOf(age));
@@ -317,6 +416,10 @@ public class MainDashboardController {
             
             ageComboBox.setStyle("-fx-pref-width: 100px; -fx-font-size: 14px;");
             
+<<<<<<< HEAD
+=======
+            // 监听选择变化
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             ageComboBox.setOnAction(e -> {
                 String selected = ageComboBox.getValue();
                 int age = selected.equals("<1") ? 0 : Integer.parseInt(selected);
@@ -337,10 +440,18 @@ public class MainDashboardController {
      * 更新 Rooms & Guests 显示
      */
     private void updateRoomsGuestsDisplay() {
+<<<<<<< HEAD
+=======
+        // 更新数字显示
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         lblRoomCount.setText(String.valueOf(roomCount));
         lblAdultCount.setText(String.valueOf(adultCount));
         lblChildCount.setText(String.valueOf(childCount));
         
+<<<<<<< HEAD
+=======
+        // 更新按钮上的总显示
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         int totalGuests = adultCount + childCount;
         String displayText = roomCount + " Room" + (roomCount > 1 ? "s" : "") + 
                            ", " + totalGuests + " Guest" + (totalGuests > 1 ? "s" : "");
@@ -348,12 +459,23 @@ public class MainDashboardController {
     }
     
     /**
+<<<<<<< HEAD
      * 更新按钮启用/禁用状态
      */
     private void updateButtons() {
         btnRoomMinus.setDisable(roomCount <= MIN_ROOMS);
         btnRoomPlus.setDisable(roomCount >= MAX_ROOMS);
         
+=======
+     * 更新按钮启用/禁用状态 ⭐ 这是你问的方法！
+     */
+    private void updateButtons() {
+        // 房间按钮
+        btnRoomMinus.setDisable(roomCount <= MIN_ROOMS);
+        btnRoomPlus.setDisable(roomCount >= MAX_ROOMS);
+        
+        // 成人按钮
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         btnAdultMinus.setDisable(adultCount <= MIN_ADULTS);
         
         int totalGuests = adultCount + childCount;
@@ -362,6 +484,10 @@ public class MainDashboardController {
         btnAdultPlus.setDisable(totalGuests >= maxAllowed);
         btnChildPlus.setDisable(totalGuests >= maxAllowed);
         
+<<<<<<< HEAD
+=======
+        // 儿童按钮
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         btnChildMinus.setDisable(childCount <= 0);
     }
     
@@ -396,6 +522,10 @@ public class MainDashboardController {
             System.out.println("儿童年龄: " + childrenAges);
         }
         
+<<<<<<< HEAD
+=======
+        // 关闭选择器
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         toggleRoomsSelector();
     }
     
@@ -404,17 +534,33 @@ public class MainDashboardController {
     /**
      * 设置导航栏按钮悬停效果
      */
+<<<<<<< HEAD
     private void setupHoverEffects() {
         setupButtonHover(btnHelp, 
             "-fx-background-color: #f5f5f5; -fx-text-fill: #333333; -fx-font-size: 14px; -fx-cursor: hand; -fx-padding: 8 15; -fx-border-radius: 5; -fx-background-radius: 5;",
             "-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand; -fx-padding: 8 15; -fx-border-radius: 5; -fx-background-radius: 5;"
         );
         
+=======
+//    第一行是悬停时效果，第二行是悬停后的效果
+    private void setupHoverEffects() {
+        // Help 按钮
+        setupButtonHover(btnHelp, 
+            "-fx-background-color: #f5f5f5; -fx-text-fill: #333333; -fx-font-size: 14px; -fx-cursor: hand; -fx-padding: 8 15; -fx-border-radius: 5; -fx-background-radius: 5;",
+            "-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand; -fx-padding: 8 15; -fx-border-radius: 5; -fx-background-radius: 5;"  // 恢复白色文字
+        );
+        
+        // Trips 按钮
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         setupButtonHover(btnTrips,
             "-fx-background-color: #f5f5f5; -fx-text-fill: #333333; -fx-font-size: 14px; -fx-cursor: hand; -fx-padding: 8 15; -fx-border-radius: 5; -fx-background-radius: 5;",
             "-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand; -fx-padding: 8 15; -fx-border-radius: 5; -fx-background-radius: 5;"
         );
         
+<<<<<<< HEAD
+=======
+        // Login 按钮
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         setupButtonHover(btnLogin,
             "-fx-background-color: #8B4513; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 10 25; -fx-border-radius: 20; -fx-background-radius: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);",
             "-fx-background-color: white; -fx-text-fill: #1a1a1a; -fx-font-size: 14px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 10 25; -fx-border-radius: 20; -fx-background-radius: 20;"
@@ -431,7 +577,11 @@ public class MainDashboardController {
             String username = SessionManager.getLoggedInUsername();
             lblWelcome.setText("Welcome back，" + username + "！");
         } else {
+<<<<<<< HEAD
             lblWelcome.setText("Travel Like You Mean It");
+=======
+            lblWelcome.setText("Welcome to the hotel reservation system");
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         }
     }
     
@@ -470,6 +620,10 @@ public class MainDashboardController {
             alert.setTitle("need login");
             alert.setHeaderText(null);
             alert.setContentText("please log in first");
+<<<<<<< HEAD
+=======
+            // 添加按钮
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             ButtonType loginBtn = new ButtonType("Login");
             ButtonType cancelBtn = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
 
@@ -485,7 +639,13 @@ public class MainDashboardController {
         }
         
         navigateToBooking();
+<<<<<<< HEAD
         System.out.println("✅ 跳转到我的订单页面");
+=======
+        // 这里可以跳转到订单页面
+        System.out.println("✅ 跳转到我的订单页面");
+        
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
     }
     
     /**
@@ -493,6 +653,10 @@ public class MainDashboardController {
      */
     private void navigateToBooking() {
         try {
+<<<<<<< HEAD
+=======
+            // 在任何导航前调用
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             NavigationManager.getInstance().push(
                 "/com/hotelbooking/view/my_bookings.fxml",
                 "Bookings"
@@ -540,6 +704,14 @@ public class MainDashboardController {
      */
     private void navigateToProfile() {
         try {
+<<<<<<< HEAD
+=======
+            NavigationManager.getInstance().push(
+                "/com/hotelbooking/view/user_profile.fxml",
+                "用户资料"
+            );
+            
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/com/hotelbooking/view/user_profile.fxml")
             );
@@ -547,7 +719,13 @@ public class MainDashboardController {
             
             Stage stage = (Stage) btnLogin.getScene().getWindow();
             stage.setScene(new Scene(root));
+<<<<<<< HEAD
             stage.setTitle("User Profile");
+=======
+            stage.setTitle("用户资料");
+            
+//            updateBackButton();
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             
         } catch (Exception e) {
             System.err.println("❌ 跳转失败: " + e.getMessage());
@@ -557,6 +735,10 @@ public class MainDashboardController {
     
     private void navigateToLogin() {
         try {
+<<<<<<< HEAD
+=======
+            // 在任何导航前调用
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             NavigationManager.getInstance().push(
                 "/com/hotelbooking/view/login.fxml",
                 "User Login"
@@ -601,6 +783,7 @@ public class MainDashboardController {
     public List<Integer> getChildrenAges() {
         return new ArrayList<>(childrenAges);
     }
+<<<<<<< HEAD
 
 
     private void showAlert(String title, String message) {
@@ -613,4 +796,6 @@ public class MainDashboardController {
         // Show the alert and wait for user interaction
         alert.showAndWait();
     }
+=======
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
 }

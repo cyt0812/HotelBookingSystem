@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.hotelbooking.service.HotelServiceTest
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.060 s -- in com.hotelbooking.service.HotelServiceTest
+=======
+Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.043 s -- in com.hotelbooking.service.HotelServiceTest
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab

@@ -366,7 +366,11 @@ public class TopNavigationController {
         try {
             NavigationManager.getInstance().push(
                 "/com/hotelbooking/view/user_profile.fxml",
+<<<<<<< HEAD
                 "User Profile"
+=======
+                "用户资料"
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             );
             
             FXMLLoader loader = new FXMLLoader(
@@ -376,7 +380,11 @@ public class TopNavigationController {
             
             Stage stage = (Stage) btnLogin.getScene().getWindow();
             stage.setScene(new Scene(root));
+<<<<<<< HEAD
             stage.setTitle("User Profile");
+=======
+            stage.setTitle("用户资料");
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             
             updateBackButton();
             

@@ -144,6 +144,7 @@
                                 <Region HBox.hgrow="ALWAYS"/>
                                 <Label fx:id="lblRoomPrice" text="450.00"/>
                             </HBox>
+<<<<<<< HEAD
 <!--                            <HBox>
                                 <Label text="Service fee:"/>
                                 <Region HBox.hgrow="ALWAYS"/>
@@ -154,6 +155,18 @@
                                 <Region HBox.hgrow="ALWAYS"/>
                                 <Label fx:id="lblTax" text="47.50"/>
                             </HBox>-->
+=======
+                            <HBox>
+                                <Label text="Service fee:"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label fx:id="lblServiceFee" text="25.00"/>
+                            </HBox>
+                            <HBox>
+                                <Label text="Tax:"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label fx:id="lblTax" text="47.50"/>
+                            </HBox>
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
                         </VBox>
                         
                         <Separator/>

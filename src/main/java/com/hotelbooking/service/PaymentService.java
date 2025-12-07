@@ -30,7 +30,11 @@ public class PaymentService {
             boolean created = paymentDAO.createPayment(payment);
             
             if (!created) {
+<<<<<<< HEAD
                 throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, "Failed to create payment record");
+=======
+                throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, "创建支付记录失败");
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             }
             
             // 模拟支付处理（在实际项目中这里会调用第三方支付API）
@@ -43,14 +47,22 @@ public class PaymentService {
             } else {
                 // 支付失败
                 paymentDAO.updatePaymentStatus(payment.getPaymentId(), "FAILED", null);
+<<<<<<< HEAD
                 throw new BusinessException(ErrorType.PAYMENT_FAILED, "Payment processing failed. Please try again or use a different payment method");
+=======
+                throw new BusinessException(ErrorType.PAYMENT_FAILED, "支付处理失败，请重试或更换支付方式");
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             }
             
         } catch (BusinessException e) {
             throw e;
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
+<<<<<<< HEAD
                 "Payment system error: " + e.getMessage(), e);
+=======
+                "支付系统错误: " + e.getMessage(), e);
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         }
     }
     
@@ -61,11 +73,19 @@ public class PaymentService {
         try {
             Payment payment = paymentDAO.getPaymentByBookingId(bookingId);
             if (payment == null) {
+<<<<<<< HEAD
                 throw new BusinessException(ErrorType.PAYMENT_NOT_FOUND, "No corresponding payment record found");
             }
             
             if (!"COMPLETED".equals(payment.getPaymentStatus())) {
                 throw new BusinessException(ErrorType.REFUND_FAILED, "Only completed payments can be refunded");
+=======
+                throw new BusinessException(ErrorType.PAYMENT_NOT_FOUND, "未找到对应的支付记录");
+            }
+            
+            if (!"COMPLETED".equals(payment.getPaymentStatus())) {
+                throw new BusinessException(ErrorType.REFUND_FAILED, "只有已完成的支付才能退款");
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             }
             
             // 模拟退款处理
@@ -75,14 +95,22 @@ public class PaymentService {
                 return paymentDAO.updatePaymentStatus(payment.getPaymentId(), "REFUNDED", 
                     payment.getTransactionId() + "_REFUND");
             } else {
+<<<<<<< HEAD
                 throw new BusinessException(ErrorType.REFUND_FAILED, "Refund processing failed");
+=======
+                throw new BusinessException(ErrorType.REFUND_FAILED, "退款处理失败");
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             }
             
         } catch (BusinessException e) {
             throw e;
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
+<<<<<<< HEAD
                 "Refund system error: " + e.getMessage(), e);
+=======
+                "退款系统错误: " + e.getMessage(), e);
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         }
     }
     
@@ -94,7 +122,11 @@ public class PaymentService {
             return Optional.ofNullable(paymentDAO.getPaymentByBookingId(bookingId));
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
+<<<<<<< HEAD
                 "Failed to query payment status: " + e.getMessage(), e);
+=======
+                "查询支付状态失败: " + e.getMessage(), e);
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         }
     }
     
@@ -103,7 +135,11 @@ public class PaymentService {
      */
     private boolean simulatePaymentProcessing(String paymentMethod) {
         // 模拟支付成功率：90%
+<<<<<<< HEAD
         System.out.println("Simulating " + paymentMethod + " payment processing...");
+=======
+        System.out.println("模拟" + paymentMethod + "支付处理...");
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         return Math.random() > 0.1;
     }
     
@@ -112,7 +148,11 @@ public class PaymentService {
      */
     private boolean simulateRefundProcessing() {
         // 模拟退款成功率：95%
+<<<<<<< HEAD
         System.out.println("Simulating refund processing...");
+=======
+        System.out.println("模拟退款处理...");
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         return Math.random() > 0.05;
     }
     
@@ -144,7 +184,11 @@ public class PaymentService {
             }
         } catch (Exception e) {
             throw new BusinessException(ErrorType.INTERNAL_SERVER_ERROR, 
+<<<<<<< HEAD
                 "Failed to calculate refund amount: " + e.getMessage(), e);
+=======
+                "计算退款金额失败: " + e.getMessage(), e);
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         }
     }
 }

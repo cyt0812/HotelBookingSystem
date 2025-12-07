@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 com\hotelbooking\entity\Room.class
 com\hotelbooking\exception\ValidationException.class
 com\hotelbooking\dao\BookingDAO.class
@@ -52,3 +53,7 @@ com\hotelbooking\util\DatabaseInitializer.class
 com\hotelbooking\dto\UserRegistrationRequest.class
 com\hotelbooking\controller\MyBookingsController.class
 com\hotelbooking\controller\MyBookingsController$1$3.class
+=======
+com/hotelbooking/util/NavigationManager.class
+com/hotelbooking/util/NavigationManager$NavigationHistory.class
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab

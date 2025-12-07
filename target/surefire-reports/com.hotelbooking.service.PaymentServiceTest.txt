@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.hotelbooking.service.PaymentServiceTest
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.106 s -- in com.hotelbooking.service.PaymentServiceTest
+=======
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.034 s -- in com.hotelbooking.service.PaymentServiceTest
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab

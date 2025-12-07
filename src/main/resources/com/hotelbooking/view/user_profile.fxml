@@ -21,8 +21,13 @@
                        style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a; -fx-cursor: hand;"/>
             </HBox>
             
+<<<<<<< HEAD
 <!--            <Button text="My Trips" style="-fx-background-color: transparent; -fx-text-fill: #333; -fx-font-size: 14px;"/>
             <Button text="Logout" onAction="#handleLogout" style="-fx-background-color: transparent; -fx-text-fill: #8B4513; -fx-font-size: 14px; -fx-font-weight: bold;"/>-->
+=======
+            <Button text="My Trips" style="-fx-background-color: transparent; -fx-text-fill: #333; -fx-font-size: 14px;"/>
+            <Button text="Logout" onAction="#handleLogout" style="-fx-background-color: transparent; -fx-text-fill: #8B4513; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         </HBox>
     </top>
     
@@ -41,6 +46,7 @@
             <!-- 个人信息卡片 -->
             <HBox spacing="40" alignment="TOP_CENTER">
                 
+<<<<<<< HEAD
                 <!-- 左侧：头像区域 -->
                 <VBox spacing="20" alignment="CENTER"
                       style="-fx-background-color: white; 
@@ -53,6 +59,11 @@
                     
                     <!-- 会员信息 -->
                     <VBox spacing="15" alignment="TOP_CENTER" style="-fx-padding: 20 0 0 0;">
+=======
+                    
+                <!-- 会员信息 -->
+                <VBox spacing="15" alignment="TOP_CENTER" style="-fx-padding: 20 0 0 0;">
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
                         <VBox spacing="5">
                             <Label text="Member Since" 
                                    style="-fx-font-size: 12px; -fx-text-fill: #999; -fx-font-weight: bold;"/>
@@ -68,7 +79,11 @@
                                    text="Loading..." 
                                    style="-fx-font-size: 14px; -fx-text-fill: #333; -fx-font-weight: bold;"/>
                         </VBox>
+<<<<<<< HEAD
                     </VBox>
+=======
+                    
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
                 </VBox>
                 
                 <!-- 右侧：个人信息卡片 -->

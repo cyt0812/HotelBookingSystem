@@ -110,12 +110,29 @@ public class PaymentController {
     private void calculatePrices() {
         numberOfNights = (int) ChronoUnit.DAYS.between(checkInDate, checkOutDate);
         
+<<<<<<< HEAD
         roomPrice=BigDecimal.valueOf(currentRoom.getPricePerNight());
         // 使用 BigDecimal 确保精度
         totalPrice = BigDecimal.valueOf(currentRoom.getPricePerNight()*(numberOfNights));        
         
         System.out.println("💰 价格计算:");
         System.out.println("   房价: $" + roomPrice);
+=======
+        // 使用 BigDecimal 确保精度
+        roomPrice = BigDecimal.valueOf(currentRoom.getPricePerNight()*(numberOfNights));
+        serviceFee = new BigDecimal("25.00");
+        
+        // 税费 = (房价 + 服务费) * 10%
+        BigDecimal subtotal = roomPrice.add(serviceFee);
+        tax = subtotal.multiply(new BigDecimal("0.10")).setScale(2, BigDecimal.ROUND_HALF_UP);
+        
+        totalPrice = subtotal.add(tax);
+
+        System.out.println("💰 价格计算:");
+        System.out.println("   房价: $" + roomPrice);
+        System.out.println("   服务费: $" + serviceFee);
+        System.out.println("   税费: $" + tax);
+>>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         System.out.println("   总计: $" + totalPrice);
     }
 
