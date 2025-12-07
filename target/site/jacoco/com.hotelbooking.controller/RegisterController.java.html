@@ -20,172 +20,115 @@ import javafx.stage.Stage;
     @FXML private CheckBox termsCheckbox;
     @FXML private Label errorLabel;
     
-    // 假设你有一个 UserDAO 类，实例化并传递给 UserService
-<span class="fc" id="L24">    UserDAO userDAO = new UserDAO();  // 创建 UserDAO 实例</span>
+    // Assume you have a UserDAO class, instantiate and pass it to UserService
+<span class="fc" id="L24">    UserDAO userDAO = new UserDAO();  // Create UserDAO instance</span>
 <span class="fc" id="L25">    private UserService userService = new UserService(userDAO);</span>
     
     @FXML
     public void initialize() {
-<span class="fc" id="L29">        System.out.println(&quot;✅ 注册页面初始化&quot;);</span>
+<span class="fc" id="L29">        System.out.println(&quot;✅ Register page initialized&quot;);</span>
 <span class="pc bpc" id="L30" title="1 of 2 branches missed.">        if (errorLabel != null) {</span>
 <span class="nc" id="L31">            errorLabel.setText(&quot;&quot;);</span>
         }
 <span class="fc" id="L33">    }</span>
     
     /**
-     * 处理注册
+     * Handle registration
      */
     @FXML
     private void handleRegister() {
-<span class="nc" id="L40">        System.out.println(&quot;🔘 注册按钮被点击&quot;);</span>
+<span class="nc" id="L40">        System.out.println(&quot;🔘 Register button clicked&quot;);</span>
 
-        // 获取输入
+        // Get user input
 <span class="nc" id="L43">        String username = usernameField.getText().trim();</span>
 <span class="nc" id="L44">        String email = emailField.getText().trim();</span>
 <span class="nc" id="L45">        String password = passwordField.getText();</span>
 <span class="nc" id="L46">        String confirmPassword = confirmPasswordField.getText();</span>
 
-        // 基础验证（你已有）
+        // Basic validation (you already have this)
 <span class="nc bnc" id="L49" title="All 6 branches missed.">        if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {</span>
-<span class="nc" id="L50">            showError(&quot;所有字段都必须填写&quot;);</span>
+<span class="nc" id="L50">            showError(&quot;All fields must be filled&quot;);</span>
 <span class="nc" id="L51">            return;</span>
         }
 <span class="nc bnc" id="L53" title="All 2 branches missed.">        if (!email.contains(&quot;@&quot;)) {</span>
-<span class="nc" id="L54">            showError(&quot;请输入有效的邮箱地址&quot;);</span>
+<span class="nc" id="L54">            showError(&quot;Please enter a valid email address&quot;);</span>
 <span class="nc" id="L55">            return;</span>
         }
 <span class="nc bnc" id="L57" title="All 2 branches missed.">        if (password.length() &lt; 6) {</span>
-<span class="nc" id="L58">            showError(&quot;密码长度至少6位&quot;);</span>
+<span class="nc" id="L58">            showError(&quot;Password must be at least 6 characters&quot;);</span>
 <span class="nc" id="L59">            return;</span>
         }
 <span class="nc bnc" id="L61" title="All 2 branches missed.">        if (!password.equals(confirmPassword)) {</span>
-<span class="nc" id="L62">            showError(&quot;两次输入的密码不一致&quot;);</span>
+<span class="nc" id="L62">            showError(&quot;Passwords do not match&quot;);</span>
 <span class="nc" id="L63">            return;</span>
         }
 <span class="nc bnc" id="L65" title="All 2 branches missed.">        if (!termsCheckbox.isSelected()) {</span>
-<span class="nc" id="L66">            showError(&quot;请同意服务条款&quot;);</span>
+<span class="nc" id="L66">            showError(&quot;Please agree to the terms and conditions&quot;);</span>
 <span class="nc" id="L67">            return;</span>
         }
 
         try {
-            // ⭐ 调用不使用 Optional 的服务
+            // ⭐ Call service to register user (no longer using Optional)
 <span class="nc" id="L72">            User registeredUser = userService.registerUser(username, email, password, &quot;CUSTOMER&quot;);</span>
 
-            // 自动登录
+            // Auto-login
 <span class="nc" id="L75">            SessionManager.login(registeredUser);</span>
 
 <span class="nc" id="L77">            Alert alert = new Alert(Alert.AlertType.INFORMATION);</span>
-<span class="nc" id="L78">            alert.setTitle(&quot;注册成功&quot;);</span>
+<span class="nc" id="L78">            alert.setTitle(&quot;Registration Successful&quot;);</span>
 <span class="nc" id="L79">            alert.setHeaderText(null);</span>
-<span class="nc" id="L80">            alert.setContentText(&quot;欢迎加入！即将跳转到主页面&quot;);</span>
+<span class="nc" id="L80">            alert.setContentText(&quot;Welcome! You will be redirected to the main page.&quot;);</span>
 <span class="nc" id="L81">            alert.showAndWait();</span>
 
 <span class="nc" id="L83">            backToHome();</span>
 <span class="nc" id="L84">        } catch (Exception e) {</span>
-<span class="nc" id="L85">            showError(&quot;注册失败: &quot; + e.getMessage());</span>
+<span class="nc" id="L85">            showError(&quot;Registration failed: &quot; + e.getMessage());</span>
 <span class="nc" id="L86">        }</span>
 <span class="nc" id="L87">    }</span>
-//    @FXML
-//    private void handleRegister() {
-//        System.out.println(&quot;🔘 注册按钮被点击&quot;);
-//        
-//        // 获取输入
-//        String username = usernameField.getText().trim();
-//        String email = emailField.getText().trim();
-//        String password = passwordField.getText();
-//        String confirmPassword = confirmPasswordField.getText();
-//        
-//        // 验证输入
-//        if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
-//            showError(&quot;所有字段都必须填写&quot;);
-//            return;
-//        }
-//        
-//        if (!email.contains(&quot;@&quot;)) {
-//            showError(&quot;请输入有效的邮箱地址&quot;);
-//            return;
-//        }
-//        
-//        if (password.length() &lt; 6) {
-//            showError(&quot;密码长度至少6位&quot;);
-//            return;
-//        }
-//        
-//        if (!password.equals(confirmPassword)) {
-//            showError(&quot;两次输入的密码不一致&quot;);
-//            return;
-//        }
-//        
-//        if (!termsCheckbox.isSelected()) {
-//            showError(&quot;请同意服务条款&quot;);
-//            return;
-//        }
-//        
-//        // 创建用户
-//        User newUser = new User(username, email, password);
-//
-//        // 调用 UserService 注册
-//        Optional&lt;User&gt; registeredUser = userService.registerUser(username, email, password, &quot;CUSTOMER&quot;);
-//
-//        if (registeredUser.isPresent()) {
-//            // 注册成功，自动登录
-//            SessionManager.login(registeredUser.get());
-//
-//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//            alert.setTitle(&quot;注册成功&quot;);
-//            alert.setHeaderText(null);
-//            alert.setContentText(&quot;欢迎加入！即将跳转到主页面&quot;);
-//            alert.showAndWait();
-//
-//            backToHome();
-//        } else {
-//            showError(&quot;注册失败，用户名可能已存在&quot;);
-//        }
-//    }
-    
+
     /**
-     * 跳转到登录页面
+     * Go to the login page
      */
     @FXML
     private void goToLogin() {
         try {
-<span class="nc" id="L152">            FXMLLoader loader = new FXMLLoader(</span>
-<span class="nc" id="L153">                getClass().getResource(&quot;/com/hotelbooking/view/login.fxml&quot;)</span>
+<span class="nc" id="L95">            FXMLLoader loader = new FXMLLoader(</span>
+<span class="nc" id="L96">                getClass().getResource(&quot;/com/hotelbooking/view/login.fxml&quot;)</span>
             );
-<span class="nc" id="L155">            Parent root = loader.load();</span>
-<span class="nc" id="L156">            Stage stage = (Stage) usernameField.getScene().getWindow();</span>
-<span class="nc" id="L157">            stage.setScene(new Scene(root));</span>
-<span class="nc" id="L158">            stage.setTitle(&quot;Login&quot;);</span>
-<span class="nc" id="L159">        } catch (Exception e) {</span>
-<span class="nc" id="L160">            e.printStackTrace();</span>
-<span class="nc" id="L161">        }</span>
-<span class="nc" id="L162">    }</span>
+<span class="nc" id="L98">            Parent root = loader.load();</span>
+<span class="nc" id="L99">            Stage stage = (Stage) usernameField.getScene().getWindow();</span>
+<span class="nc" id="L100">            stage.setScene(new Scene(root));</span>
+<span class="nc" id="L101">            stage.setTitle(&quot;Login&quot;);</span>
+<span class="nc" id="L102">        } catch (Exception e) {</span>
+<span class="nc" id="L103">            e.printStackTrace();</span>
+<span class="nc" id="L104">        }</span>
+<span class="nc" id="L105">    }</span>
     
     /**
-     * 返回主页
+     * Go back to the home page
      */
     @FXML
     private void backToHome() {
         try {
-<span class="nc" id="L170">            FXMLLoader loader = new FXMLLoader(</span>
-<span class="nc" id="L171">                getClass().getResource(&quot;/com/hotelbooking/view/main_dashboard.fxml&quot;)</span>
+<span class="nc" id="L113">            FXMLLoader loader = new FXMLLoader(</span>
+<span class="nc" id="L114">                getClass().getResource(&quot;/com/hotelbooking/view/main_dashboard.fxml&quot;)</span>
             );
-<span class="nc" id="L173">            Parent root = loader.load();</span>
-<span class="nc" id="L174">            Stage stage = (Stage) usernameField.getScene().getWindow();</span>
-<span class="nc" id="L175">            stage.setScene(new Scene(root));</span>
-<span class="nc" id="L176">            stage.setTitle(&quot;Hotel Booking System&quot;);</span>
-<span class="nc" id="L177">        } catch (Exception e) {</span>
-<span class="nc" id="L178">            e.printStackTrace();</span>
-<span class="nc" id="L179">        }</span>
-<span class="nc" id="L180">    }</span>
+<span class="nc" id="L116">            Parent root = loader.load();</span>
+<span class="nc" id="L117">            Stage stage = (Stage) usernameField.getScene().getWindow();</span>
+<span class="nc" id="L118">            stage.setScene(new Scene(root));</span>
+<span class="nc" id="L119">            stage.setTitle(&quot;Hotel Booking System&quot;);</span>
+<span class="nc" id="L120">        } catch (Exception e) {</span>
+<span class="nc" id="L121">            e.printStackTrace();</span>
+<span class="nc" id="L122">        }</span>
+<span class="nc" id="L123">    }</span>
     
     /**
-     * 显示错误信息
+     * Show error messages
      */
     void showError(String message) {
-<span class="pc bpc" id="L186" title="1 of 2 branches missed.">        if (errorLabel != null) {</span>
-<span class="nc" id="L187">            errorLabel.setText(message);</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">        if (errorLabel != null) {</span>
+<span class="nc" id="L130">            errorLabel.setText(message);</span>
         }
-<span class="fc" id="L189">    }</span>
+<span class="fc" id="L132">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

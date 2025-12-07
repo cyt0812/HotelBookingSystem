@@ -67,89 +67,114 @@ import javafx.util.converter.LocalDateStringConverter;
     
     @FXML
     public void initialize() {
-<span class="nc" id="L70">        System.out.println(&quot;✅ 主界面初始化成功&quot;);</span>
+<span class="nc" id="L70">        System.out.println(&quot;✅ Main Dashboard initialized&quot;);</span>
 <span class="nc" id="L71">        Locale.setDefault(Locale.ENGLISH);</span>
-        // 初始化儿童年龄
-<span class="nc bnc" id="L73" title="All 2 branches missed.">        for (int i = 0; i &lt; childCount; i++) {</span>
-<span class="nc" id="L74">            childrenAges.add(0);</span>
-        }
-                
-        // 初始化日期选择器（默认值）
-<span class="nc" id="L78">        checkInDate.setValue(java.time.LocalDate.now().plusDays(1));</span>
-<span class="nc" id="L79">        checkOutDate.setValue(java.time.LocalDate.now().plusDays(2));</span>
 
-<span class="nc" id="L81">        setupHoverEffects();</span>
-<span class="nc" id="L82">        updateWelcomeMessage();</span>
-<span class="nc" id="L83">        updateLoginButton();</span>
-<span class="nc" id="L84">        updateRoomsGuestsDisplay();</span>
-<span class="nc" id="L85">        updateChildrenAgeSelectors();</span>
-<span class="nc" id="L86">        updateButtons();</span>
-<span class="nc" id="L87">    }</span>
+        // Set default dates (Check-in tomorrow, Check-out day after tomorrow)
+<span class="nc" id="L74">        checkInDate.setValue(java.time.LocalDate.now().plusDays(1));</span>
+<span class="nc" id="L75">        checkOutDate.setValue(java.time.LocalDate.now().plusDays(2));</span>
+
+        // Ensure check-out date is always later than check-in date
+<span class="nc" id="L78">        checkInDate.valueProperty().addListener((observable, oldValue, newValue) -&gt; {</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            if (checkOutDate.getValue().isBefore(newValue)) {</span>
+<span class="nc" id="L80">                checkOutDate.setValue(newValue.plusDays(1)); // Set check-out date to one day after check-in</span>
+            }
+<span class="nc" id="L82">        });</span>
+
+        // Initialize other UI elements
+<span class="nc" id="L85">        setupHoverEffects();</span>
+<span class="nc" id="L86">        updateWelcomeMessage();</span>
+<span class="nc" id="L87">        updateLoginButton();</span>
+<span class="nc" id="L88">        updateRoomsGuestsDisplay();</span>
+<span class="nc" id="L89">        updateChildrenAgeSelectors();</span>
+<span class="nc" id="L90">        updateButtons();</span>
+<span class="nc" id="L91">    }</span>
     
 
     public void initializeDatePickers() {
-<span class="nc" id="L91">        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;MMM dd, yyyy&quot;, Locale.ENGLISH);</span>
+<span class="nc" id="L95">        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;MMM dd, yyyy&quot;, Locale.ENGLISH);</span>
 
-<span class="nc bnc" id="L93" title="All 2 branches missed.">        if (checkInDate != null) {</span>
-<span class="nc" id="L94">            LocalDate defaultCheckInDate = LocalDate.now().plusDays(1);</span>
-<span class="nc" id="L95">            checkInDate.setValue(defaultCheckInDate);</span>
-<span class="nc" id="L96">            checkInDate.setConverter(new LocalDateStringConverter(formatter, null));</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (checkInDate != null) {</span>
+<span class="nc" id="L98">            LocalDate defaultCheckInDate = LocalDate.now().plusDays(1);</span>
+<span class="nc" id="L99">            checkInDate.setValue(defaultCheckInDate);</span>
+<span class="nc" id="L100">            checkInDate.setConverter(new LocalDateStringConverter(formatter, null));</span>
         }
 
-<span class="nc bnc" id="L99" title="All 2 branches missed.">        if (checkOutDate != null) {</span>
-<span class="nc" id="L100">            LocalDate defaultCheckOutDate = LocalDate.now().plusDays(2);</span>
-<span class="nc" id="L101">            checkOutDate.setValue(defaultCheckOutDate);</span>
-<span class="nc" id="L102">            checkOutDate.setConverter(new LocalDateStringConverter(formatter, null));</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (checkOutDate != null) {</span>
+<span class="nc" id="L104">            LocalDate defaultCheckOutDate = LocalDate.now().plusDays(2);</span>
+<span class="nc" id="L105">            checkOutDate.setValue(defaultCheckOutDate);</span>
+<span class="nc" id="L106">            checkOutDate.setConverter(new LocalDateStringConverter(formatter, null));</span>
         }
-<span class="nc" id="L104">    }</span>
+<span class="nc" id="L108">    }</span>
     
     /**
      * 处理搜索酒店按钮
      */
     @FXML
     private void handleSearchHotel() {
-<span class="nc" id="L111">        System.out.println(&quot;🔍 开始搜索酒店&quot;);</span>
-        // 保存日期
-<span class="nc" id="L113">        SessionManager.setCheckInDate(checkInDate.getValue());</span>
-<span class="nc" id="L114">        SessionManager.setCheckOutDate(checkOutDate.getValue());</span>
+<span class="nc" id="L115">        System.out.println(&quot;🔍 Searching for hotels&quot;);</span>
 
-        // 保存人数
-<span class="nc" id="L117">        SessionManager.setRoomCount(roomCount);</span>
-<span class="nc" id="L118">        SessionManager.setAdultCount(adultCount);</span>
-<span class="nc" id="L119">        SessionManager.setChildCount(childCount);</span>
-        
-<span class="nc" id="L121">        navigateToHotelSearch();</span>
-<span class="nc" id="L122">    }</span>
+        // Get today's date
+<span class="nc" id="L118">        LocalDate today = LocalDate.now();</span>
+
+        // Check if the check-in date is before today's date
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (checkInDate.getValue().isBefore(today)) {</span>
+<span class="nc" id="L122">            showAlert(&quot;Invalid Date&quot;, &quot;Check-in date cannot be earlier than today's date.&quot;);</span>
+<span class="nc" id="L123">            return;</span>
+        }
+
+        // Check if the check-out date is before the check-in date
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        if (checkOutDate.getValue().isBefore(checkInDate.getValue())) {</span>
+<span class="nc" id="L128">            showAlert(&quot;Invalid Date Range&quot;, &quot;Check-out date cannot be earlier than check-in date.&quot;);</span>
+<span class="nc" id="L129">            return;</span>
+        }
+
+        // Ensure check-in and check-out dates are not the same day
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        if (checkInDate.getValue().isEqual(checkOutDate.getValue())) {</span>
+<span class="nc" id="L134">            showAlert(&quot;Invalid Date Range&quot;, &quot;Check-in and check-out dates cannot be the same day.&quot;);</span>
+<span class="nc" id="L135">            return;</span>
+        }
+
+        // Save dates and guest counts to session
+<span class="nc" id="L139">        SessionManager.setCheckInDate(checkInDate.getValue());</span>
+<span class="nc" id="L140">        SessionManager.setCheckOutDate(checkOutDate.getValue());</span>
+
+<span class="nc" id="L142">        SessionManager.setRoomCount(roomCount);</span>
+<span class="nc" id="L143">        SessionManager.setAdultCount(adultCount);</span>
+<span class="nc" id="L144">        SessionManager.setChildCount(childCount);</span>
+
+<span class="nc" id="L146">        navigateToHotelSearch();</span>
+<span class="nc" id="L147">    }</span>
     
     /**
      * 跳转到酒店搜索页面
      */
     private void navigateToHotelSearch() {
         try {
-<span class="nc" id="L129">            NavigationManager.getInstance().push(</span>
+<span class="nc" id="L154">            NavigationManager.getInstance().push(</span>
                 &quot;/com/hotelbooking/view/search_hotels.fxml&quot;,
                 &quot;Search Hotel&quot;
             );
-<span class="nc" id="L133">            String keyword = txtDestination.getText().trim();</span>
-<span class="nc" id="L134">            FXMLLoader loader = new FXMLLoader(</span>
-<span class="nc" id="L135">                getClass().getResource(&quot;/com/hotelbooking/view/search_hotels.fxml&quot;)</span>
+<span class="nc" id="L158">            String keyword = txtDestination.getText().trim();</span>
+<span class="nc" id="L159">            FXMLLoader loader = new FXMLLoader(</span>
+<span class="nc" id="L160">                getClass().getResource(&quot;/com/hotelbooking/view/search_hotels.fxml&quot;)</span>
             );
-<span class="nc" id="L137">            Parent root = loader.load();</span>
+<span class="nc" id="L162">            Parent root = loader.load();</span>
             
-<span class="nc" id="L139">            SearchHotelsController controller = loader.getController();</span>
-<span class="nc" id="L140">            controller.setSearchKeyword(keyword);</span>
+<span class="nc" id="L164">            SearchHotelsController controller = loader.getController();</span>
+<span class="nc" id="L165">            controller.setSearchKeyword(keyword);</span>
             
-<span class="nc" id="L142">            Stage stage = (Stage) btnLogin.getScene().getWindow();</span>
-<span class="nc" id="L143">            stage.setScene(new Scene(root));</span>
-<span class="nc" id="L144">            stage.setTitle(&quot;Hotel Search&quot;);</span>
+<span class="nc" id="L167">            Stage stage = (Stage) btnLogin.getScene().getWindow();</span>
+<span class="nc" id="L168">            stage.setScene(new Scene(root));</span>
+<span class="nc" id="L169">            stage.setTitle(&quot;Hotel Search&quot;);</span>
             
-<span class="nc" id="L146">            System.out.println(&quot;✅ 跳转到酒店搜索页面&quot;);</span>
+<span class="nc" id="L171">            System.out.println(&quot;✅ 跳转到酒店搜索页面&quot;);</span>
             
-<span class="nc" id="L148">        } catch (Exception e) {</span>
-<span class="nc" id="L149">            System.err.println(&quot;❌ 跳转失败: &quot; + e.getMessage());</span>
-<span class="nc" id="L150">            e.printStackTrace();</span>
-<span class="nc" id="L151">        }</span>
-<span class="nc" id="L152">    }</span>
+<span class="nc" id="L173">        } catch (Exception e) {</span>
+<span class="nc" id="L174">            System.err.println(&quot;❌ 跳转失败: &quot; + e.getMessage());</span>
+<span class="nc" id="L175">            e.printStackTrace();</span>
+<span class="nc" id="L176">        }</span>
+<span class="nc" id="L177">    }</span>
     
     // ==================== Rooms &amp; Guests Selector 方法 ====================
     
@@ -158,221 +183,221 @@ import javafx.util.converter.LocalDateStringConverter;
      */
     @FXML
     private void toggleRoomsSelector() {
-<span class="nc" id="L161">        boolean isVisible = selectorPanel.isVisible();</span>
-<span class="nc bnc" id="L162" title="All 2 branches missed.">        selectorPanel.setVisible(!isVisible);</span>
-<span class="nc bnc" id="L163" title="All 2 branches missed.">        selectorPanel.setManaged(!isVisible);</span>
+<span class="nc" id="L186">        boolean isVisible = selectorPanel.isVisible();</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">        selectorPanel.setVisible(!isVisible);</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">        selectorPanel.setManaged(!isVisible);</span>
         
         // 更新箭头
-<span class="nc bnc" id="L166" title="All 2 branches missed.">        lblArrow.setText(isVisible ? &quot;▼&quot; : &quot;▲&quot;);</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">        lblArrow.setText(isVisible ? &quot;▼&quot; : &quot;▲&quot;);</span>
         
-<span class="nc bnc" id="L168" title="All 2 branches missed.">        System.out.println(&quot;选择器&quot; + (isVisible ? &quot;关闭&quot; : &quot;打开&quot;));</span>
-<span class="nc" id="L169">    }</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        System.out.println(&quot;选择器&quot; + (isVisible ? &quot;关闭&quot; : &quot;打开&quot;));</span>
+<span class="nc" id="L194">    }</span>
     
     /**
      * 增加房间数
      */
     @FXML
     private void increaseRooms() {
-<span class="nc bnc" id="L176" title="All 2 branches missed.">        if (roomCount &lt; MAX_ROOMS) {</span>
-<span class="nc" id="L177">            roomCount++;</span>
-<span class="nc" id="L178">            updateRoomsGuestsDisplay();</span>
-<span class="nc" id="L179">            updateButtons();</span>
-<span class="nc" id="L180">            System.out.println(&quot;房间数: &quot; + roomCount);</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">        if (roomCount &lt; MAX_ROOMS) {</span>
+<span class="nc" id="L202">            roomCount++;</span>
+<span class="nc" id="L203">            updateRoomsGuestsDisplay();</span>
+<span class="nc" id="L204">            updateButtons();</span>
+<span class="nc" id="L205">            System.out.println(&quot;房间数: &quot; + roomCount);</span>
         }
-<span class="nc" id="L182">    }</span>
+<span class="nc" id="L207">    }</span>
     
     /**
      * 减少房间数
      */
     @FXML
     private void decreaseRooms() {
-<span class="nc bnc" id="L189" title="All 2 branches missed.">        if (roomCount &gt; MIN_ROOMS) {</span>
-<span class="nc" id="L190">            roomCount--;</span>
-<span class="nc" id="L191">            updateRoomsGuestsDisplay();</span>
-<span class="nc" id="L192">            updateButtons();</span>
-<span class="nc" id="L193">            System.out.println(&quot;房间数: &quot; + roomCount);</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">        if (roomCount &gt; MIN_ROOMS) {</span>
+<span class="nc" id="L215">            roomCount--;</span>
+<span class="nc" id="L216">            updateRoomsGuestsDisplay();</span>
+<span class="nc" id="L217">            updateButtons();</span>
+<span class="nc" id="L218">            System.out.println(&quot;房间数: &quot; + roomCount);</span>
         }
-<span class="nc" id="L195">    }</span>
+<span class="nc" id="L220">    }</span>
     
     /**
      * 增加成人数
      */
     @FXML
     private void increaseAdults() {
-<span class="nc" id="L202">        int totalGuests = adultCount + childCount;</span>
-<span class="nc" id="L203">        int maxAllowed = roomCount * MAX_GUESTS_PER_ROOM;</span>
+<span class="nc" id="L227">        int totalGuests = adultCount + childCount;</span>
+<span class="nc" id="L228">        int maxAllowed = roomCount * MAX_GUESTS_PER_ROOM;</span>
         
-<span class="nc bnc" id="L205" title="All 2 branches missed.">        if (totalGuests &lt; maxAllowed) {</span>
-<span class="nc" id="L206">            adultCount++;</span>
-<span class="nc" id="L207">            updateRoomsGuestsDisplay();</span>
-<span class="nc" id="L208">            updateButtons();</span>
-<span class="nc" id="L209">            System.out.println(&quot;成人数: &quot; + adultCount);</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">        if (totalGuests &lt; maxAllowed) {</span>
+<span class="nc" id="L231">            adultCount++;</span>
+<span class="nc" id="L232">            updateRoomsGuestsDisplay();</span>
+<span class="nc" id="L233">            updateButtons();</span>
+<span class="nc" id="L234">            System.out.println(&quot;成人数: &quot; + adultCount);</span>
         }
-<span class="nc" id="L211">    }</span>
+<span class="nc" id="L236">    }</span>
     
     /**
      * 减少成人数
      */
     @FXML
     private void decreaseAdults() {
-<span class="nc bnc" id="L218" title="All 2 branches missed.">        if (adultCount &gt; MIN_ADULTS) {</span>
-<span class="nc" id="L219">            adultCount--;</span>
-<span class="nc" id="L220">            updateRoomsGuestsDisplay();</span>
-<span class="nc" id="L221">            updateButtons();</span>
-<span class="nc" id="L222">            System.out.println(&quot;成人数: &quot; + adultCount);</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">        if (adultCount &gt; MIN_ADULTS) {</span>
+<span class="nc" id="L244">            adultCount--;</span>
+<span class="nc" id="L245">            updateRoomsGuestsDisplay();</span>
+<span class="nc" id="L246">            updateButtons();</span>
+<span class="nc" id="L247">            System.out.println(&quot;成人数: &quot; + adultCount);</span>
         }
-<span class="nc" id="L224">    }</span>
+<span class="nc" id="L249">    }</span>
     
     /**
      * 增加儿童数
      */
     @FXML
     private void increaseChildren() {
-<span class="nc" id="L231">        int totalGuests = adultCount + childCount;</span>
-<span class="nc" id="L232">        int maxAllowed = roomCount * MAX_GUESTS_PER_ROOM;</span>
+<span class="nc" id="L256">        int totalGuests = adultCount + childCount;</span>
+<span class="nc" id="L257">        int maxAllowed = roomCount * MAX_GUESTS_PER_ROOM;</span>
         
-<span class="nc bnc" id="L234" title="All 2 branches missed.">        if (totalGuests &lt; maxAllowed) {</span>
-<span class="nc" id="L235">            childCount++;</span>
-<span class="nc" id="L236">            childrenAges.add(0);</span>
-<span class="nc" id="L237">            updateRoomsGuestsDisplay();</span>
-<span class="nc" id="L238">            updateChildrenAgeSelectors();</span>
-<span class="nc" id="L239">            updateButtons();</span>
-<span class="nc" id="L240">            System.out.println(&quot;儿童数: &quot; + childCount);</span>
+<span class="nc bnc" id="L259" title="All 2 branches missed.">        if (totalGuests &lt; maxAllowed) {</span>
+<span class="nc" id="L260">            childCount++;</span>
+<span class="nc" id="L261">            childrenAges.add(0);</span>
+<span class="nc" id="L262">            updateRoomsGuestsDisplay();</span>
+<span class="nc" id="L263">            updateChildrenAgeSelectors();</span>
+<span class="nc" id="L264">            updateButtons();</span>
+<span class="nc" id="L265">            System.out.println(&quot;儿童数: &quot; + childCount);</span>
         }
-<span class="nc" id="L242">    }</span>
+<span class="nc" id="L267">    }</span>
     
     /**
      * 减少儿童数
      */
     @FXML
     private void decreaseChildren() {
-<span class="nc bnc" id="L249" title="All 2 branches missed.">        if (childCount &gt; 0) {</span>
-<span class="nc" id="L250">            childCount--;</span>
-<span class="nc bnc" id="L251" title="All 2 branches missed.">            if (!childrenAges.isEmpty()) {</span>
-<span class="nc" id="L252">                childrenAges.remove(childrenAges.size() - 1);</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">        if (childCount &gt; 0) {</span>
+<span class="nc" id="L275">            childCount--;</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">            if (!childrenAges.isEmpty()) {</span>
+<span class="nc" id="L277">                childrenAges.remove(childrenAges.size() - 1);</span>
             }
-<span class="nc" id="L254">            updateRoomsGuestsDisplay();</span>
-<span class="nc" id="L255">            updateChildrenAgeSelectors();</span>
-<span class="nc" id="L256">            updateButtons();</span>
-<span class="nc" id="L257">            System.out.println(&quot;儿童数: &quot; + childCount);</span>
+<span class="nc" id="L279">            updateRoomsGuestsDisplay();</span>
+<span class="nc" id="L280">            updateChildrenAgeSelectors();</span>
+<span class="nc" id="L281">            updateButtons();</span>
+<span class="nc" id="L282">            System.out.println(&quot;儿童数: &quot; + childCount);</span>
         }
-<span class="nc" id="L259">    }</span>
+<span class="nc" id="L284">    }</span>
     
     /**
      * 更新儿童年龄选择器
      */
     private void updateChildrenAgeSelectors() {
-<span class="nc" id="L265">        childrenAgeContainer.getChildren().clear();</span>
+<span class="nc" id="L290">        childrenAgeContainer.getChildren().clear();</span>
         
-<span class="nc bnc" id="L267" title="All 2 branches missed.">        if (childCount == 0) {</span>
-<span class="nc" id="L268">            return;</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">        if (childCount == 0) {</span>
+<span class="nc" id="L293">            return;</span>
         }
         
-<span class="nc bnc" id="L271" title="All 2 branches missed.">        for (int i = 0; i &lt; childCount; i++) {</span>
-<span class="nc" id="L272">            final int index = i;</span>
+<span class="nc bnc" id="L296" title="All 2 branches missed.">        for (int i = 0; i &lt; childCount; i++) {</span>
+<span class="nc" id="L297">            final int index = i;</span>
             
-<span class="nc" id="L274">            HBox ageSelector = new HBox(15);</span>
-<span class="nc" id="L275">            ageSelector.setAlignment(javafx.geometry.Pos.CENTER_LEFT);</span>
+<span class="nc" id="L299">            HBox ageSelector = new HBox(15);</span>
+<span class="nc" id="L300">            ageSelector.setAlignment(javafx.geometry.Pos.CENTER_LEFT);</span>
             
-<span class="nc" id="L277">            Label label = new Label(&quot;Child &quot; + (i + 1) + &quot;: Age&quot;);</span>
-<span class="nc" id="L278">            label.setStyle(&quot;-fx-font-size: 14px; -fx-text-fill: #333333;&quot;);</span>
+<span class="nc" id="L302">            Label label = new Label(&quot;Child &quot; + (i + 1) + &quot;: Age&quot;);</span>
+<span class="nc" id="L303">            label.setStyle(&quot;-fx-font-size: 14px; -fx-text-fill: #333333;&quot;);</span>
             
-<span class="nc" id="L280">            ComboBox&lt;String&gt; ageComboBox = new ComboBox&lt;&gt;();</span>
-<span class="nc" id="L281">            ageComboBox.setItems(FXCollections.observableArrayList(</span>
+<span class="nc" id="L305">            ComboBox&lt;String&gt; ageComboBox = new ComboBox&lt;&gt;();</span>
+<span class="nc" id="L306">            ageComboBox.setItems(FXCollections.observableArrayList(</span>
                 &quot;&lt;1&quot;, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, 
                 &quot;10&quot;, &quot;11&quot;, &quot;12&quot;, &quot;13&quot;, &quot;14&quot;, &quot;15&quot;, &quot;16&quot;, &quot;17&quot;
             ));
             
-<span class="nc bnc" id="L286" title="All 2 branches missed.">            if (index &lt; childrenAges.size()) {</span>
-<span class="nc" id="L287">                int age = childrenAges.get(index);</span>
-<span class="nc bnc" id="L288" title="All 2 branches missed.">                ageComboBox.setValue(age == 0 ? &quot;&lt;1&quot; : String.valueOf(age));</span>
-<span class="nc" id="L289">            } else {</span>
-<span class="nc" id="L290">                ageComboBox.setValue(&quot;&lt;1&quot;);</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">            if (index &lt; childrenAges.size()) {</span>
+<span class="nc" id="L312">                int age = childrenAges.get(index);</span>
+<span class="nc bnc" id="L313" title="All 2 branches missed.">                ageComboBox.setValue(age == 0 ? &quot;&lt;1&quot; : String.valueOf(age));</span>
+<span class="nc" id="L314">            } else {</span>
+<span class="nc" id="L315">                ageComboBox.setValue(&quot;&lt;1&quot;);</span>
             }
             
-<span class="nc" id="L293">            ageComboBox.setStyle(&quot;-fx-pref-width: 100px; -fx-font-size: 14px;&quot;);</span>
+<span class="nc" id="L318">            ageComboBox.setStyle(&quot;-fx-pref-width: 100px; -fx-font-size: 14px;&quot;);</span>
             
-<span class="nc" id="L295">            ageComboBox.setOnAction(e -&gt; {</span>
-<span class="nc" id="L296">                String selected = ageComboBox.getValue();</span>
-<span class="nc bnc" id="L297" title="All 2 branches missed.">                int age = selected.equals(&quot;&lt;1&quot;) ? 0 : Integer.parseInt(selected);</span>
+<span class="nc" id="L320">            ageComboBox.setOnAction(e -&gt; {</span>
+<span class="nc" id="L321">                String selected = ageComboBox.getValue();</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">                int age = selected.equals(&quot;&lt;1&quot;) ? 0 : Integer.parseInt(selected);</span>
                 
-<span class="nc bnc" id="L299" title="All 2 branches missed.">                if (index &lt; childrenAges.size()) {</span>
-<span class="nc" id="L300">                    childrenAges.set(index, age);</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">                if (index &lt; childrenAges.size()) {</span>
+<span class="nc" id="L325">                    childrenAges.set(index, age);</span>
                 }
                 
-<span class="nc" id="L303">                System.out.println(&quot;儿童 &quot; + (index + 1) + &quot; 年龄: &quot; + selected);</span>
-<span class="nc" id="L304">            });</span>
+<span class="nc" id="L328">                System.out.println(&quot;儿童 &quot; + (index + 1) + &quot; 年龄: &quot; + selected);</span>
+<span class="nc" id="L329">            });</span>
             
-<span class="nc" id="L306">            ageSelector.getChildren().addAll(label, ageComboBox);</span>
-<span class="nc" id="L307">            childrenAgeContainer.getChildren().add(ageSelector);</span>
+<span class="nc" id="L331">            ageSelector.getChildren().addAll(label, ageComboBox);</span>
+<span class="nc" id="L332">            childrenAgeContainer.getChildren().add(ageSelector);</span>
         }
-<span class="nc" id="L309">    }</span>
+<span class="nc" id="L334">    }</span>
     
     /**
      * 更新 Rooms &amp; Guests 显示
      */
     private void updateRoomsGuestsDisplay() {
-<span class="nc" id="L315">        lblRoomCount.setText(String.valueOf(roomCount));</span>
-<span class="nc" id="L316">        lblAdultCount.setText(String.valueOf(adultCount));</span>
-<span class="nc" id="L317">        lblChildCount.setText(String.valueOf(childCount));</span>
+<span class="nc" id="L340">        lblRoomCount.setText(String.valueOf(roomCount));</span>
+<span class="nc" id="L341">        lblAdultCount.setText(String.valueOf(adultCount));</span>
+<span class="nc" id="L342">        lblChildCount.setText(String.valueOf(childCount));</span>
         
-<span class="nc" id="L319">        int totalGuests = adultCount + childCount;</span>
-<span class="nc bnc" id="L320" title="All 2 branches missed.">        String displayText = roomCount + &quot; Room&quot; + (roomCount &gt; 1 ? &quot;s&quot; : &quot;&quot;) + </span>
-<span class="nc bnc" id="L321" title="All 2 branches missed.">                           &quot;, &quot; + totalGuests + &quot; Guest&quot; + (totalGuests &gt; 1 ? &quot;s&quot; : &quot;&quot;);</span>
-<span class="nc" id="L322">        lblRoomsGuestsDisplay.setText(displayText);</span>
-<span class="nc" id="L323">    }</span>
+<span class="nc" id="L344">        int totalGuests = adultCount + childCount;</span>
+<span class="nc bnc" id="L345" title="All 2 branches missed.">        String displayText = roomCount + &quot; Room&quot; + (roomCount &gt; 1 ? &quot;s&quot; : &quot;&quot;) + </span>
+<span class="nc bnc" id="L346" title="All 2 branches missed.">                           &quot;, &quot; + totalGuests + &quot; Guest&quot; + (totalGuests &gt; 1 ? &quot;s&quot; : &quot;&quot;);</span>
+<span class="nc" id="L347">        lblRoomsGuestsDisplay.setText(displayText);</span>
+<span class="nc" id="L348">    }</span>
     
     /**
      * 更新按钮启用/禁用状态
      */
     private void updateButtons() {
-<span class="nc bnc" id="L329" title="All 2 branches missed.">        btnRoomMinus.setDisable(roomCount &lt;= MIN_ROOMS);</span>
-<span class="nc bnc" id="L330" title="All 2 branches missed.">        btnRoomPlus.setDisable(roomCount &gt;= MAX_ROOMS);</span>
+<span class="nc bnc" id="L354" title="All 2 branches missed.">        btnRoomMinus.setDisable(roomCount &lt;= MIN_ROOMS);</span>
+<span class="nc bnc" id="L355" title="All 2 branches missed.">        btnRoomPlus.setDisable(roomCount &gt;= MAX_ROOMS);</span>
         
-<span class="nc bnc" id="L332" title="All 2 branches missed.">        btnAdultMinus.setDisable(adultCount &lt;= MIN_ADULTS);</span>
+<span class="nc bnc" id="L357" title="All 2 branches missed.">        btnAdultMinus.setDisable(adultCount &lt;= MIN_ADULTS);</span>
         
-<span class="nc" id="L334">        int totalGuests = adultCount + childCount;</span>
-<span class="nc" id="L335">        int maxAllowed = roomCount * MAX_GUESTS_PER_ROOM;</span>
+<span class="nc" id="L359">        int totalGuests = adultCount + childCount;</span>
+<span class="nc" id="L360">        int maxAllowed = roomCount * MAX_GUESTS_PER_ROOM;</span>
         
-<span class="nc bnc" id="L337" title="All 2 branches missed.">        btnAdultPlus.setDisable(totalGuests &gt;= maxAllowed);</span>
-<span class="nc bnc" id="L338" title="All 2 branches missed.">        btnChildPlus.setDisable(totalGuests &gt;= maxAllowed);</span>
+<span class="nc bnc" id="L362" title="All 2 branches missed.">        btnAdultPlus.setDisable(totalGuests &gt;= maxAllowed);</span>
+<span class="nc bnc" id="L363" title="All 2 branches missed.">        btnChildPlus.setDisable(totalGuests &gt;= maxAllowed);</span>
         
-<span class="nc bnc" id="L340" title="All 2 branches missed.">        btnChildMinus.setDisable(childCount &lt;= 0);</span>
-<span class="nc" id="L341">    }</span>
+<span class="nc bnc" id="L365" title="All 2 branches missed.">        btnChildMinus.setDisable(childCount &lt;= 0);</span>
+<span class="nc" id="L366">    }</span>
     
     /**
      * 重置为默认值
      */
     @FXML
     private void handleReset() {
-<span class="nc" id="L348">        System.out.println(&quot;🔄 重置选择&quot;);</span>
+<span class="nc" id="L373">        System.out.println(&quot;🔄 重置选择&quot;);</span>
         
-<span class="nc" id="L350">        roomCount = 1;</span>
-<span class="nc" id="L351">        adultCount = 1;</span>
-<span class="nc" id="L352">        childCount = 0;</span>
-<span class="nc" id="L353">        childrenAges.clear();</span>
+<span class="nc" id="L375">        roomCount = 1;</span>
+<span class="nc" id="L376">        adultCount = 1;</span>
+<span class="nc" id="L377">        childCount = 0;</span>
+<span class="nc" id="L378">        childrenAges.clear();</span>
         
-<span class="nc" id="L355">        updateRoomsGuestsDisplay();</span>
-<span class="nc" id="L356">        updateChildrenAgeSelectors();</span>
-<span class="nc" id="L357">        updateButtons();</span>
-<span class="nc" id="L358">    }</span>
+<span class="nc" id="L380">        updateRoomsGuestsDisplay();</span>
+<span class="nc" id="L381">        updateChildrenAgeSelectors();</span>
+<span class="nc" id="L382">        updateButtons();</span>
+<span class="nc" id="L383">    }</span>
     
     /**
      * 完成选择
      */
     @FXML
     private void handleDone() {
-<span class="nc" id="L365">        System.out.println(&quot;✅ 选择完成&quot;);</span>
-<span class="nc" id="L366">        System.out.println(&quot;房间: &quot; + roomCount);</span>
-<span class="nc" id="L367">        System.out.println(&quot;成人: &quot; + adultCount);</span>
-<span class="nc" id="L368">        System.out.println(&quot;儿童: &quot; + childCount);</span>
+<span class="nc" id="L390">        System.out.println(&quot;✅ 选择完成&quot;);</span>
+<span class="nc" id="L391">        System.out.println(&quot;房间: &quot; + roomCount);</span>
+<span class="nc" id="L392">        System.out.println(&quot;成人: &quot; + adultCount);</span>
+<span class="nc" id="L393">        System.out.println(&quot;儿童: &quot; + childCount);</span>
         
-<span class="nc bnc" id="L370" title="All 2 branches missed.">        if (childCount &gt; 0) {</span>
-<span class="nc" id="L371">            System.out.println(&quot;儿童年龄: &quot; + childrenAges);</span>
+<span class="nc bnc" id="L395" title="All 2 branches missed.">        if (childCount &gt; 0) {</span>
+<span class="nc" id="L396">            System.out.println(&quot;儿童年龄: &quot; + childrenAges);</span>
         }
         
-<span class="nc" id="L374">        toggleRoomsSelector();</span>
-<span class="nc" id="L375">    }</span>
+<span class="nc" id="L399">        toggleRoomsSelector();</span>
+<span class="nc" id="L400">    }</span>
     
     // ==================== 导航栏方法 ====================
     
@@ -380,201 +405,213 @@ import javafx.util.converter.LocalDateStringConverter;
      * 设置导航栏按钮悬停效果
      */
     private void setupHoverEffects() {
-<span class="nc" id="L383">        setupButtonHover(btnHelp, </span>
+<span class="nc" id="L408">        setupButtonHover(btnHelp, </span>
             &quot;-fx-background-color: #f5f5f5; -fx-text-fill: #333333; -fx-font-size: 14px; -fx-cursor: hand; -fx-padding: 8 15; -fx-border-radius: 5; -fx-background-radius: 5;&quot;,
             &quot;-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand; -fx-padding: 8 15; -fx-border-radius: 5; -fx-background-radius: 5;&quot;
         );
         
-<span class="nc" id="L388">        setupButtonHover(btnTrips,</span>
+<span class="nc" id="L413">        setupButtonHover(btnTrips,</span>
             &quot;-fx-background-color: #f5f5f5; -fx-text-fill: #333333; -fx-font-size: 14px; -fx-cursor: hand; -fx-padding: 8 15; -fx-border-radius: 5; -fx-background-radius: 5;&quot;,
             &quot;-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand; -fx-padding: 8 15; -fx-border-radius: 5; -fx-background-radius: 5;&quot;
         );
         
-<span class="nc" id="L393">        setupButtonHover(btnLogin,</span>
+<span class="nc" id="L418">        setupButtonHover(btnLogin,</span>
             &quot;-fx-background-color: #8B4513; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 10 25; -fx-border-radius: 20; -fx-background-radius: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);&quot;,
             &quot;-fx-background-color: white; -fx-text-fill: #1a1a1a; -fx-font-size: 14px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 10 25; -fx-border-radius: 20; -fx-background-radius: 20;&quot;
         );
-<span class="nc" id="L397">    }</span>
+<span class="nc" id="L422">    }</span>
     
     private void setupButtonHover(Button button, String hoverStyle, String normalStyle) {
-<span class="nc" id="L400">        button.setOnMouseEntered(e -&gt; button.setStyle(hoverStyle));</span>
-<span class="nc" id="L401">        button.setOnMouseExited(e -&gt; button.setStyle(normalStyle));</span>
-<span class="nc" id="L402">    }</span>
+<span class="nc" id="L425">        button.setOnMouseEntered(e -&gt; button.setStyle(hoverStyle));</span>
+<span class="nc" id="L426">        button.setOnMouseExited(e -&gt; button.setStyle(normalStyle));</span>
+<span class="nc" id="L427">    }</span>
     
     private void updateWelcomeMessage() {
-<span class="nc bnc" id="L405" title="All 2 branches missed.">        if (SessionManager.isLoggedIn()) {</span>
-<span class="nc" id="L406">            String username = SessionManager.getLoggedInUsername();</span>
-<span class="nc" id="L407">            lblWelcome.setText(&quot;Welcome back，&quot; + username + &quot;！&quot;);</span>
-<span class="nc" id="L408">        } else {</span>
-<span class="nc" id="L409">            lblWelcome.setText(&quot;Travel Like You Mean It&quot;);</span>
+<span class="nc bnc" id="L430" title="All 2 branches missed.">        if (SessionManager.isLoggedIn()) {</span>
+<span class="nc" id="L431">            String username = SessionManager.getLoggedInUsername();</span>
+<span class="nc" id="L432">            lblWelcome.setText(&quot;Welcome back，&quot; + username + &quot;！&quot;);</span>
+<span class="nc" id="L433">        } else {</span>
+<span class="nc" id="L434">            lblWelcome.setText(&quot;Travel Like You Mean It&quot;);</span>
         }
-<span class="nc" id="L411">    }</span>
+<span class="nc" id="L436">    }</span>
     
     private void updateLoginButton() {
-<span class="nc bnc" id="L414" title="All 2 branches missed.">        if (SessionManager.isLoggedIn()) {</span>
-<span class="nc" id="L415">            String username = SessionManager.getLoggedInUsername();</span>
-<span class="nc" id="L416">            btnLogin.setText(&quot;👤 &quot; + username);</span>
-<span class="nc" id="L417">        } else {</span>
-<span class="nc" id="L418">            btnLogin.setText(&quot;👤 Sign In&quot;);</span>
+<span class="nc bnc" id="L439" title="All 2 branches missed.">        if (SessionManager.isLoggedIn()) {</span>
+<span class="nc" id="L440">            String username = SessionManager.getLoggedInUsername();</span>
+<span class="nc" id="L441">            btnLogin.setText(&quot;👤 &quot; + username);</span>
+<span class="nc" id="L442">        } else {</span>
+<span class="nc" id="L443">            btnLogin.setText(&quot;👤 Sign In&quot;);</span>
         }
-<span class="nc" id="L420">    }</span>
+<span class="nc" id="L445">    }</span>
     
     @FXML
     private void handleHelp() {
-<span class="nc" id="L424">        Alert alert = new Alert(Alert.AlertType.INFORMATION);</span>
-<span class="nc" id="L425">        alert.setTitle(&quot;Help Center&quot;);</span>
-<span class="nc" id="L426">        alert.setHeaderText(&quot;Need help?&quot;);</span>
-<span class="nc" id="L427">        alert.setContentText(</span>
+<span class="nc" id="L449">        Alert alert = new Alert(Alert.AlertType.INFORMATION);</span>
+<span class="nc" id="L450">        alert.setTitle(&quot;Help Center&quot;);</span>
+<span class="nc" id="L451">        alert.setHeaderText(&quot;Need help?&quot;);</span>
+<span class="nc" id="L452">        alert.setContentText(</span>
             &quot;Frequently Asked Questions:\n\n&quot; +
             &quot;1. How to book a room?\n   Select the dates and destination, then browse the available rooms.\n\n&quot; +
             &quot;2. How to view my bookings?\n   Click the 'My Trips' button.\n\n&quot; +
             &quot;3. Contact customer service: 400-888-8888&quot;
         );
-<span class="nc" id="L433">        alert.showAndWait();</span>
-<span class="nc" id="L434">    }</span>
+<span class="nc" id="L458">        alert.showAndWait();</span>
+<span class="nc" id="L459">    }</span>
     
     /**
      * 处理 Trips 按钮
      */
     @FXML
     private void handleTrips() {
-<span class="nc" id="L441">        System.out.println(&quot;🔘 Trips 按钮被点击&quot;);</span>
+<span class="nc" id="L466">        System.out.println(&quot;🔘 Trips 按钮被点击&quot;);</span>
         
-<span class="nc bnc" id="L443" title="All 2 branches missed.">        if (!SessionManager.isLoggedIn()) {</span>
-<span class="nc" id="L444">            Alert alert = new Alert(Alert.AlertType.WARNING);</span>
-<span class="nc" id="L445">            alert.setTitle(&quot;need login&quot;);</span>
-<span class="nc" id="L446">            alert.setHeaderText(null);</span>
-<span class="nc" id="L447">            alert.setContentText(&quot;please log in first&quot;);</span>
-<span class="nc" id="L448">            ButtonType loginBtn = new ButtonType(&quot;Login&quot;);</span>
-<span class="nc" id="L449">            ButtonType cancelBtn = new ButtonType(&quot;Close&quot;, ButtonBar.ButtonData.CANCEL_CLOSE);</span>
+<span class="nc bnc" id="L468" title="All 2 branches missed.">        if (!SessionManager.isLoggedIn()) {</span>
+<span class="nc" id="L469">            Alert alert = new Alert(Alert.AlertType.WARNING);</span>
+<span class="nc" id="L470">            alert.setTitle(&quot;need login&quot;);</span>
+<span class="nc" id="L471">            alert.setHeaderText(null);</span>
+<span class="nc" id="L472">            alert.setContentText(&quot;please log in first&quot;);</span>
+<span class="nc" id="L473">            ButtonType loginBtn = new ButtonType(&quot;Login&quot;);</span>
+<span class="nc" id="L474">            ButtonType cancelBtn = new ButtonType(&quot;Close&quot;, ButtonBar.ButtonData.CANCEL_CLOSE);</span>
 
-<span class="nc" id="L451">            alert.getButtonTypes().setAll(loginBtn, cancelBtn);</span>
+<span class="nc" id="L476">            alert.getButtonTypes().setAll(loginBtn, cancelBtn);</span>
 
-<span class="nc" id="L453">            Optional&lt;ButtonType&gt; result = alert.showAndWait();</span>
+<span class="nc" id="L478">            Optional&lt;ButtonType&gt; result = alert.showAndWait();</span>
 
-<span class="nc bnc" id="L455" title="All 4 branches missed.">            if (result.isPresent() &amp;&amp; result.get() == loginBtn) {</span>
-<span class="nc" id="L456">                System.out.println(&quot;➡ 用户选择登录，导航到login&quot;);</span>
-<span class="nc" id="L457">                navigateToLogin(); </span>
+<span class="nc bnc" id="L480" title="All 4 branches missed.">            if (result.isPresent() &amp;&amp; result.get() == loginBtn) {</span>
+<span class="nc" id="L481">                System.out.println(&quot;➡ 用户选择登录，导航到login&quot;);</span>
+<span class="nc" id="L482">                navigateToLogin(); </span>
             }
-<span class="nc" id="L459">            return;</span>
+<span class="nc" id="L484">            return;</span>
         }
         
-<span class="nc" id="L462">        navigateToBooking();</span>
-<span class="nc" id="L463">        System.out.println(&quot;✅ 跳转到我的订单页面&quot;);</span>
-<span class="nc" id="L464">    }</span>
+<span class="nc" id="L487">        navigateToBooking();</span>
+<span class="nc" id="L488">        System.out.println(&quot;✅ 跳转到我的订单页面&quot;);</span>
+<span class="nc" id="L489">    }</span>
     
     /**
      * 跳转到用户预订页面
      */
     private void navigateToBooking() {
         try {
-<span class="nc" id="L471">            NavigationManager.getInstance().push(</span>
+<span class="nc" id="L496">            NavigationManager.getInstance().push(</span>
                 &quot;/com/hotelbooking/view/my_bookings.fxml&quot;,
                 &quot;Bookings&quot;
             );
-<span class="nc" id="L475">            FXMLLoader loader = new FXMLLoader(</span>
-<span class="nc" id="L476">                getClass().getResource(&quot;/com/hotelbooking/view/my_bookings.fxml&quot;)</span>
+<span class="nc" id="L500">            FXMLLoader loader = new FXMLLoader(</span>
+<span class="nc" id="L501">                getClass().getResource(&quot;/com/hotelbooking/view/my_bookings.fxml&quot;)</span>
             );
-<span class="nc" id="L478">            Parent root = loader.load();</span>
+<span class="nc" id="L503">            Parent root = loader.load();</span>
             
-<span class="nc" id="L480">            Stage stage = (Stage) btnLogin.getScene().getWindow();</span>
-<span class="nc" id="L481">            stage.setScene(new Scene(root));</span>
-<span class="nc" id="L482">            stage.setTitle(&quot;Bookings&quot;);</span>
+<span class="nc" id="L505">            Stage stage = (Stage) btnLogin.getScene().getWindow();</span>
+<span class="nc" id="L506">            stage.setScene(new Scene(root));</span>
+<span class="nc" id="L507">            stage.setTitle(&quot;Bookings&quot;);</span>
             
-<span class="nc" id="L484">            System.out.println(&quot;✅ 跳转到用户预订&quot;);</span>
+<span class="nc" id="L509">            System.out.println(&quot;✅ 跳转到用户预订&quot;);</span>
             
-<span class="nc" id="L486">        } catch (Exception e) {</span>
-<span class="nc" id="L487">            System.err.println(&quot;❌ 跳转失败: &quot; + e.getMessage());</span>
-<span class="nc" id="L488">        }</span>
-<span class="nc" id="L489">    }</span>
+<span class="nc" id="L511">        } catch (Exception e) {</span>
+<span class="nc" id="L512">            System.err.println(&quot;❌ 跳转失败: &quot; + e.getMessage());</span>
+<span class="nc" id="L513">        }</span>
+<span class="nc" id="L514">    }</span>
     
     @FXML
     private void handleLogin() {
-<span class="nc bnc" id="L493" title="All 2 branches missed.">        if (SessionManager.isLoggedIn()) {</span>
-<span class="nc" id="L494">            showUserMenu();</span>
+<span class="nc bnc" id="L518" title="All 2 branches missed.">        if (SessionManager.isLoggedIn()) {</span>
+<span class="nc" id="L519">            showUserMenu();</span>
         } else {
-<span class="nc" id="L496">            navigateToLogin();</span>
+<span class="nc" id="L521">            navigateToLogin();</span>
         }
-<span class="nc" id="L498">    }</span>
+<span class="nc" id="L523">    }</span>
     
     private void showUserMenu() {
-<span class="nc" id="L501">        ContextMenu contextMenu = new ContextMenu();</span>
+<span class="nc" id="L526">        ContextMenu contextMenu = new ContextMenu();</span>
         
-<span class="nc" id="L503">        MenuItem profileItem = new MenuItem(&quot;👤 My Profile&quot;);</span>
-<span class="nc" id="L504">        profileItem.setOnAction(e -&gt; navigateToProfile());</span>
+<span class="nc" id="L528">        MenuItem profileItem = new MenuItem(&quot;👤 My Profile&quot;);</span>
+<span class="nc" id="L529">        profileItem.setOnAction(e -&gt; navigateToProfile());</span>
         
-<span class="nc" id="L506">        MenuItem logoutItem = new MenuItem(&quot;🚪 Logout&quot;);</span>
-<span class="nc" id="L507">        logoutItem.setOnAction(e -&gt; handleLogout());</span>
+<span class="nc" id="L531">        MenuItem logoutItem = new MenuItem(&quot;🚪 Logout&quot;);</span>
+<span class="nc" id="L532">        logoutItem.setOnAction(e -&gt; handleLogout());</span>
         
-<span class="nc" id="L509">        contextMenu.getItems().addAll(profileItem, logoutItem);</span>
-<span class="nc" id="L510">        contextMenu.show(btnLogin, javafx.geometry.Side.BOTTOM, 0, 5);</span>
-<span class="nc" id="L511">    }</span>
+<span class="nc" id="L534">        contextMenu.getItems().addAll(profileItem, logoutItem);</span>
+<span class="nc" id="L535">        contextMenu.show(btnLogin, javafx.geometry.Side.BOTTOM, 0, 5);</span>
+<span class="nc" id="L536">    }</span>
     
     /**
      * 跳转到用户资料页面
      */
     private void navigateToProfile() {
         try {
-<span class="nc" id="L518">            FXMLLoader loader = new FXMLLoader(</span>
-<span class="nc" id="L519">                getClass().getResource(&quot;/com/hotelbooking/view/user_profile.fxml&quot;)</span>
+<span class="nc" id="L543">            FXMLLoader loader = new FXMLLoader(</span>
+<span class="nc" id="L544">                getClass().getResource(&quot;/com/hotelbooking/view/user_profile.fxml&quot;)</span>
             );
-<span class="nc" id="L521">            Parent root = loader.load();</span>
+<span class="nc" id="L546">            Parent root = loader.load();</span>
             
-<span class="nc" id="L523">            Stage stage = (Stage) btnLogin.getScene().getWindow();</span>
-<span class="nc" id="L524">            stage.setScene(new Scene(root));</span>
-<span class="nc" id="L525">            stage.setTitle(&quot;User Profile&quot;);</span>
+<span class="nc" id="L548">            Stage stage = (Stage) btnLogin.getScene().getWindow();</span>
+<span class="nc" id="L549">            stage.setScene(new Scene(root));</span>
+<span class="nc" id="L550">            stage.setTitle(&quot;User Profile&quot;);</span>
             
-<span class="nc" id="L527">        } catch (Exception e) {</span>
-<span class="nc" id="L528">            System.err.println(&quot;❌ 跳转失败: &quot; + e.getMessage());</span>
-<span class="nc" id="L529">            e.printStackTrace();</span>
-<span class="nc" id="L530">        }</span>
-<span class="nc" id="L531">    }</span>
+<span class="nc" id="L552">        } catch (Exception e) {</span>
+<span class="nc" id="L553">            System.err.println(&quot;❌ 跳转失败: &quot; + e.getMessage());</span>
+<span class="nc" id="L554">            e.printStackTrace();</span>
+<span class="nc" id="L555">        }</span>
+<span class="nc" id="L556">    }</span>
     
     private void navigateToLogin() {
         try {
-<span class="nc" id="L535">            NavigationManager.getInstance().push(</span>
+<span class="nc" id="L560">            NavigationManager.getInstance().push(</span>
                 &quot;/com/hotelbooking/view/login.fxml&quot;,
                 &quot;User Login&quot;
             );
-<span class="nc" id="L539">            FXMLLoader loader = new FXMLLoader(</span>
-<span class="nc" id="L540">                getClass().getResource(&quot;/com/hotelbooking/view/login.fxml&quot;)</span>
+<span class="nc" id="L564">            FXMLLoader loader = new FXMLLoader(</span>
+<span class="nc" id="L565">                getClass().getResource(&quot;/com/hotelbooking/view/login.fxml&quot;)</span>
             );
-<span class="nc" id="L542">            Parent root = loader.load();</span>
-<span class="nc" id="L543">            Stage stage = (Stage) btnLogin.getScene().getWindow();</span>
-<span class="nc" id="L544">            stage.setScene(new Scene(root));</span>
-<span class="nc" id="L545">            stage.setTitle(&quot;User Login&quot;);</span>
-<span class="nc" id="L546">        } catch (Exception e) {</span>
-<span class="nc" id="L547">            e.printStackTrace();</span>
-<span class="nc" id="L548">        }</span>
-<span class="nc" id="L549">    }</span>
+<span class="nc" id="L567">            Parent root = loader.load();</span>
+<span class="nc" id="L568">            Stage stage = (Stage) btnLogin.getScene().getWindow();</span>
+<span class="nc" id="L569">            stage.setScene(new Scene(root));</span>
+<span class="nc" id="L570">            stage.setTitle(&quot;User Login&quot;);</span>
+<span class="nc" id="L571">        } catch (Exception e) {</span>
+<span class="nc" id="L572">            e.printStackTrace();</span>
+<span class="nc" id="L573">        }</span>
+<span class="nc" id="L574">    }</span>
     
     private void handleLogout() {
-<span class="nc" id="L552">        SessionManager.logout();</span>
-<span class="nc" id="L553">        updateWelcomeMessage();</span>
-<span class="nc" id="L554">        updateLoginButton();</span>
+<span class="nc" id="L577">        SessionManager.logout();</span>
+<span class="nc" id="L578">        updateWelcomeMessage();</span>
+<span class="nc" id="L579">        updateLoginButton();</span>
         
-<span class="nc" id="L556">        Alert alert = new Alert(Alert.AlertType.INFORMATION);</span>
-<span class="nc" id="L557">        alert.setTitle(&quot;Logout Successful&quot;);</span>
-<span class="nc" id="L558">        alert.setContentText(&quot;You have successfully logged out&quot;);</span>
-<span class="nc" id="L559">        alert.showAndWait();</span>
-<span class="nc" id="L560">    }</span>
+<span class="nc" id="L581">        Alert alert = new Alert(Alert.AlertType.INFORMATION);</span>
+<span class="nc" id="L582">        alert.setTitle(&quot;Logout Successful&quot;);</span>
+<span class="nc" id="L583">        alert.setContentText(&quot;You have successfully logged out&quot;);</span>
+<span class="nc" id="L584">        alert.showAndWait();</span>
+<span class="nc" id="L585">    }</span>
     
     // ==================== 数据获取方法 ====================
     
     public int getRoomCount() {
-<span class="nc" id="L565">        return roomCount;</span>
+<span class="nc" id="L590">        return roomCount;</span>
     }
     
     public int getAdultCount() {
-<span class="nc" id="L569">        return adultCount;</span>
+<span class="nc" id="L594">        return adultCount;</span>
     }
     
     public int getChildCount() {
-<span class="nc" id="L573">        return childCount;</span>
+<span class="nc" id="L598">        return childCount;</span>
     }
     
     public List&lt;Integer&gt; getChildrenAges() {
-<span class="nc" id="L577">        return new ArrayList&lt;&gt;(childrenAges);</span>
+<span class="nc" id="L602">        return new ArrayList&lt;&gt;(childrenAges);</span>
     }
+
+
+    private void showAlert(String title, String message) {
+        // Create an alert of type ERROR
+<span class="nc" id="L608">        Alert alert = new Alert(Alert.AlertType.ERROR);</span>
+<span class="nc" id="L609">        alert.setTitle(title);</span>
+<span class="nc" id="L610">        alert.setHeaderText(null);  // No header</span>
+<span class="nc" id="L611">        alert.setContentText(message);  // Display the message</span>
+
+        // Show the alert and wait for user interaction
+<span class="nc" id="L614">        alert.showAndWait();</span>
+<span class="nc" id="L615">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

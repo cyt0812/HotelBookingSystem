@@ -16,9 +16,9 @@ import java.sql.SQLException;
     static {
         // 检查是否有测试环境指定的数据库URL
 <span class="fc" id="L18">        String testUrl = System.getProperty(&quot;test.derby.url&quot;);</span>
-<span class="pc bpc" id="L19" title="2 of 4 branches missed.">        if (testUrl != null &amp;&amp; !testUrl.isEmpty()) {</span>
-<span class="fc" id="L20">            URL = testUrl;</span>
-<span class="fc" id="L21">            System.out.println(&quot;测试模式：使用数据库 &quot; + URL);</span>
+<span class="pc bpc" id="L19" title="3 of 4 branches missed.">        if (testUrl != null &amp;&amp; !testUrl.isEmpty()) {</span>
+<span class="nc" id="L20">            URL = testUrl;</span>
+<span class="nc" id="L21">            System.out.println(&quot;测试模式：使用数据库 &quot; + URL);</span>
         }
         
         try {

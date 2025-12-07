@@ -2,6 +2,9 @@
 
 import com.hotelbooking.entity.User;
 import com.hotelbooking.dao.UserDAO;
+import com.hotelbooking.exception.BusinessException;
+import com.hotelbooking.exception.ErrorType;
+import com.hotelbooking.exception.ValidationException;
 import com.hotelbooking.service.UserService;
 import com.hotelbooking.util.NavigationManager;
 import com.hotelbooking.util.SessionManager;
@@ -12,121 +15,136 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-<span class="nc" id="L15">public class LoginController {</span>
-    
+<span class="nc" id="L18">public class LoginController {</span>
+
     @FXML private TextField usernameField;
     @FXML private TextField emailField;
     @FXML private TextField confirmPasswordField;
     @FXML private PasswordField passwordField;
     @FXML private Button loginButton;
     @FXML private Label errorLabel;
-    
-<span class="nc" id="L24">    UserDAO userDAO = new UserDAO();</span>
-<span class="nc" id="L25">    private UserService userService = new UserService(userDAO);</span>
-    
+
+<span class="nc" id="L27">    UserDAO userDAO = new UserDAO();</span>
+<span class="nc" id="L28">    private UserService userService = new UserService(userDAO);</span>
+
     @FXML
     public void initialize() {
-<span class="nc" id="L29">        System.out.println(&quot;✅ 登录页面初始化&quot;);</span>
-        
-        // 清空错误提示
-<span class="nc bnc" id="L32" title="All 2 branches missed.">        if (errorLabel != null) {</span>
-<span class="nc" id="L33">            errorLabel.setText(&quot;&quot;);</span>
+<span class="nc" id="L32">        System.out.println(&quot;✅ Login page initialized&quot;);</span>
+
+        // Clear error message
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        if (errorLabel != null) {</span>
+<span class="nc" id="L36">            errorLabel.setText(&quot;&quot;);</span>
         }
-<span class="nc" id="L35">    }</span>
-    
+<span class="nc" id="L38">    }</span>
+
     /**
-     * 处理登录
+     * Handle login
      */
-    
     @FXML
     private void handleLogin() {
-<span class="nc" id="L43">        System.out.println(&quot;🔘 登录按钮被点击&quot;);</span>
+<span class="nc" id="L45">        System.out.println(&quot;🔘 Login button clicked&quot;);</span>
 
-        // 验证输入
-<span class="nc bnc" id="L46" title="All 4 branches missed.">        if (usernameField == null || passwordField == null) {</span>
-<span class="nc" id="L47">            showError(&quot;界面初始化失败&quot;);</span>
-<span class="nc" id="L48">            return;</span>
+        // Input validation
+<span class="nc bnc" id="L48" title="All 4 branches missed.">        if (usernameField == null || passwordField == null) {</span>
+<span class="nc" id="L49">            showError(&quot;UI initialization failed&quot;);</span>
+<span class="nc" id="L50">            return;</span>
         }
 
-<span class="nc" id="L51">        String username = usernameField.getText().trim();</span>
-<span class="nc" id="L52">        String password = passwordField.getText();</span>
+<span class="nc" id="L53">        String username = usernameField.getText().trim();</span>
+<span class="nc" id="L54">        String password = passwordField.getText();</span>
 
-<span class="nc bnc" id="L54" title="All 4 branches missed.">        if (username.isEmpty() || password.isEmpty()) {</span>
-<span class="nc" id="L55">            showError(&quot;用户名和密码不能为空&quot;);</span>
-<span class="nc" id="L56">            return;</span>
+<span class="nc bnc" id="L56" title="All 4 branches missed.">        if (username.isEmpty() || password.isEmpty()) {</span>
+<span class="nc" id="L57">            showError(&quot;Username and password cannot be empty&quot;);</span>
+<span class="nc" id="L58">            return;</span>
         }
 
-        // 调用 UserService 登录（不再使用 Optional）
-<span class="nc" id="L60">        User user = userService.loginUser(username, password); // 注意这里返回 User 或 null</span>
+        try {
+            // Call UserService to login (no longer using Optional)
+<span class="nc" id="L63">            User user = userService.loginUser(username, password); // Returns User or null</span>
 
-<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (user != null) {</span>
-            // 登录成功
-<span class="nc" id="L64">            SessionManager.login(user);</span>
-<span class="nc" id="L65">            navigateToMainDashboard();</span>
-        } else {
-            // 用户不存在或密码错误
-<span class="nc" id="L68">            showError(&quot;用户名或密码错误&quot;);</span>
-        }
-<span class="nc" id="L70">    }</span>
-    
+<span class="nc bnc" id="L65" title="All 2 branches missed.">            if (user != null) {</span>
+                // Login successful
+<span class="nc" id="L67">                SessionManager.login(user);</span>
+<span class="nc" id="L68">                navigateToMainDashboard();</span>
+            } else {
+                // This case shouldn't be hit since it's already handled by the loginUser method
+                // User does not exist or password is incorrect
+<span class="nc" id="L72">                showError(&quot;Incorrect username or password&quot;);</span>
+            }
+<span class="nc" id="L74">        } catch (ValidationException e) {</span>
+            // Catch validation exception from frontend
+<span class="nc" id="L76">            showError(e.getMessage());  // Show invalid input message</span>
+<span class="nc" id="L77">        } catch (BusinessException e) {</span>
+            // Catch business exception
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            if (e.getErrorType() == ErrorType.INVALID_CREDENTIALS) {</span>
+<span class="nc" id="L80">                showError(&quot;Incorrect username or password&quot;);  // Update error message here</span>
+            } else {
+<span class="nc" id="L82">                showError(&quot;Login failed, please try again&quot;);</span>
+            }
+<span class="nc" id="L84">        } catch (Exception e) {</span>
+<span class="nc" id="L85">            showError(&quot;Login failed, please try again&quot;);</span>
+<span class="nc" id="L86">            e.printStackTrace();  // Print stack trace for debugging</span>
+<span class="nc" id="L87">        }</span>
+<span class="nc" id="L88">    }</span>
+
     /**
-     * 跳转到注册页面
+     * Navigate to the register page
      */
     @FXML
     private void goToRegister() {
         try {
-<span class="nc" id="L78">            FXMLLoader loader = new FXMLLoader(</span>
-<span class="nc" id="L79">                getClass().getResource(&quot;/com/hotelbooking/view/register.fxml&quot;)</span>
+<span class="nc" id="L96">            FXMLLoader loader = new FXMLLoader(</span>
+<span class="nc" id="L97">                getClass().getResource(&quot;/com/hotelbooking/view/register.fxml&quot;)</span>
             );
-<span class="nc" id="L81">            Parent root = loader.load();</span>
-<span class="nc" id="L82">            Stage stage = (Stage) loginButton.getScene().getWindow();</span>
-<span class="nc" id="L83">            stage.setScene(new Scene(root));</span>
-<span class="nc" id="L84">            stage.setTitle(&quot;Register&quot;);</span>
-<span class="nc" id="L85">        } catch (Exception e) {</span>
-<span class="nc" id="L86">            e.printStackTrace();</span>
-<span class="nc" id="L87">        }</span>
-<span class="nc" id="L88">    }</span>
-    
+<span class="nc" id="L99">            Parent root = loader.load();</span>
+<span class="nc" id="L100">            Stage stage = (Stage) loginButton.getScene().getWindow();</span>
+<span class="nc" id="L101">            stage.setScene(new Scene(root));</span>
+<span class="nc" id="L102">            stage.setTitle(&quot;Register&quot;);</span>
+<span class="nc" id="L103">        } catch (Exception e) {</span>
+<span class="nc" id="L104">            e.printStackTrace();</span>
+<span class="nc" id="L105">        }</span>
+<span class="nc" id="L106">    }</span>
+
     /**
-     * 返回主页
+     * Return to the home page
      */
     @FXML
     private void backToHome() {
-<span class="nc" id="L95">        navigateToMainDashboard();</span>
-<span class="nc" id="L96">    }</span>
-    
+<span class="nc" id="L113">        navigateToMainDashboard();</span>
+<span class="nc" id="L114">    }</span>
+
     /**
-     * 跳转到主界面
+     * Navigate to the main dashboard
      */
     private void navigateToMainDashboard() {
         try {
-            // 在任何导航前调用
-<span class="nc" id="L104">            NavigationManager.getInstance().push(</span>
+            // Call before any navigation
+<span class="nc" id="L122">            NavigationManager.getInstance().push(</span>
                 &quot;/com/hotelbooking/view/main_dashboard.fxml&quot;,
                 &quot;Hotel Booking System&quot;
             );
-<span class="nc" id="L108">            FXMLLoader loader = new FXMLLoader(</span>
-<span class="nc" id="L109">                getClass().getResource(&quot;/com/hotelbooking/view/main_dashboard.fxml&quot;)</span>
+<span class="nc" id="L126">            FXMLLoader loader = new FXMLLoader(</span>
+<span class="nc" id="L127">                getClass().getResource(&quot;/com/hotelbooking/view/main_dashboard.fxml&quot;)</span>
             );
-<span class="nc" id="L111">            Parent root = loader.load();</span>
-<span class="nc" id="L112">            Stage stage = (Stage) loginButton.getScene().getWindow();</span>
-<span class="nc" id="L113">            stage.setScene(new Scene(root));</span>
-<span class="nc" id="L114">            stage.setTitle(&quot;Hotel Booking System&quot;);</span>
-<span class="nc" id="L115">        } catch (Exception e) {</span>
-<span class="nc" id="L116">            e.printStackTrace();</span>
-<span class="nc" id="L117">        }</span>
-<span class="nc" id="L118">    }</span>
-    
+<span class="nc" id="L129">            Parent root = loader.load();</span>
+<span class="nc" id="L130">            Stage stage = (Stage) loginButton.getScene().getWindow();</span>
+<span class="nc" id="L131">            stage.setScene(new Scene(root));</span>
+<span class="nc" id="L132">            stage.setTitle(&quot;Hotel Booking System&quot;);</span>
+<span class="nc" id="L133">        } catch (Exception e) {</span>
+<span class="nc" id="L134">            e.printStackTrace();</span>
+<span class="nc" id="L135">        }</span>
+<span class="nc" id="L136">    }</span>
+
     /**
-     * 显示错误信息
+     * Show error message
      */
     private void showError(String message) {
-<span class="nc bnc" id="L124" title="All 2 branches missed.">    if (errorLabel != null) {</span>
-<span class="nc" id="L125">        errorLabel.setText(message);</span>
-<span class="nc" id="L126">        System.out.println(&quot;Error displayed: &quot; + message);  // 这里添加调试日志</span>
-    } else {
-<span class="nc" id="L128">        System.out.println(&quot;Error label is null!&quot;);  // 调试: 检查 errorLabel 是否正确绑定</span>
-    }
-<span class="nc" id="L130">}</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        if (errorLabel != null) {</span>
+<span class="nc" id="L143">            errorLabel.setText(message);</span>
+<span class="nc" id="L144">            System.out.println(&quot;Error displayed: &quot; + message);  // Debug log</span>
+        } else {
+<span class="nc" id="L146">            System.out.println(&quot;Error label is null!&quot;);  // Debug: check if errorLabel is correctly bound</span>
+        }
+<span class="nc" id="L148">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -1,7 +1,7 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 HotelBookingSystem,com.hotelbooking.controller,UserController,174,0,12,0,40,0,18,0,12,0
-HotelBookingSystem,com.hotelbooking.controller,TopNavigationController,489,0,24,0,151,0,38,0,26,0
 HotelBookingSystem,com.hotelbooking.controller,EditProfileController,350,0,42,0,106,0,34,0,13,0
+HotelBookingSystem,com.hotelbooking.controller,TopNavigationController,489,0,24,0,151,0,38,0,26,0
 HotelBookingSystem,com.hotelbooking.controller,HotelRoomsController,657,0,30,0,139,0,28,0,13,0
 HotelBookingSystem,com.hotelbooking.controller,AdminController,7,0,0,0,3,0,2,0,2,0
 HotelBookingSystem,com.hotelbooking.controller,UserProfileController,315,0,14,0,91,0,18,0,11,0
@@ -12,9 +12,9 @@ HotelBookingSystem,com.hotelbooking.controller,MyBookingsController.1.new Runnab
 HotelBookingSystem,com.hotelbooking.controller,MyBookingsController.1.new Runnable() {...},18,0,0,0,3,0,2,0,2,0
 HotelBookingSystem,com.hotelbooking.controller,MyBookingsController.1.new Runnable() {...},16,0,0,0,3,0,2,0,2,0
 HotelBookingSystem,com.hotelbooking.controller,SearchHotelsController,433,0,10,0,97,0,16,0,11,0
-HotelBookingSystem,com.hotelbooking.controller,LoginController,162,0,14,0,50,0,14,0,7,0
+HotelBookingSystem,com.hotelbooking.controller,LoginController,188,0,16,0,60,0,15,0,7,0
 HotelBookingSystem,com.hotelbooking.controller,RegisterController,175,26,16,2,54,8,12,3,3,3
-HotelBookingSystem,com.hotelbooking.controller,MainDashboardController,1117,0,70,0,264,0,73,0,38,0
+HotelBookingSystem,com.hotelbooking.controller,MainDashboardController,1185,0,76,0,282,0,78,0,40,0
 HotelBookingSystem,com.hotelbooking.controller,BookingController,83,222,6,10,30,45,9,19,3,17
 HotelBookingSystem,com.hotelbooking.controller,PaymentController,714,0,78,0,164,0,57,0,18,0
 HotelBookingSystem,com.hotelbooking.controller,MyBookingsController,807,0,23,0,184,0,44,0,31,0
@@ -42,7 +42,7 @@ HotelBookingSystem,com.hotelbooking.exception,UserNotFoundException,13,0,0,0,6,0
 HotelBookingSystem,com.hotelbooking.exception,GlobalExceptionHandler,71,85,3,1,19,20,7,4,5,4
 HotelBookingSystem,com.hotelbooking.exception,BusinessException,0,41,0,0,0,14,0,5,0,5
 HotelBookingSystem,com.hotelbooking.util,NavigationManager.NavigationHistory,0,21,0,0,0,9,0,2,0,2
-HotelBookingSystem,com.hotelbooking.util,DatabaseConnection,83,46,12,4,28,15,11,4,3,4
+HotelBookingSystem,com.hotelbooking.util,DatabaseConnection,92,37,13,3,30,13,11,4,3,4
 HotelBookingSystem,com.hotelbooking.util,DatabaseInitializer,39,512,4,6,12,119,4,6,1,4
 HotelBookingSystem,com.hotelbooking.util,SceneManager,52,0,0,0,17,0,4,0,4,0
 HotelBookingSystem,com.hotelbooking.util,NavigationManager,0,153,1,11,0,36,1,15,0,10
