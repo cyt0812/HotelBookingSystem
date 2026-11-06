@@ -10,7 +10,7 @@
       spacing="5">
     
     <!-- 显示按钮 - 点击展开选择器 -->
-    <Label text="Rooms & Guests" 
+    <Label text="Rooms &amp; Guests" 
            style="-fx-font-size: 12px; -fx-text-fill: #666666;"/>
     
     <Button fx:id="btnRoomsGuests" 

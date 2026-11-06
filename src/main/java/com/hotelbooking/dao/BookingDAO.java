@@ -37,15 +37,10 @@ public class BookingDAO {
                     }
                 }
             }
-<<<<<<< HEAD
             System.out.println("✅ Creating booking record: " + booking.getBookingId());
             return booking;
         } catch (SQLException e) {
             System.out.println("❌ Failed to create booking: " + e.getMessage());
-=======
-            return booking;
-        } catch (SQLException e) {
->>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             throw new RuntimeException("Error creating booking", e);
         }
     }
@@ -57,10 +52,7 @@ public class BookingDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, id);
-<<<<<<< HEAD
             System.out.println("✅ Querying booking by ID: " + id);
-=======
->>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             ResultSet rs = stmt.executeQuery();
             
             if (rs.next()) {
@@ -83,10 +75,7 @@ public class BookingDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, userId);
-<<<<<<< HEAD
             System.out.println("✅ Querying bookings by user ID: " + userId);
-=======
->>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             ResultSet rs = stmt.executeQuery();
             
             while (rs.next()) {
@@ -95,10 +84,7 @@ public class BookingDAO {
             return bookings;
             
         } catch (SQLException e) {
-<<<<<<< HEAD
             System.out.println("❌ Failed to query bookings: " + e.getMessage());
-=======
->>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             throw new RuntimeException("Error getting bookings by user id: " + userId, e);
         }
     }
@@ -153,17 +139,11 @@ public class BookingDAO {
             stmt.setInt(2, bookingId);
             
             int affectedRows = stmt.executeUpdate();
-<<<<<<< HEAD
             System.out.println("✅ Updating booking status: " + bookingId + " -> " + status);
             return affectedRows > 0;
             
         } catch (SQLException e) {
             System.out.println("❌ Failed to update booking status: " + e.getMessage());
-=======
-            return affectedRows > 0;
-            
-        } catch (SQLException e) {
->>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
             throw new RuntimeException("Error updating booking status: " + bookingId, e);
         }
     }

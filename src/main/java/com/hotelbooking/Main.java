@@ -4,10 +4,7 @@ package com.hotelbooking;
 import com.hotelbooking.util.DatabaseInitializer;
 import com.hotelbooking.util.NavigationManager;
 import com.hotelbooking.util.SceneManager;
-<<<<<<< HEAD
 import com.hotelbooking.util.DatabaseConnection;
-=======
->>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -47,7 +44,6 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-<<<<<<< HEAD
     
     @Override
     public void stop() throws Exception {
@@ -55,8 +51,4 @@ public class Main extends Application {
         System.out.println("Closing application, shutting down database...");
         DatabaseConnection.shutdownDatabase();
     }
-=======
-
-
->>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
 }

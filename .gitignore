@@ -1,0 +1,16 @@
+# Maven 构建产物
+target/
+
+# Derby 运行时数据库（由程序自动生成，不应提交）
+database/
+
+# IDE
+.nb-gradle/
+nbproject/private/
+nbbuild/
+nbdist/
+.idea/
+*.iml
+.classpath
+.project
+.settings/

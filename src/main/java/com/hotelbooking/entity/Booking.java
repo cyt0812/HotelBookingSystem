@@ -10,11 +10,7 @@ import java.time.LocalDateTime;
 
 public class Booking {
     private Integer id;
-<<<<<<< HEAD
     private String bookingId;  // Add bookingId field
-=======
-    private String bookingId;  // 添加 bookingId 字段
->>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
     private Integer userId;
     private Integer hotelId;
     private Integer roomId;
@@ -24,20 +20,12 @@ public class Booking {
     private String status;
     private LocalDateTime createdAt;
     
-<<<<<<< HEAD
     // Default constructor
-=======
-    // 默认构造器
->>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
     public Booking() {
         this.createdAt = LocalDateTime.now();
     }
     
-<<<<<<< HEAD
     // Parameterized constructor
-=======
-    // 带参数构造器
->>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
     public Booking(Integer userId, Integer hotelId, Integer roomId, LocalDate checkInDate, 
                   LocalDate checkOutDate, BigDecimal totalPrice, String status) {
         this.userId = userId;
@@ -48,17 +36,10 @@ public class Booking {
         this.totalPrice = totalPrice;
         this.status = status;
         this.createdAt = LocalDateTime.now();
-<<<<<<< HEAD
         this.bookingId = "BOOK_" + System.currentTimeMillis() + "_" + userId;  // Auto-generate bookingId
     }
     
     // Getters and Setters
-=======
-        this.bookingId = "BOOK_" + System.currentTimeMillis() + "_" + userId;  // 自动生成 bookingId
-    }
-    
-    // Getter 和 Setter
->>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
     public Integer getId() {
         return id;
     }
@@ -68,11 +49,7 @@ public class Booking {
     }
     
     public String getBookingId() {
-<<<<<<< HEAD
         // Auto-generate bookingId if null
-=======
-        // 如果 bookingId 为 null，自动生成一个
->>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
         if (bookingId == null && userId != null) {
             bookingId = "BOOK_" + System.currentTimeMillis() + "_" + userId;
         }
@@ -151,11 +128,7 @@ public class Booking {
     public String toString() {
         return "Booking{" +
                 "id=" + id +
-<<<<<<< HEAD
                 ", bookingId='" + bookingId + "'" +  // Add bookingId to toString
-=======
-                ", bookingId='" + bookingId + '\'' +  // 添加 bookingId 到 toString
->>>>>>> 6649ffb6f11ba4a21e86e142d60c4668e7b802ab
                 ", userId=" + userId +
                 ", hotelId=" + hotelId +
                 ", roomId=" + roomId +
