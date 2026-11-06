@@ -1,10 +1,10 @@
-# HotelBookingSystem
+# HotelBookingSystem: Test Coverage & CI Workflow Extension
 
 ![Java CI with Maven](https://github.com/cyt0812/HotelBookingSystem/actions/workflows/maven.yml/badge.svg)
 
-A GUI-based Java hotel booking system built with Java 21, JavaFX 21, and Apache Derby.
+> **Note:** This repository is an extension of an existing JavaFX-based hotel booking system. Our team's focus for this iteration is **improving test coverage** (particularly the `controller` layer) and **establishing a robust collaborative CI/CD workflow**.
 
-This repository is an extension of an existing course project. Our team's focus for this iteration is **improving test coverage (especially the controller layer)** and **establishing a robust collaborative CI/CD workflow**.
+This project is built with Java 21, JavaFX 21, and Apache Derby.
 
 ## 👥 Team Members & Roles
 
