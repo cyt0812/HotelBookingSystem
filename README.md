@@ -143,10 +143,10 @@ python format_jacoco_report.py
 - `com.hotelbooking.util`: 81%
 - `com.hotelbooking.exception`: 78%
 - `com.hotelbooking.entity`: 76%
-- `com.hotelbooking.service`: 67%
+- `com.hotelbooking.service`: 68%
 - `com.hotelbooking.dao`: 56%
 - `com.hotelbooking`: 20%
-- `com.hotelbooking.controller`: 8% (needs improvement)
+- `com.hotelbooking.controller`: 7% (needs improvement)
 
 ## 📁 Project Structure
 
