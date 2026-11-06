@@ -17,7 +17,7 @@ A GUI-based Java hotel booking system for COMP603 Program Design & Construction 
 ## 👥 Team Members
 
 - **Xintong Wu** - Backend & Database Development
-- **Mcree** - GUI & Frontend Development
+- **Jiayi Mo** - GUI & Frontend Development
 - **Yuting Chen** - Testing & Integration
 
 ## 📋 Project Features
