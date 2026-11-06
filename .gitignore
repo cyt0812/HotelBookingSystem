@@ -14,3 +14,16 @@ nbdist/
 .classpath
 .project
 .settings/
+
+# Compiled Java files
+*.class
+
+# Backup files
+*.backup
+
+# Operating system files
+.DS_Store
+desktop.ini
+
+# Derby runtime log
+derby.log
