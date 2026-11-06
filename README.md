@@ -1,4 +1,6 @@
 # HotelBookingSystem
+![Java CI with Maven](https://github.com/cyt0812/HotelBookingSystem/actions/workflows/maven.yml/badge.svg)
+
 A GUI-based Java hotel booking system for COMP603 Program Design & Construction course at CJLU. Developed with JavaFX and Apache Derby.
 
 ## 🛠️ Tech Stack
