@@ -129,13 +129,13 @@ python format_jacoco_report.py
 ### Test Coverage
 
 **Current Coverage:**
-- Overall: 38%
-- Instructions: 38%
-- Branches: 34%
-- Complexity: 39%
-- Lines: 38%
-- Methods: 53%
-- Classes: 64%
+- Overall: 37%
+- Instructions: 37%
+- Branches: 32%
+- Complexity: 38%
+- Lines: 37%
+- Methods: 52%
+- Classes: 63%
 
 **Package Coverage:**
 - `com.hotelbooking.dto`: 100%
