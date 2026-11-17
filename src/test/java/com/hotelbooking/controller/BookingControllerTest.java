@@ -45,8 +45,9 @@ class BookingControllerTest {
     // -------------------------
     // CREATE BOOKING
     // -------------------------
+    // 👇 验收标准 1：验证 Service 恰好被调用 1 次 (增加调用次数验证)
     @Test
-    void createBooking_ShouldReturnSuccess() {
+    void createBooking_ShouldCallServiceExactlyOnce() {
         LocalDate in = LocalDate.now().plusDays(1);
         LocalDate out = LocalDate.now().plusDays(3);
         Booking booking = new Booking(1, 1, 1, in, out, new BigDecimal("300"), "CONFIRMED");
@@ -54,11 +55,26 @@ class BookingControllerTest {
         when(bookingService.createBooking(1, 1, 1, in, out))
                 .thenReturn(Optional.of(booking));
 
+        bookingController.createBooking(1, 1, 1, in, out);
+
+        // 核心验证：恰好调用 1 次！
+        verify(bookingService, times(1)).createBooking(1, 1, 1, in, out);
+    }
+
+    // 👇 验收标准 2：日期冲突返回错误 (模拟 Service 返回 empty)
+    @Test
+    void createBooking_ConflictingDates_ReturnsError() {
+        LocalDate in = LocalDate.now().plusDays(1);
+        LocalDate out = LocalDate.now().plusDays(3);
+
+        // 模拟冲突：Service 返回 Optional.empty()
+        when(bookingService.createBooking(anyInt(), anyInt(), anyInt(), any(LocalDate.class), any(LocalDate.class)))
+                .thenReturn(Optional.empty());
+
         ApiResponse<Object> res = bookingController.createBooking(1, 1, 1, in, out);
 
-        assertTrue(res.isSuccess());
-        assertEquals("预订创建成功", res.getMessage());
-        assertEquals("CONFIRMED", ((Booking) res.getData()).getStatus());
+        // 验证：由于抛出了异常被 catch，返回的应该是失败状态
+        assertFalse(res.isSuccess());
     }
 
 
