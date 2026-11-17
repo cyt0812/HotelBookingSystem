@@ -24,8 +24,17 @@ public class LoginController {
     @FXML private Button loginButton;
     @FXML private Label errorLabel;
 
-    UserDAO userDAO = new UserDAO();
-    private UserService userService = new UserService(userDAO);
+    private UserService userService;
+
+    // 生产代码用原来的无参构造
+    public LoginController() {
+        this.userService = new UserService(new UserDAO());
+    }
+
+    // 测试用的包可见构造器（把假 Service 塞进来）
+    LoginController(UserService userService) {
+        this.userService = userService;
+    }
 
     @FXML
     public void initialize() {
@@ -44,7 +53,6 @@ public class LoginController {
     private void handleLogin() {
         System.out.println("🔘 Login button clicked");
 
-        // Input validation
         if (usernameField == null || passwordField == null) {
             showError("UI initialization failed");
             return;
@@ -53,37 +61,45 @@ public class LoginController {
         String username = usernameField.getText().trim();
         String password = passwordField.getText();
 
-        if (username.isEmpty() || password.isEmpty()) {
+        // 调用抽出来的纯逻辑方法
+        boolean success = performLogin(username, password);
+
+        if (success) {
+            navigateToMainDashboard();
+        }
+    }
+
+    // 这是你抽出来的可测试方法，不依赖 JavaFX UI
+    boolean performLogin(String username, String password) {
+        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
             showError("Username and password cannot be empty");
-            return;
+            return false;
         }
 
         try {
-            // Call UserService to login (no longer using Optional)
-            User user = userService.loginUser(username, password); // Returns User or null
+            User user = userService.loginUser(username, password);
 
             if (user != null) {
-                // Login successful
-                SessionManager.login(user);
-                navigateToMainDashboard();
+                SessionManager.login(user); // 生产时正常登录
+                return true;
             } else {
-                // This case shouldn't be hit since it's already handled by the loginUser method
-                // User does not exist or password is incorrect
                 showError("Incorrect username or password");
+                return false;
             }
         } catch (ValidationException e) {
-            // Catch validation exception from frontend
-            showError(e.getMessage());  // Show invalid input message
+            showError(e.getMessage());
+            return false;
         } catch (BusinessException e) {
-            // Catch business exception
             if (e.getErrorType() == ErrorType.INVALID_CREDENTIALS) {
-                showError("Incorrect username or password");  // Update error message here
+                showError("Incorrect username or password");
             } else {
                 showError("Login failed, please try again");
             }
+            return false;
         } catch (Exception e) {
             showError("Login failed, please try again");
-            e.printStackTrace();  // Print stack trace for debugging
+            e.printStackTrace();
+            return false;
         }
     }
 
