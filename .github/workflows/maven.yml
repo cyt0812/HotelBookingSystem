@@ -23,7 +23,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build and Test with Maven
-        run: xvfb-run -a mvn -B clean test
+        run: xvfb-run -a mvn -B clean verify
         env:
           _JAVA_OPTIONS: -Dprism.order=sw
       - name: Upload JaCoCo Report

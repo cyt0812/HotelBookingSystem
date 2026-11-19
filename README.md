@@ -34,6 +34,7 @@ We use **JUnit 5** and **Mockito** for unit testing. To ensure code quality, we 
     *(View the report at `target/site/jacoco/index.html`)*
 *   **Current Coverage:** controller line coverage **58.7%** (1,095 / 1,864 lines), above the iteration target of 25%; overall line coverage **63.6%**.
 *   **Test Suite:** 420 tests, all passing.
+*   **Coverage Gate:** CI runs `mvn clean verify`, which fails the build if overall line coverage drops below 60%.
 
 ---
 
