@@ -14,6 +14,7 @@ nbdist/
 .classpath
 .project
 .settings/
+.vscode/
 
 # Compiled Java files
 *.class
