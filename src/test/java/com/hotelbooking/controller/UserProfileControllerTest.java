@@ -17,7 +17,7 @@ import static com.hotelbooking.test.JavaFxTestSupport.setField;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * UserProfileController 的标签填充与格式化工具方法测试。
+ * UserProfileController 的资料展示格式化测试。
  */
 class UserProfileControllerTest {
 
@@ -43,6 +43,7 @@ class UserProfileControllerTest {
             fullNameLabel = new Label();
             memberSinceLabel = new Label();
             roleLabel = new Label();
+
             setField(controller, "usernameLabel", usernameLabel);
             setField(controller, "emailLabel", emailLabel);
             setField(controller, "fullNameLabel", fullNameLabel);
@@ -57,37 +58,50 @@ class UserProfileControllerTest {
     }
 
     @Test
-    void initializeFillsProfileLabels() {
+    void initializePopulatesAllLabelsFromCurrentUser() {
+        User user = new User("alice", "alice@example.com", "secret1");
+        user.setFullName("Alice Chen");
+        user.setRole("ADMIN");
+        user.setCreatedAt(LocalDateTime.of(2025, 3, 4, 10, 0));
+        SessionManager.setCurrentUser(user);
+
+        runOnFxThread(controller::initialize);
+
         runOnFxThread(() -> {
-            User user = new User(5, "alice", "alice@example.com", "pw");
-            user.setFullName("Alice Chen");
-            user.setRole("ADMIN");
-            user.setCreatedAt(LocalDateTime.of(2026, 3, 8, 10, 30));
-            SessionManager.setCurrentUser(user);
-
-            controller.initialize();
-
             assertEquals("alice", usernameLabel.getText());
             assertEquals("alice@example.com", emailLabel.getText());
             assertEquals("Alice Chen", fullNameLabel.getText());
             assertEquals("Admin", roleLabel.getText());
-            assertEquals("Mar 08, 2026", memberSinceLabel.getText());
+            assertEquals("Mar 04, 2025", memberSinceLabel.getText());
         });
     }
 
     @Test
-    void initializeShowsNotSetWhenFullNameMissing() {
+    void initializeFallsBackWhenOptionalFieldsAreMissing() {
+        User user = new User("bob", "bob@example.com", "secret1");
+        user.setFullName(null);
+        user.setRole(null);
+        user.setCreatedAt(null);
+        SessionManager.setCurrentUser(user);
+
+        runOnFxThread(controller::initialize);
+
         runOnFxThread(() -> {
-            User user = new User(6, "bob", "bob@example.com", "pw");
-            user.setFullName("");
-            user.setRole("CUSTOMER");
-            SessionManager.setCurrentUser(user);
-
-            controller.initialize();
-
             assertEquals("Not set", fullNameLabel.getText());
-            assertEquals("Customer", roleLabel.getText());
+            assertEquals("User", roleLabel.getText());
+            assertEquals("Unknown", memberSinceLabel.getText());
         });
+    }
+
+    @Test
+    void initializeTreatsBlankFullNameAsNotSet() {
+        User user = new User("carol", "carol@example.com", "secret1");
+        user.setFullName("");
+        SessionManager.setCurrentUser(user);
+
+        runOnFxThread(controller::initialize);
+
+        runOnFxThread(() -> assertEquals("Not set", fullNameLabel.getText()));
     }
 
     @Test
