@@ -18,7 +18,10 @@ We have implemented a **GitHub Actions CI pipeline** and configured **Branch Pro
 
 *   **Continuous Integration:** Every Pull Request targeting the `master` branch triggers an automated `mvn clean test` run.
 *   **Quality Gate:** Pull Requests cannot be merged if the CI pipeline fails.
+*   **JaCoCo Report:** Each CI run publishes the coverage HTML report as a downloadable `jacoco-report` artifact.
+*   **CI Run History:** <https://github.com/cyt0812/HotelBookingSystem/actions/workflows/maven.yml>
 *   **Trial Change Evidence:** For an example of our workflow, review <https://github.com/cyt0812/HotelBookingSystem/pull/5>, where we cleaned up non-source files, verified by CI.
+*   **Test Evidence:** [PR #7](https://github.com/cyt0812/HotelBookingSystem/pull/7) (LoginController tests) and [PR #8](https://github.com/cyt0812/HotelBookingSystem/pull/8) (BookingController tests).
 
 ## 🧪 Testing & Coverage (New)
 
@@ -27,6 +30,8 @@ We use **JUnit 5** and **Mockito** for unit testing. To ensure code quality, we 
 *   **Run Tests:** `mvn clean test`
 *   **Generate Coverage Report:** `mvn clean test jacoco:report`
     *(View the report at `target/site/jacoco/index.html`)*
+*   **Current Coverage:** controller line coverage **57.3%** (1,070 / 1,867 lines); overall line coverage **62.9%**.
+*   **Test Suite:** 414 tests, all passing.
 
 ---
 

@@ -26,6 +26,9 @@ public class LoginController {
 
     private UserService userService;
 
+    // 最近一次展示给用户的错误信息（便于在无 JavaFX UI 的单元测试中断言）
+    String lastErrorMessage;
+
     // 生产代码用原来的无参构造
     public LoginController() {
         this.userService = new UserService(new UserDAO());
@@ -155,6 +158,7 @@ public class LoginController {
      * Show error message
      */
     private void showError(String message) {
+        lastErrorMessage = message;
         if (errorLabel != null) {
             errorLabel.setText(message);
             System.out.println("Error displayed: " + message);  // Debug log

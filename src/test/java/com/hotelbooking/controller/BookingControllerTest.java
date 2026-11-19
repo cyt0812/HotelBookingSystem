@@ -55,10 +55,11 @@ class BookingControllerTest {
         when(bookingService.createBooking(1, 1, 1, in, out))
                 .thenReturn(Optional.of(booking));
 
-        bookingController.createBooking(1, 1, 1, in, out);
+        ApiResponse<Object> res = bookingController.createBooking(1, 1, 1, in, out);
 
-        // 核心验证：恰好调用 1 次！
+        // 核心验证：恰好调用 1 次，且返回成功响应
         verify(bookingService, times(1)).createBooking(1, 1, 1, in, out);
+        assertTrue(res.isSuccess());
     }
 
     // 👇 验收标准 2：日期冲突返回错误 (模拟 Service 返回 empty)
