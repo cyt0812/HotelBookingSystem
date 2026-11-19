@@ -20,6 +20,8 @@ We have implemented a **GitHub Actions CI pipeline** and configured **Branch Pro
 *   **Quality Gate:** Pull Requests cannot be merged if the CI pipeline fails.
 *   **JaCoCo Report:** Each CI run publishes the coverage HTML report as a downloadable `jacoco-report` artifact.
 *   **CI Run History:** <https://github.com/cyt0812/HotelBookingSystem/actions/workflows/maven.yml>
+*   **Latest Verified Run:** <https://github.com/cyt0812/HotelBookingSystem/actions/runs/44477954916> (success, 39s, JaCoCo artifact published)
+*   **Submission Commit:** `0825fa0`
 *   **Trial Change Evidence:** For an example of our workflow, review <https://github.com/cyt0812/HotelBookingSystem/pull/5>, where we cleaned up non-source files, verified by CI.
 *   **Test Evidence:** [PR #7](https://github.com/cyt0812/HotelBookingSystem/pull/7) (LoginController tests) and [PR #8](https://github.com/cyt0812/HotelBookingSystem/pull/8) (BookingController tests).
 
