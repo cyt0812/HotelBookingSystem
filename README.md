@@ -14,10 +14,10 @@ This project is built with Java 21, JavaFX 21, and Apache Derby.
 
 ## ⚙️ CI Workflow & Collaboration (New)
 
-We have implemented a **GitHub Actions CI pipeline** and configured **Branch Protection** on the `master` branch to enforce software quality.
+We have implemented a **GitHub Actions CI pipeline** that runs automatically on every push and pull request to `master`, and we use feature branches plus Pull Requests as our collaboration workflow.
 
 *   **Continuous Integration:** Every Pull Request targeting the `master` branch triggers an automated `mvn clean test` run.
-*   **Quality Gate:** Pull Requests cannot be merged if the CI pipeline fails.
+*   **Branch Protection:** Enabled on `master` — direct pushes are blocked, changes must arrive through a Pull Request, and the `build` check (`Java CI with Maven`) must pass before merging. Force pushes and branch deletion are disabled, and the branch must be up to date with `master` before merging.
 *   **JaCoCo Report:** Each CI run publishes the coverage HTML report as a downloadable `jacoco-report` artifact.
 *   **CI Run History:** <https://github.com/cyt0812/HotelBookingSystem/actions/workflows/maven.yml>
 *   **Latest Verified Run:** <https://github.com/cyt0812/HotelBookingSystem/actions/runs/44477954916> (success, 39s, JaCoCo artifact published)
@@ -32,7 +32,7 @@ We use **JUnit 5** and **Mockito** for unit testing. To ensure code quality, we 
 *   **Run Tests:** `mvn clean test`
 *   **Generate Coverage Report:** `mvn clean test jacoco:report`
     *(View the report at `target/site/jacoco/index.html`)*
-*   **Current Coverage:** controller line coverage **57.3%** (1,070 / 1,867 lines); overall line coverage **62.9%**.
+*   **Current Coverage:** controller line coverage **57.4%** (1,070 / 1,864 lines), above the iteration target of 25%; overall line coverage **62.9%**.
 *   **Test Suite:** 414 tests, all passing.
 
 ---
@@ -91,6 +91,8 @@ We use **JUnit 5** and **Mockito** for unit testing. To ensure code quality, we 
 2. Open NetBeans 23 and select **File → Open Project**.
 3. Navigate to the project folder and open it.
 4. Right-click on the project and select **Run**.
+
+> `nbactions.xml` and `nb-configuration.xml` are shared NetBeans project settings and are intentionally version-controlled so the Run configuration (`mvn clean compile javafx:run`) works out of the box.
 
 ### Option 2: Using Maven (Command Line)
 

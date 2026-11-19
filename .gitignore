@@ -25,5 +25,10 @@ nbdist/
 .DS_Store
 desktop.ini
 
-# Derby runtime log
+# Derby runtime log and auto-generated config
 derby.log
+derby.properties
+
+# Generated debug artifacts
+classpath.txt
+test_output.txt
