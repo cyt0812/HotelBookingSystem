@@ -198,6 +198,8 @@ class MyBookingsControllerTest {
     @Test
     void getCurrentUserIdReflectsSession() {
         runOnFxThread(() -> {
+            // 显式清空会话，避免受其他测试类设置的静态状态影响（JUnit 执行顺序不固定）
+            SessionManager.logout();
             assertNull(invokeMethod(controller, "getCurrentUserId", new Class<?>[]{}));
 
             SessionManager.setCurrentUser(new User(42, "bob", "bob@example.com", "pw"));

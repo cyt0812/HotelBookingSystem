@@ -1,54 +1,136 @@
 package com.hotelbooking.controller;
 
-import com.hotelbooking.entity.User;
 import com.hotelbooking.service.UserService;
-import com.hotelbooking.util.SessionManager;
+import com.hotelbooking.test.JavaFxTestSupport;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.Mockito.*;
+import static com.hotelbooking.test.JavaFxTestSupport.invokeMethod;
+import static com.hotelbooking.test.JavaFxTestSupport.runOnFxThread;
+import static com.hotelbooking.test.JavaFxTestSupport.setField;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-public class RegisterControllerTest {
+/**
+ * RegisterController 的表单校验与失败提示测试。
+ * 成功注册分支会弹出 Alert 阻塞测试线程，因此不在单元测试范围内。
+ */
+class RegisterControllerTest {
 
-    @InjectMocks
     private RegisterController controller;
 
-    @Mock
-    private UserService userService;
+    private TextField usernameField;
+    private TextField emailField;
+    private PasswordField passwordField;
+    private PasswordField confirmPasswordField;
+    private CheckBox termsCheckbox;
+    private Label errorLabel;
 
-    private User testUser;
+    @BeforeAll
+    static void initJavaFx() {
+        JavaFxTestSupport.initToolkit();
+    }
 
     @BeforeEach
-    public void setUp() {
-        // Initialize mocks
-        MockitoAnnotations.openMocks(this);
+    void setUp() {
+        controller = new RegisterController();
+        runOnFxThread(() -> {
+            usernameField = new TextField();
+            emailField = new TextField();
+            passwordField = new PasswordField();
+            confirmPasswordField = new PasswordField();
+            termsCheckbox = new CheckBox();
+            errorLabel = new Label();
 
-        // Setup test user
-        testUser = new User();
-        testUser.setId(1);
-        testUser.setUsername("testuser");
-        testUser.setEmail("test@example.com");
+            setField(controller, "usernameField", usernameField);
+            setField(controller, "emailField", emailField);
+            setField(controller, "passwordField", passwordField);
+            setField(controller, "confirmPasswordField", confirmPasswordField);
+            setField(controller, "termsCheckbox", termsCheckbox);
+            setField(controller, "errorLabel", errorLabel);
+        });
     }
 
     @Test
-    public void testInitialize() {
-        // Act - Call initialize method
-        // This test is simplified as we can't easily mock JavaFX components
-        assertDoesNotThrow(() -> controller.initialize());
+    void initializeClearsPreviousError() {
+        runOnFxThread(() -> {
+            errorLabel.setText("old error");
+            controller.initialize();
+            assertEquals("", errorLabel.getText());
+        });
     }
 
-    // The following handleRegister tests can't be easily implemented without JavaFX initialization
-    // They require mocking TextField, PasswordField, and CheckBox components which causes NoClassDefFoundError
-    // Instead, we'll create a simple test to verify the showError method works
     @Test
-    public void testShowError() {
-        // This test is simplified since we can't easily mock JavaFX Label component
-        // We'll just verify the method exists and can be called
-        assertDoesNotThrow(() -> controller.showError("Test error message"));
+    void registerRejectsEmptyFields() {
+        runOnFxThread(() -> {
+            invokeMethod(controller, "handleRegister", new Class<?>[]{});
+            assertEquals("All fields must be filled", errorLabel.getText());
+        });
     }
 
-    // The goToLogin and backToHome methods can't be easily tested without JavaFX initialization
-    // They involve FXML loading and scene switching which requires the JavaFX toolkit to be initialized
+    @Test
+    void registerRejectsInvalidEmail() {
+        runOnFxThread(() -> {
+            fill("alice", "alice.example.com", "secret1", "secret1", true);
+            invokeMethod(controller, "handleRegister", new Class<?>[]{});
+            assertEquals("Please enter a valid email address", errorLabel.getText());
+        });
+    }
+
+    @Test
+    void registerRejectsShortPassword() {
+        runOnFxThread(() -> {
+            fill("alice", "alice@example.com", "123", "123", true);
+            invokeMethod(controller, "handleRegister", new Class<?>[]{});
+            assertEquals("Password must be at least 6 characters", errorLabel.getText());
+        });
+    }
+
+    @Test
+    void registerRejectsMismatchedPasswords() {
+        runOnFxThread(() -> {
+            fill("alice", "alice@example.com", "secret1", "secret2", true);
+            invokeMethod(controller, "handleRegister", new Class<?>[]{});
+            assertEquals("Passwords do not match", errorLabel.getText());
+        });
+    }
+
+    @Test
+    void registerRequiresAcceptingTerms() {
+        runOnFxThread(() -> {
+            fill("alice", "alice@example.com", "secret1", "secret1", false);
+            invokeMethod(controller, "handleRegister", new Class<?>[]{});
+            assertEquals("Please agree to the terms and conditions", errorLabel.getText());
+        });
+    }
+
+    @Test
+    void registerReportsServiceFailure() {
+        runOnFxThread(() -> {
+            UserService failingService = mock(UserService.class);
+            when(failingService.registerUser(anyString(), anyString(), anyString(), anyString()))
+                    .thenThrow(new IllegalStateException("db down"));
+            setField(controller, "userService", failingService);
+
+            fill("alice", "alice@example.com", "secret1", "secret1", true);
+            invokeMethod(controller, "handleRegister", new Class<?>[]{});
+
+            assertEquals("Registration failed: db down", errorLabel.getText());
+        });
+    }
+
+    private void fill(String username, String email, String password, String confirmPassword, boolean accepted) {
+        usernameField.setText(username);
+        emailField.setText(email);
+        passwordField.setText(password);
+        confirmPasswordField.setText(confirmPassword);
+        termsCheckbox.setSelected(accepted);
+    }
 }
