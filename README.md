@@ -16,12 +16,12 @@ This project is built with Java 21, JavaFX 21, and Apache Derby.
 
 We have implemented a **GitHub Actions CI pipeline** that runs automatically on every push and pull request to `master`, and we use feature branches plus Pull Requests as our collaboration workflow.
 
-*   **Continuous Integration:** Every Pull Request targeting the `master` branch triggers an automated `mvn clean test` run.
+*   **Continuous Integration:** Every Pull Request and push targeting the `master` branch triggers an automated `mvn clean verify` run, which includes the JaCoCo coverage gate.
 *   **Branch Protection:** Enabled on `master` — direct pushes are blocked, changes must arrive through a Pull Request, and the `build` check (`Java CI with Maven`) must pass before merging. Force pushes and branch deletion are disabled, and the branch must be up to date with `master` before merging.
 *   **JaCoCo Report:** Each CI run publishes the coverage HTML report as a downloadable `jacoco-report` artifact.
 *   **CI Run History:** <https://github.com/cyt0812/HotelBookingSystem/actions/workflows/maven.yml>
-*   **Latest Verified Run:** <https://github.com/cyt0812/HotelBookingSystem/actions/runs/44477954916> (success, 39s, JaCoCo artifact published)
-*   **Submission Commit:** `0825fa0`
+*   **Latest Verified Run:** <https://github.com/cyt0812/HotelBookingSystem/actions/runs/44491438344> (success, 420 tests, JaCoCo artifact published)
+*   **Submission Commit:** `f52af3b`
 *   **Trial Change Evidence:** For an example of our workflow, review <https://github.com/cyt0812/HotelBookingSystem/pull/5>, where we cleaned up non-source files, verified by CI.
 *   **Test Evidence:** [PR #7](https://github.com/cyt0812/HotelBookingSystem/pull/7) (LoginController tests) and [PR #8](https://github.com/cyt0812/HotelBookingSystem/pull/8) (BookingController tests).
 
