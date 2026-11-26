@@ -24,6 +24,7 @@ We have implemented a **GitHub Actions CI pipeline** that runs automatically on 
 *   **Submission Commit:** `f52af3b`
 *   **Trial Change Evidence:** For an example of our workflow, review <https://github.com/cyt0812/HotelBookingSystem/pull/5>, where we cleaned up non-source files, verified by CI.
 *   **Test Evidence:** [PR #7](https://github.com/cyt0812/HotelBookingSystem/pull/7) (LoginController tests) and [PR #8](https://github.com/cyt0812/HotelBookingSystem/pull/8) (BookingController tests).
+*   **Group Evidence & Contributions:** [Group 16 evidence index and individual contribution records](doc/Group16_Evidence_Index_and_Contribution_Record.md), including requirement traceability and QA verification notes.
 
 ## 🧪 Testing & Coverage (New)
 
